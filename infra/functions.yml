@@ -1,0 +1,6 @@
+healthCheck:
+  handler: src/functions/healthCheck/handler.healthCheck
+  events:
+    - http:
+        path: /health-check
+        method: get

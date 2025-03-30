@@ -1,0 +1,13 @@
+service: interview
+configValidationMode: error
+
+provider:
+  name: aws
+  region: us-east-1
+  runtime: nodejs22.x
+
+functions:
+  - ${file(./infra/functions.yml)}
+
+plugins:
+  - serverless-offline
