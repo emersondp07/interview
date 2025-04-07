@@ -10,4 +10,5 @@ functions:
   - ${file(./infra/functions.yml)}
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-offline
