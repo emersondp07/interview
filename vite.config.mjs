@@ -7,6 +7,14 @@ export default defineConfig({
     globals: true,
     coverage: {
       reporter: ["text", "lcov"],
+      exclude: [
+        "**/*.type.ts",
+        "**/*.d.ts",
+        "node_modules/**",
+        "dist/**",
+        "coverage/**",
+        "**/*.mjs",
+      ],
     },
   },
 });

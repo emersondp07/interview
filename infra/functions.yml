@@ -1,0 +1,7 @@
+findFranchises:
+  handler: src/infra/functions/health-check/handler.healthCheck
+  events:
+    - http:
+        path: /health-check
+        method: get
+        cors: true
