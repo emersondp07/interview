@@ -1,19 +1,18 @@
 import { Entity } from '@/core/entities/entity'
 import type { Optional } from '@/core/types/optional'
-import { ROLE } from './interfaces/adminitrator.type'
-import type { CompanyProps } from './interfaces/company.type'
+import type { InterviewerProps } from './interfaces/interviewer.type'
 
-export class Company extends Entity<CompanyProps> {
+export class Interviewer extends Entity<InterviewerProps> {
+	get name() {
+		return this.props.name
+	}
+
 	get email() {
 		return this.props.email
 	}
 
 	get password() {
 		return this.props.password
-	}
-
-	get phone() {
-		return this.props.phone
 	}
 
 	get role() {
@@ -36,36 +35,28 @@ export class Company extends Entity<CompanyProps> {
 		this.props.updatedAt = new Date()
 	}
 
-	changePassword(password: string) {
-		this.props.password = password
-		this.touch()
-	}
-
 	changeEmail(email: string) {
 		this.props.email = email
 		this.touch()
 	}
 
-	changePhone(phone: string) {
-		this.props.phone = phone
+	changePassword(password: string) {
+		this.props.password = password
 		this.touch()
 	}
 
-	delete() {
-		this.props.deletedAt = new Date()
-		this.props.updatedAt = new Date()
+	changeName(name: string) {
+		this.props.name = name
+		this.touch()
 	}
 
-	static create(
-		props: Optional<CompanyProps, 'createdAt' | 'updatedAt' | 'role'>,
-	) {
-		const client = new Company({
+	static create(props: Optional<InterviewerProps, 'createdAt' | 'updatedAt'>) {
+		const interviewer = new Interviewer({
 			...props,
-			role: ROLE.COMPANY,
 			createdAt: props.createdAt ?? new Date(),
 			updatedAt: props.updatedAt ?? new Date(),
 		})
 
-		return client
+		return interviewer
 	}
 }

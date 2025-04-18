@@ -1,14 +1,14 @@
-import type { UniqueEntityID } from '@/core/entities/unique-entity'
+import type { ROLE } from './adminitrator.type'
 import type { DOCUMENT_TYPE } from './client.type'
 
 export interface CompanyProps {
-	id?: UniqueEntityID
 	corporateReason: string
 	documentType: DOCUMENT_TYPE.CNPJ
 	cnpj: string
 	email: string
 	password: string
 	phone: string
+	role: ROLE.COMPANY
 	createdAt: Date
 	updatedAt: Date
 	deletedAt?: Date

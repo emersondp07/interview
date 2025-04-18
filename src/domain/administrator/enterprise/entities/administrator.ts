@@ -1,6 +1,7 @@
 import { Entity } from '@/core/entities/entity'
+import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
-import type { AdministratorProps } from './interfaces/adminitrator.type'
+import { type AdministratorProps, ROLE } from './interfaces/adminitrator.type'
 
 export class Administrator extends Entity<AdministratorProps> {
 	get name() {
@@ -47,13 +48,18 @@ export class Administrator extends Entity<AdministratorProps> {
 	}
 
 	static create(
-		props: Optional<AdministratorProps, 'createdAt' | 'updatedAt'>,
+		props: Optional<AdministratorProps, 'createdAt' | 'updatedAt' | 'role'>,
+		id?: UniqueEntityID,
 	) {
-		const administrator = new Administrator({
-			...props,
-			createdAt: props.createdAt ?? new Date(),
-			updatedAt: props.updatedAt ?? new Date(),
-		})
+		const administrator = new Administrator(
+			{
+				...props,
+				role: ROLE.ADMIN,
+				createdAt: props.createdAt ?? new Date(),
+				updatedAt: props.updatedAt ?? new Date(),
+			},
+			id,
+		)
 		return administrator
 	}
 }

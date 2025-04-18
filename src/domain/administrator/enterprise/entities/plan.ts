@@ -1,24 +1,23 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
-import { ROLE } from './interfaces/adminitrator.type'
-import type { ClientProps } from './interfaces/client.type'
+import type { PlanProps } from './interfaces/plan.type'
 
-export class Client extends Entity<ClientProps> {
+export class Plan extends Entity<PlanProps> {
 	get name() {
 		return this.props.name
 	}
 
-	get phone() {
-		return this.props.phone
+	get price() {
+		return this.props.price
 	}
 
-	get email() {
-		return this.props.email
+	get interviewLimit() {
+		return this.props.interviewLimit
 	}
 
-	get role() {
-		return this.props.role
+	get description() {
+		return this.props.description
 	}
 
 	get createdAt() {
@@ -27,10 +26,6 @@ export class Client extends Entity<ClientProps> {
 
 	get updatedAt() {
 		return this.props.updatedAt
-	}
-
-	get deletedAt() {
-		return this.props.deletedAt
 	}
 
 	private touch() {
@@ -42,35 +37,34 @@ export class Client extends Entity<ClientProps> {
 		this.touch()
 	}
 
-	changePhone(phone: string) {
-		this.props.phone = phone
+	changePrice(price: string) {
+		this.props.price = price
 		this.touch()
 	}
 
-	changeEmail(email: string) {
-		this.props.email = email
+	changeInterviewLimit(interviewLimit: number) {
+		this.props.interviewLimit = interviewLimit
 		this.touch()
 	}
 
-	delete() {
-		this.props.deletedAt = new Date()
+	changeDescription(description: string) {
+		this.props.description = description
 		this.touch()
 	}
 
 	static create(
-		props: Optional<ClientProps, 'createdAt' | 'updatedAt' | 'role'>,
+		props: Optional<PlanProps, 'createdAt' | 'updatedAt'>,
 		id?: UniqueEntityID,
 	) {
-		const client = new Client(
+		const plan = new Plan(
 			{
 				...props,
-				role: ROLE.CLIENT,
 				createdAt: props.createdAt ?? new Date(),
 				updatedAt: props.updatedAt ?? new Date(),
 			},
 			id,
 		)
 
-		return client
+		return plan
 	}
 }

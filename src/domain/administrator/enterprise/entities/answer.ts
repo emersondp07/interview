@@ -1,4 +1,5 @@
 import { Entity } from '@/core/entities/entity'
+import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
 import type { AnswerProps } from './interfaces/answer.type'
 
@@ -32,12 +33,18 @@ export class Answer extends Entity<AnswerProps> {
 		this.touch()
 	}
 
-	static create(props: Optional<AnswerProps, 'createdAt' | 'updatedAt'>) {
-		const answer = new Answer({
-			...props,
-			createdAt: props.createdAt ?? new Date(),
-			updatedAt: props.updatedAt ?? new Date(),
-		})
+	static create(
+		props: Optional<AnswerProps, 'createdAt' | 'updatedAt'>,
+		id?: UniqueEntityID,
+	) {
+		const answer = new Answer(
+			{
+				...props,
+				createdAt: props.createdAt ?? new Date(),
+				updatedAt: props.updatedAt ?? new Date(),
+			},
+			id,
+		)
 		return answer
 	}
 }

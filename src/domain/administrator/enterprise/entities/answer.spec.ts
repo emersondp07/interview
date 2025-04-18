@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker'
 import { Answer } from './answer'
 
 describe('Answer Entity', () => {
-	it('Should be able create an administrator with valid data', () => {
+	it('Should be able', () => {
 		const answer = Answer.create({
 			intervirewId: new UniqueEntityID(),
 			questionId: new UniqueEntityID(),
@@ -17,19 +17,20 @@ describe('Answer Entity', () => {
 		expect(answer.updatedAt).toBeInstanceOf(Date)
 	})
 
-	it('Should be able to change the name of an administrator', async () => {
+	it('Should be able', async () => {
 		const answer = Answer.create({
 			intervirewId: new UniqueEntityID(),
 			questionId: new UniqueEntityID(),
-			answerText: faker.lorem.sentence(),
+			answerText: 'Hello world',
 		})
 
 		const oldUpdatedAt = answer.updatedAt
 
 		await delay(10)
 
-		answer.changeText(faker.lorem.sentence())
+		answer.changeText('Ola mundo')
 
+		expect(answer.answerText).toBe('Ola mundo')
 		expect(answer.updatedAt.getTime()).toBeGreaterThan(oldUpdatedAt.getTime())
 	})
 })

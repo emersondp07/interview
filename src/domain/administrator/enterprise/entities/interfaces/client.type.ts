@@ -1,4 +1,4 @@
-import type { UniqueEntityID } from '@/core/entities/unique-entity'
+import type { ROLE } from './adminitrator.type'
 
 export enum DOCUMENT_TYPE {
 	CPF = 'CPF',
@@ -7,14 +7,13 @@ export enum DOCUMENT_TYPE {
 }
 
 export interface ClientProps {
-	id?: UniqueEntityID
 	name: string
 	documentType: DOCUMENT_TYPE.CPF
 	document: string
 	birthDate: Date
 	phone: string
 	email: string
-	address: string
+	role: ROLE.CLIENT
 	createdAt: Date
 	updatedAt: Date
 	deletedAt?: Date

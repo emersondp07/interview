@@ -1,7 +1,8 @@
 export enum ROLE {
-	ADMIN = 'admin',
-	COMPANY = 'company',
-	INTERVIEWR = 'interviewer',
+	ADMIN = 'ADMIN',
+	COMPANY = 'COMPANY',
+	INTERVIEWER = 'INTERVIEWER',
+	CLIENT = 'CLIENT',
 }
 
 export interface AdministratorProps {
