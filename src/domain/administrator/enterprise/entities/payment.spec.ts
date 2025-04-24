@@ -13,5 +13,10 @@ describe('Interviewer Entity', () => {
 		})
 
 		expect(payment.id).toBeInstanceOf(UniqueEntityID)
+		expect(payment.signatureId).toBeInstanceOf(UniqueEntityID)
+		expect(payment.invoiceId).toBeInstanceOf(UniqueEntityID)
+		expect(payment.method).toBe(PAYMENT_METHOD.CREDIT_CARD)
+		expect(payment.value_paid).toBe('100')
+		expect(payment.proof_url).toBe('http://example.com/proof.jpg')
 	})
 })

@@ -11,6 +11,9 @@ describe('Question Entity', () => {
 		})
 
 		expect(question.id).toBeTruthy()
+		expect(question.text).toBeTruthy()
+		expect(question.mandatory).toBeTruthy()
+		expect(question.companyId).toBeInstanceOf(UniqueEntityID)
 		expect(question.createdAt).toBeInstanceOf(Date)
 	})
 

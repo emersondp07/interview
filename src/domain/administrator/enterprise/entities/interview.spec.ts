@@ -13,6 +13,8 @@ describe('Interview Entity', () => {
 		})
 
 		expect(interview.id).toBeInstanceOf(UniqueEntityID)
+		expect(interview.clientId).toBeInstanceOf(UniqueEntityID)
+		expect(interview.interviewerId).toBeInstanceOf(UniqueEntityID)
 		expect(interview.createdAt).toBeInstanceOf(Date)
 	})
 
@@ -30,6 +32,24 @@ describe('Interview Entity', () => {
 		company.changeStatus(STATUS_INTERVIEW.IN_PROGRESS)
 
 		expect(company.status).toEqual(STATUS_INTERVIEW.IN_PROGRESS)
+		expect(company.updatedAt.getTime()).toBeGreaterThan(oldUpdatedAt.getTime())
+	})
+
+	it('Should be able', async () => {
+		const company = Interview.create({
+			clientId: new UniqueEntityID(),
+			interviewerId: new UniqueEntityID(),
+			status: STATUS_INTERVIEW.SCHEDULED,
+		})
+
+		const oldUpdatedAt = company.updatedAt
+
+		await delay(10)
+
+		company.delete()
+
+		expect(company.status).toEqual(STATUS_INTERVIEW.CANCELED)
+		expect(company.deletedAt).toBeInstanceOf(Date)
 		expect(company.updatedAt.getTime()).toBeGreaterThan(oldUpdatedAt.getTime())
 	})
 })

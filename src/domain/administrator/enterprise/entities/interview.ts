@@ -1,7 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import type { Optional } from '@/core/types/optional'
-import type {
-	InterviewProps,
+import {
+	type InterviewProps,
 	STATUS_INTERVIEW,
 } from './interfaces/interview.type'
 
@@ -36,6 +36,12 @@ export class Interview extends Entity<InterviewProps> {
 
 	changeStatus(status: STATUS_INTERVIEW) {
 		this.props.status = status
+		this.touch()
+	}
+
+	delete() {
+		this.props.deletedAt = new Date()
+		this.props.status = STATUS_INTERVIEW.CANCELED
 		this.touch()
 	}
 

@@ -1,5 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import type { Optional } from '@/core/types/optional'
+import { ROLE } from './interfaces/adminitrator.type'
 import type { InterviewerProps } from './interfaces/interviewer.type'
 
 export class Interviewer extends Entity<InterviewerProps> {
@@ -50,9 +51,17 @@ export class Interviewer extends Entity<InterviewerProps> {
 		this.touch()
 	}
 
-	static create(props: Optional<InterviewerProps, 'createdAt' | 'updatedAt'>) {
+	delete() {
+		this.props.deletedAt = new Date()
+		this.touch()
+	}
+
+	static create(
+		props: Optional<InterviewerProps, 'role' | 'createdAt' | 'updatedAt'>,
+	) {
 		const interviewer = new Interviewer({
 			...props,
+			role: ROLE.INTERVIEWER,
 			createdAt: props.createdAt ?? new Date(),
 			updatedAt: props.updatedAt ?? new Date(),
 		})
