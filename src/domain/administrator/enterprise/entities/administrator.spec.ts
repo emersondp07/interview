@@ -5,7 +5,7 @@ import { Administrator } from './administrator'
 import { ROLE } from './interfaces/adminitrator.type'
 
 describe('Administrator Entity', () => {
-	it('Should be able create an administrator with valid data', () => {
+	it('Should be able to create an administrator with valid data', () => {
 		const administrator = Administrator.create({
 			name: 'John Doe',
 			email: faker.internet.email(),
@@ -18,7 +18,7 @@ describe('Administrator Entity', () => {
 		expect(administrator.updatedAt).toBeInstanceOf(Date)
 	})
 
-	it('Should be able to change the name of an administrator', async () => {
+	it('Should be able to change the datas of an administrator', async () => {
 		const administrator = Administrator.create({
 			name: 'John Doe',
 			email: 'john.doe@gmail.com',
