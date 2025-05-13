@@ -1,9 +1,19 @@
 import { Entity } from '@/core/entities/entity'
+import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
-import { ROLE } from './interfaces/adminitrator.type'
+import { ROLE } from '../../../administrator/enterprise/entities/interfaces/adminitrator.type'
+import { DOCUMENT_TYPE } from '../../../client/enterprise/entities/interfaces/client.type'
 import type { CompanyProps } from './interfaces/company.type'
 
 export class Company extends Entity<CompanyProps> {
+	get corporateReason() {
+		return this.props.corporateReason
+	}
+
+	get cnpj() {
+		return this.props.cnpj
+	}
+
 	get email() {
 		return this.props.email
 	}
@@ -57,14 +67,22 @@ export class Company extends Entity<CompanyProps> {
 	}
 
 	static create(
-		props: Optional<CompanyProps, 'createdAt' | 'updatedAt' | 'role'>,
+		props: Optional<
+			CompanyProps,
+			'createdAt' | 'updatedAt' | 'role' | 'documentType'
+		>,
+		id?: UniqueEntityID,
 	) {
-		const client = new Company({
-			...props,
-			role: ROLE.COMPANY,
-			createdAt: props.createdAt ?? new Date(),
-			updatedAt: props.updatedAt ?? new Date(),
-		})
+		const client = new Company(
+			{
+				...props,
+				documentType: DOCUMENT_TYPE.CNPJ,
+				role: ROLE.COMPANY,
+				createdAt: props.createdAt ?? new Date(),
+				updatedAt: props.updatedAt ?? new Date(),
+			},
+			id,
+		)
 
 		return client
 	}

@@ -1,10 +1,11 @@
 import type { UniqueEntityID } from '@/core/entities/unique-entity'
 
-export interface QuestionProps {
-	text: string
-	mandatory: boolean
+export interface ContractProps {
+	title: string
+	description: string
+	imageId: string
 	createdAt: Date
 	updatedAt: Date
-	answerId?: UniqueEntityID
+	deletedAt?: Date
 	companyId: UniqueEntityID
 }

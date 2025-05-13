@@ -2,8 +2,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity'
 import { STATUS_PAYMENT } from './interfaces/invoice.type'
 import { Invoice } from './invoice'
 
-describe('Interviewer Entity', () => {
-	it('Should be able create a interviewer with valid data', () => {
+describe('Invoice Entity', () => {
+	it('Should be able to create an invoice with valid data', () => {
 		const invoice = Invoice.create({
 			mounth: 'January',
 			value: '100.00',
@@ -19,7 +19,7 @@ describe('Interviewer Entity', () => {
 		expect(invoice.dueDate).toBeInstanceOf(Date)
 	})
 
-	it('Should be able to validate the payment status to paid', async () => {
+	it('Should be able to change the datas of an invoice', async () => {
 		const invoice = Invoice.create({
 			mounth: 'January',
 			value: '100.00',

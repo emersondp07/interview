@@ -1,15 +1,19 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
-import type { QuestionProps } from './interfaces/question.type'
+import type { ContractProps } from './interfaces/contract.type'
 
-export class Question extends Entity<QuestionProps> {
-	get text() {
-		return this.props.text
+export class Contract extends Entity<ContractProps> {
+	get title() {
+		return this.props.title
 	}
 
-	get mandatory() {
-		return this.props.mandatory
+	get description() {
+		return this.props.description
+	}
+
+	get imageId() {
+		return this.props.imageId
 	}
 
 	get createdAt() {
@@ -20,24 +24,20 @@ export class Question extends Entity<QuestionProps> {
 		return this.props.updatedAt
 	}
 
-	get companyId() {
-		return this.props.companyId
+	get deletedAt() {
+		return this.props.deletedAt
 	}
 
-	get answerId() {
-		return this.props.answerId
-	}
-
-	createAnswer(answerId: UniqueEntityID) {
-		this.props.answerId = answerId
+	delete() {
+		this.props.deletedAt = new Date()
 		this.props.updatedAt = new Date()
 	}
 
 	static create(
-		props: Optional<QuestionProps, 'createdAt' | 'updatedAt'>,
+		props: Optional<ContractProps, 'createdAt' | 'updatedAt'>,
 		id?: UniqueEntityID,
 	) {
-		const question = new Question(
+		const contract = new Contract(
 			{
 				...props,
 				createdAt: props.createdAt ?? new Date(),
@@ -46,6 +46,6 @@ export class Question extends Entity<QuestionProps> {
 			id,
 		)
 
-		return question
+		return contract
 	}
 }

@@ -13,4 +13,6 @@ export interface PaymentProps {
 	method: PAYMENT_METHOD
 	value_paid: string
 	proof_url: string
+	createdAt: Date
+	updatedAt: Date
 }

@@ -1,5 +1,5 @@
-import type { ROLE } from './adminitrator.type'
-import type { DOCUMENT_TYPE } from './client.type'
+import type { ROLE } from '../../../../administrator/enterprise/entities/interfaces/adminitrator.type'
+import type { DOCUMENT_TYPE } from '../../../../client/enterprise/entities/interfaces/client.type'
 
 export interface CompanyProps {
 	corporateReason: string

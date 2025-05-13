@@ -2,8 +2,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity'
 import { PAYMENT_METHOD } from './interfaces/payment.type'
 import { Payment } from './payment'
 
-describe('Interviewer Entity', () => {
-	it('Should be able create a interviewer with valid data', () => {
+describe('Payment Entity', () => {
+	it('Should be able create a payment with valid data', () => {
 		const payment = Payment.create({
 			signatureId: new UniqueEntityID(),
 			invoiceId: new UniqueEntityID(),
@@ -13,5 +13,10 @@ describe('Interviewer Entity', () => {
 		})
 
 		expect(payment.id).toBeInstanceOf(UniqueEntityID)
+		expect(payment.signatureId).toBeInstanceOf(UniqueEntityID)
+		expect(payment.invoiceId).toBeInstanceOf(UniqueEntityID)
+		expect(payment.method).toBe(PAYMENT_METHOD.CREDIT_CARD)
+		expect(payment.value_paid).toBe('100')
+		expect(payment.proof_url).toBe('http://example.com/proof.jpg')
 	})
 })

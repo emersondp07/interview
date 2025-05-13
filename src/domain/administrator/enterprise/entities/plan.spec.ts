@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker'
 import { Plan } from './plan'
 
 describe('Plan Entity', () => {
-	it('Should be able', () => {
+	it('Should be able to create a plan with valid data', () => {
 		const plan = Plan.create({
 			name: 'Plan Name',
 			price: '10',
@@ -17,7 +17,7 @@ describe('Plan Entity', () => {
 		expect(plan.updatedAt).toBeInstanceOf(Date)
 	})
 
-	it('Should be able', async () => {
+	it('Should be able to change the datas of a plan', async () => {
 		const plan = Plan.create({
 			name: 'Plan Name',
 			price: '10',

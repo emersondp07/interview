@@ -1,7 +1,7 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityID } from '@/core/entities/unique-entity'
 import type { Optional } from '@/core/types/optional'
-import { ROLE } from './interfaces/adminitrator.type'
+import { ROLE } from '../../../administrator/enterprise/entities/interfaces/adminitrator.type'
 import type { ClientProps } from './interfaces/client.type'
 
 export class Client extends Entity<ClientProps> {
@@ -15,6 +15,14 @@ export class Client extends Entity<ClientProps> {
 
 	get email() {
 		return this.props.email
+	}
+
+	get birthDate() {
+		return this.props.birthDate
+	}
+
+	get document() {
+		return this.props.document
 	}
 
 	get role() {

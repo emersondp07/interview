@@ -1,5 +1,6 @@
 import { Entity } from '@/core/entities/entity'
 import type { UniqueEntityID } from '@/core/entities/unique-entity'
+import type { Optional } from '@/core/types/optional'
 import type { PaymentProps } from './interfaces/payment.type'
 
 export class Payment extends Entity<PaymentProps> {
@@ -23,10 +24,15 @@ export class Payment extends Entity<PaymentProps> {
 		return this.props.proof_url
 	}
 
-	static create(props: PaymentProps, id?: UniqueEntityID) {
+	static create(
+		props: Optional<PaymentProps, 'createdAt' | 'updatedAt'>,
+		id?: UniqueEntityID,
+	) {
 		const payment = new Payment(
 			{
 				...props,
+				createdAt: props.createdAt ?? new Date(),
+				updatedAt: props.updatedAt ?? new Date(),
 			},
 			id,
 		)

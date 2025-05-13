@@ -26,7 +26,8 @@
       "complexity": {
         "noForEach": "off",
         "noStaticOnlyClass": "off",
-        "noThisInStatic": "off"
+        "noThisInStatic": "off",
+        "noBannedTypes": "off"
       },
       "style": {
         "noUselessElse": "off"
