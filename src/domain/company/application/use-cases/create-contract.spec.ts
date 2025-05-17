@@ -28,7 +28,7 @@ describe('Create Contract', () => {
 		const result = await sut.execute({
 			title: 'Example Contract',
 			description: 'Example description',
-			imageId: 'url de imagem salva',
+			imageUrl: 'url de imagem salva',
 			companyId: company.id.toString(),
 		})
 
@@ -42,7 +42,7 @@ describe('Create Contract', () => {
 		const result = await sut.execute({
 			title: 'Example Contract',
 			description: 'Example description',
-			imageId: 'url de imagem salva',
+			imageUrl: 'url de imagem salva',
 			companyId: company.id.toString(),
 		})
 

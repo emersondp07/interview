@@ -9,6 +9,7 @@ export default defineConfig({
       reporter: ["text", "lcov"],
       exclude: [
         "**/*.type.ts",
+        "**/*-repository.ts",
         "**/*.d.ts",
         "node_modules/**",
         "dist/**",

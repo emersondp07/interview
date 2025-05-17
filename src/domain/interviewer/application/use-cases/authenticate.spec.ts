@@ -22,11 +22,12 @@ describe('Authenticate Use Case', () => {
 
 		await interviewersRepository.create(interviewer)
 
-		await sut.execute({
+		const result = await sut.execute({
 			email: interviewer.email,
-			password: interviewer.password,
+			password: '123456',
 		})
 
+		expect(result.isSuccess()).toBe(true)
 		expect(interviewer.id.toString()).toEqual(expect.any(String))
 	})
 

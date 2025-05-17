@@ -7,7 +7,7 @@ import { Contract } from '../../enterprise/entities/contract'
 interface CreateContractUseCaseRequest {
 	title: string
 	description: string
-	imageId: string
+	imageUrl: string
 	companyId: string
 }
 
@@ -25,7 +25,7 @@ export class CreateContractUseCase {
 	async execute({
 		title,
 		description,
-		imageId,
+		imageUrl,
 		companyId,
 	}: CreateContractUseCaseRequest): Promise<CreateContractUseCaseResponse> {
 		const company = await this.companiesRepository.findById(companyId)
@@ -37,7 +37,7 @@ export class CreateContractUseCase {
 		const contract = Contract.create({
 			title,
 			description,
-			imageId,
+			imageUrl,
 			companyId: company.id,
 		})
 

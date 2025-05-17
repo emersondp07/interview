@@ -2,3 +2,4 @@ ignoredBuiltDependencies:
   - '@biomejs/biome'
   - esbuild
   - serverless
+  - sonar-scanner
