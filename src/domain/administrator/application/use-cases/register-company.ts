@@ -3,9 +3,9 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import type { CompaniesRepository } from '../../../administrator/application/repositories/companies-repository'
 import type { PlansRepository } from '../../../administrator/application/repositories/plans-repository'
-import { Company } from '../../enterprise/entities/company'
-import { Signature } from '../../enterprise/entities/signature'
-import type { SignaturesRepository } from '../repositories/signatures-repository'
+import type { SignaturesRepository } from '../../../company/application/repositories/signatures-repository'
+import { Company } from '../../../company/enterprise/entities/company'
+import { Signature } from '../../../company/enterprise/entities/signature'
 
 interface RegisterCompanyUseCaseRequest {
 	corporateReason: string
@@ -51,6 +51,7 @@ export class RegisterCompanyUseCase {
 				email,
 				password,
 				phone,
+				planId,
 			})
 		}
 

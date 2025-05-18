@@ -1,0 +1,16 @@
+import { z } from 'zod'
+import { DOCUMENT_TYPE } from '../../../client/enterprise/entities/interfaces/client.type'
+
+const registerClient = z.object({
+	name: z.string().min(1, 'Name is required'),
+	documentType: z.string().toUpperCase().pipe(z.nativeEnum(DOCUMENT_TYPE)),
+	document: z.string().min(1, 'Document is required'),
+	birthDate: z.date().refine((date) => date <= new Date(), {
+		message: 'Birth date must be in the past',
+	}),
+	phone: z.string().min(1, 'Phone is required'),
+	email: z.string().email('Invalid email format'),
+	companyId: z.string().uuid('Company ID is required'),
+})
+
+export type RegisterClientSchema = z.infer<typeof registerClient>

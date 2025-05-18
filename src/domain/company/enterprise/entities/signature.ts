@@ -23,6 +23,10 @@ export class Signature extends Entity<SignatureProps> {
 		return this.props.planId
 	}
 
+	get companyId() {
+		return this.props.companyId
+	}
+
 	cancel() {
 		this.props.status = STATUS_SIGNATURE.CANCELED
 		this.props.endValidity = new Date()

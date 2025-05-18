@@ -1,0 +1,168 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DOCUMENT_TYPE {
+  CPF
+  CNPJ
+  RG
+}
+
+enum ROLE {
+  ADMINISTRATOR
+  COMPANY
+  INTERVIEWER
+  CLIENT
+}
+
+enum STATUS_INTERVIEW {
+  SCHEDULED
+  IN_PROGRESS
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+enum STATUS_PAYMENT {
+  OPEN
+  PAID
+  PENDING
+  CANCELED
+  REBUND
+  DEFEATED
+}
+
+enum STATUS_SIGNATURE {
+  ACTIVE
+  INACTIVE
+  PENDING
+  CANCELED
+}
+
+model Administrator {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  password   String
+  role       ROLE
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model Plan {
+  id              String      @id @default(uuid())
+  name            String
+  price           String
+  interview_limit Int
+  description     String
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @updatedAt
+  deleted_at      DateTime?
+  signature       Signature[]
+}
+
+model Company {
+  id               String        @id @default(uuid())
+  corporate_reason String
+  cnpj             String        @unique
+  email            String        @unique
+  password         String
+  phone            String
+  role             ROLE
+  created_at       DateTime      @default(now())
+  updated_at       DateTime      @updatedAt
+  deleted_at       DateTime?
+  plan_id          String
+  interviewers     Interviewer[]
+  clients          Client[]
+  contract         Contract[]
+  signature        Signature[]
+}
+
+model Signature {
+  id             String           @id @default(uuid())
+  start_validity DateTime         @default(now())
+  end_validity   DateTime?
+  status         STATUS_SIGNATURE
+  Invoice        Invoice[]
+  company_id     String?
+  company        Company?         @relation(fields: [company_id], references: [id])
+  plan_id        String?
+  Plan           Plan?            @relation(fields: [plan_id], references: [id])
+}
+
+model Invoice {
+  id           String         @id @default(uuid())
+  mounth       String
+  value        String
+  issueDate    DateTime
+  dueDate      DateTime
+  paymentDate  DateTime?
+  status       STATUS_PAYMENT
+  created_at   DateTime       @default(now())
+  updated_at   DateTime       @updatedAt
+  deleted_at   DateTime?
+  signature_id String?
+  signature    Signature?     @relation(fields: [signature_id], references: [id])
+}
+
+model Contract {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  image_url   String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  company_id  String
+  company     Company   @relation(fields: [company_id], references: [id])
+}
+
+model Interviewer {
+  id         String      @id @default(uuid())
+  name       String
+  email      String      @unique
+  password   String
+  role       ROLE
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  deleted_at DateTime?
+  company_id String
+  company    Company     @relation(fields: [company_id], references: [id])
+  interviews Interview[]
+}
+
+model Client {
+  id           String        @id @default(uuid())
+  name         String
+  documentType DOCUMENT_TYPE
+  document     String        @unique
+  birthDate    DateTime
+  phone        String
+  email        String
+  role         ROLE
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  deleted_at   DateTime?
+  company_id   String
+  company      Company       @relation(fields: [company_id], references: [id])
+  interviews   Interview[]
+}
+
+model Interview {
+  id             String           @id @default(uuid())
+  status         STATUS_INTERVIEW
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  deleted_at     DateTime?
+  interviewer_id String?
+  client_id      String
+  interviewer    Interviewer?     @relation(fields: [interviewer_id], references: [id])
+  client         Client           @relation(fields: [client_id], references: [id])
+}

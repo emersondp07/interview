@@ -14,6 +14,7 @@ describe('Company Entity', () => {
 			email: faker.internet.email(),
 			password: faker.internet.password(),
 			phone: faker.phone.number(),
+			planId: faker.string.uuid(),
 		})
 
 		expect(company.id).toBeInstanceOf(UniqueEntityID)
@@ -29,6 +30,7 @@ describe('Company Entity', () => {
 			email: 'company.x@gmail.com',
 			password: 'c123',
 			phone: '11 99999-9999',
+			planId: 'plan-id',
 		})
 
 		const oldUpdatedAt = company.updatedAt
@@ -44,6 +46,7 @@ describe('Company Entity', () => {
 		expect(company.email).toEqual('company.y@gmail.com')
 		expect(company.password).toEqual('d123')
 		expect(company.phone).toEqual('11 98765-4321')
+		expect(company.planId).toEqual('plan-id')
 		expect(company.updatedAt.getTime()).toBeGreaterThan(oldUpdatedAt.getTime())
 	})
 
@@ -55,6 +58,7 @@ describe('Company Entity', () => {
 			email: 'company.x@gmail.com',
 			password: 'c123',
 			phone: '11 99999-9999',
+			planId: faker.string.uuid(),
 		})
 
 		const oldUpdatedAt = company.updatedAt

@@ -13,6 +13,8 @@ describe('Invoice Entity', () => {
 		})
 
 		expect(invoice.id).toBeInstanceOf(UniqueEntityID)
+		expect(invoice.mounth).toEqual('January')
+		expect(invoice.value).toBeInstanceOf('100.00')
 		expect(invoice.signatureId).toBeInstanceOf(UniqueEntityID)
 		expect(invoice.planId).toBeInstanceOf(UniqueEntityID)
 		expect(invoice.issueDate).toBeInstanceOf(Date)

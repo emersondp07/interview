@@ -4,6 +4,14 @@ import type { Optional } from '@/core/types/optional'
 import { type InvoiceProps, STATUS_PAYMENT } from './interfaces/invoice.type'
 
 export class Invoice extends Entity<InvoiceProps> {
+	get mounth() {
+		return this.props.mounth
+	}
+
+	get value() {
+		return this.props.value
+	}
+
 	get issueDate() {
 		return this.props.issueDate
 	}

@@ -13,6 +13,7 @@ describe('Contract Entity', () => {
 		})
 
 		expect(contract.id).toBeInstanceOf(UniqueEntityID)
+		expect(contract.companyId).toBeInstanceOf(UniqueEntityID)
 		expect(contract.title).toEqual('Contrato de concordancia de patologia')
 		expect(contract.description).toEqual(
 			'Examplo de contrato de concordancia de patologia',
