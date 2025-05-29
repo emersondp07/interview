@@ -16,5 +16,5 @@ export async function deleteClient(
 		clientId,
 	})
 
-	return reply.status(201).send()
+	return reply.status(204).send()
 }
