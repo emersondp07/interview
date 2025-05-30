@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const fetchPlansSchema = z.object({
+export const fetchPlansSchema = z.object({
 	page: z.number().min(1, 'Page must be greater than 0'),
 })
 

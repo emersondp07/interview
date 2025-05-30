@@ -1,10 +1,10 @@
 import { z } from 'zod'
 
-const createInterviewer = z.object({
+export const createInterviewerSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	email: z.string().email('Invalid email format'),
 	password: z.string().min(6, 'Password must be at least 6 characters long'),
 	companyId: z.string().uuid('Invalid company ID format'),
 })
 
-export type CreateInterviewerSchema = z.infer<typeof createInterviewer>
+export type CreateInterviewerSchema = z.infer<typeof createInterviewerSchema>

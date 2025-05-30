@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { DOCUMENT_TYPE } from '../../../client/enterprise/entities/interfaces/client.type'
 
-const registerClient = z.object({
+export const registerClientSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
 	documentType: z.string().toUpperCase().pipe(z.nativeEnum(DOCUMENT_TYPE)),
 	document: z.string().min(1, 'Document is required'),
@@ -13,4 +13,4 @@ const registerClient = z.object({
 	companyId: z.string().uuid('Company ID is required'),
 })
 
-export type RegisterClientSchema = z.infer<typeof registerClient>
+export type RegisterClientSchema = z.infer<typeof registerClientSchema>

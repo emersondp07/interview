@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-const fetchInterviewers = z.object({
+export const fetchInterviewersSchema = z.object({
 	page: z.number().min(1, 'Page must be greater than 0'),
 })
 
-export type FetchInterviewersSchema = z.infer<typeof fetchInterviewers>
+export type FetchInterviewersSchema = z.infer<typeof fetchInterviewersSchema>
