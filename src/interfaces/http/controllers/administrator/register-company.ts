@@ -1,9 +1,9 @@
 import { RegisterCompanyUseCase } from '@/domain/administrator/application/use-cases/register-company'
 import type { RegisterCompanySchema } from '@/domain/administrator/application/validators/register-company.schema'
+import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
+import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { PrismaCompaniesRepository } from '../../../../infra/database/repositories/prisma-companies-repository'
-import { PrismaPlansRepository } from '../../../../infra/database/repositories/prisma-plans-repository'
-import { PrismaSignaturesRepository } from '../../../../infra/database/repositories/prisma-signatures-repository'
 
 export async function registerCompany(
 	request: FastifyRequest,
