@@ -70,7 +70,7 @@ export async function administratorRoutes(app: FastifyTypedInstance) {
 	)
 
 	app.get(
-		'/get-company',
+		'/get-company/:companyId',
 		{
 			schema: {
 				tags: ['Administrator'],

@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -90,7 +93,7 @@ model Signature {
   start_validity DateTime         @default(now())
   end_validity   DateTime?
   status         STATUS_SIGNATURE
-  Invoice        Invoice[]
+  invoice        Invoice[]
   company_id     String?
   company        Company?         @relation(fields: [company_id], references: [id])
   plan_id        String?

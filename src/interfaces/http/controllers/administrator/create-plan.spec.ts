@@ -1,8 +1,7 @@
+import { app } from '@/infra/http/server'
 import request from 'supertest'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { app } from '../../../../infra/http/server'
 
-describe('Register (e2e)', () => {
+describe('Create plan (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
 	})
@@ -11,11 +10,11 @@ describe('Register (e2e)', () => {
 		await app.close()
 	})
 
-	it('should be able to register', async () => {
+	it('should be able to create plan', async () => {
 		const response = await request(app.server).post('/create-plan').send({
-			planName: 'John Doe',
-			planPrice: 'johndoe@example.com',
-			planDescription: '123456',
+			planName: 'Name plan',
+			planPrice: '29,90',
+			planDescription: 'Description plan',
 			planInterviewLimit: 100,
 		})
 

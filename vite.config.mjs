@@ -18,5 +18,6 @@ export default defineConfig({
         "**/*.mjs",
       ],
     },
+    environmentMatchGlobs: [["src/interfaces/http/controllers/**", "prisma"]],
   },
 });

@@ -1,5 +1,5 @@
 import { DeleteClientUseCase } from '@/domain/company/application/use-cases/delete-client'
-import type { DeleteClientSchema } from '@/domain/company/application/validators/delete-client.schema'
+import type { DeleteClientParams } from '@/domain/company/application/validators/delete-client.schema'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -7,7 +7,7 @@ export async function deleteClient(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { clientId } = request.body as DeleteClientSchema
+	const { clientId } = request.params as DeleteClientParams
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const deleteClientUseCase = new DeleteClientUseCase(prismaClientsRepository)

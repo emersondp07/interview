@@ -6,6 +6,7 @@ export class PrismaSignaturesRepository implements SignaturesRepository {
 	async create(signature: Signature) {
 		await prisma.signature.create({
 			data: {
+				id: signature.id.toString(),
 				start_validity: signature.startValidity,
 				status: signature.status,
 				company_id: signature.companyId.toString(),
