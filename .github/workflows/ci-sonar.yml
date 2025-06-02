@@ -40,7 +40,7 @@ jobs:
         run: yarn test:coverage
         env:
           JWT_SECRET: testing
-          DATABASE_URL: "postgresql://docker:docker@host.docker.internal:5432/interview?schema=public"
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/interview?schema=public"
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
