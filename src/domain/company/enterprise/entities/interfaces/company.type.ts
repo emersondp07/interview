@@ -9,6 +9,7 @@ export interface CompanyProps {
 	password: string
 	phone: string
 	role: ROLE.COMPANY
+	planId: string
 	createdAt: Date
 	updatedAt: Date
 	deletedAt?: Date

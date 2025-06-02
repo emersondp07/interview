@@ -16,6 +16,7 @@ export function makeCompany(
 			email: faker.internet.email(),
 			password: faker.internet.password(),
 			phone: faker.phone.number(),
+			planId: faker.string.uuid(),
 			...override,
 		},
 		id,

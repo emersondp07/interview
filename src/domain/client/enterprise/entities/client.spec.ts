@@ -19,6 +19,7 @@ describe('Client Entity', () => {
 
 		expect(client.id).toBeInstanceOf(UniqueEntityID)
 		expect(client.role).toBe(ROLE.CLIENT)
+		expect(client.document).toBe('12345678909')
 		expect(client.birthDate).toBeInstanceOf(Date)
 		expect(client.createdAt).toBeInstanceOf(Date)
 		expect(client.updatedAt).toBeInstanceOf(Date)

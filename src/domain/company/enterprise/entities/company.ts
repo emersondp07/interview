@@ -30,6 +30,10 @@ export class Company extends Entity<CompanyProps> {
 		return this.props.role
 	}
 
+	get planId() {
+		return this.props.planId
+	}
+
 	get createdAt() {
 		return this.props.createdAt
 	}

@@ -12,8 +12,12 @@ export class Contract extends Entity<ContractProps> {
 		return this.props.description
 	}
 
-	get imageId() {
-		return this.props.imageId
+	get imageUrl() {
+		return this.props.imageUrl
+	}
+
+	get companyId() {
+		return this.props.companyId
 	}
 
 	get createdAt() {

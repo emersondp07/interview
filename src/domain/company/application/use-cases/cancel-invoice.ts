@@ -1,5 +1,5 @@
 import { type Either, failed, success } from '@/core/either'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
+import type { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import type { InvoicesRepository } from '../../../company/application/repositories/invoices-repository'
 
@@ -24,10 +24,6 @@ export class CancelInvoiceUseCase {
 
 		if (!invoice) {
 			return failed(new ResourceNotFoundError())
-		}
-
-		if (invoice.signatureId.toString() !== signatureId) {
-			return failed(new NotAllowedError())
 		}
 
 		await this.invoicesRepository.delete(invoice)

@@ -11,6 +11,7 @@ describe('Question Entity', () => {
 
 		expect(signature.id).toBeTruthy()
 		expect(signature.startValidity).toBeInstanceOf(Date)
+		expect(signature.companyId).toBeInstanceOf(UniqueEntityID)
 		expect(signature.status).toBe(STATUS_SIGNATURE.ACTIVE)
 	})
 

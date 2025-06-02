@@ -21,12 +21,20 @@ export class Client extends Entity<ClientProps> {
 		return this.props.birthDate
 	}
 
+	get documentType() {
+		return this.props.documentType
+	}
+
 	get document() {
 		return this.props.document
 	}
 
 	get role() {
 		return this.props.role
+	}
+
+	get companyId() {
+		return this.props.companyId
 	}
 
 	get createdAt() {

@@ -9,6 +9,8 @@ export default defineConfig({
       reporter: ["text", "lcov"],
       exclude: [
         "**/*.type.ts",
+        "**/*.schema.ts",
+        "**/*-repository.ts",
         "**/*.d.ts",
         "node_modules/**",
         "dist/**",
@@ -16,5 +18,6 @@ export default defineConfig({
         "**/*.mjs",
       ],
     },
+    environmentMatchGlobs: [["src/interfaces/http/controllers/**", "prisma"]],
   },
 });
