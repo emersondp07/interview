@@ -129,7 +129,7 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 	)
 
 	app.delete(
-		'/delete-interviewer',
+		'/delete-interviewer/:companyId/:interviewerId',
 		{
 			schema: {
 				tags: ['Company'],

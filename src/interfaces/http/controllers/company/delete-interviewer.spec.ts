@@ -68,7 +68,9 @@ describe('Delete Interviewer (e2e)', () => {
 		})
 
 		const response = await request(app.server)
-			.delete(`/delete-client/${interviewer.id.toString()}`)
+			.delete(
+				`/delete-interviewer/${company.id.toString()}/${interviewer.id.toString()}`,
+			)
 			.send()
 
 		expect(response.status).toEqual(204)

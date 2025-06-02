@@ -36,7 +36,7 @@ describe('Delete Inteviewer', () => {
 		await inMemoryInterviewersRepository.create(interviewer)
 
 		const result = await sut.execute({
-			interviewerId: 'interviewer-1',
+			interviewerId: 'interviewer-2',
 			companyId: 'company-2',
 		})
 

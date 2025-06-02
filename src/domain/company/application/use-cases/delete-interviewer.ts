@@ -19,7 +19,7 @@ export class DeleteInterviewerUseCase {
 		const interviewer =
 			await this.interviewersRepository.findById(interviewerId)
 
-		if (interviewer?.companyId.toString() !== companyId) {
+		if (!interviewer) {
 			return failed(new ResourceNotFoundError())
 		}
 
