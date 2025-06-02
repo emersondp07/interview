@@ -18,14 +18,14 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Install yarn
+        run: npm install --global yarn
 
       - name: Install project dependencies
-        run: pnpm install
+        run: yarn install
 
       - name: Run test coverage
-        run: pnpm test:coverage
+        run: yarn test:coverage
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
