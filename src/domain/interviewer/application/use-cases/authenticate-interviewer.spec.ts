@@ -2,19 +2,19 @@ import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencial
 import { makeInterviewer } from '@/tests/factories/make-interviewer'
 import { InMemoryInterviewersRepository } from '@/tests/repositories/in-memory-interviewers-repository'
 import { hash } from 'bcryptjs'
-import { AuthenticateUseCase } from './authenticate'
+import { AuthenticateInterviewerUseCase } from './authenticate-interviewer'
 
 let interviewersRepository: InMemoryInterviewersRepository
-let sut: AuthenticateUseCase
+let sut: AuthenticateInterviewerUseCase
 
 describe('Authenticate Use Case', () => {
 	beforeEach(() => {
 		interviewersRepository = new InMemoryInterviewersRepository()
 
-		sut = new AuthenticateUseCase(interviewersRepository)
+		sut = new AuthenticateInterviewerUseCase(interviewersRepository)
 	})
 
-	it('Should be able to authenticate', async () => {
+	it('Should be able to authenticate interviewer', async () => {
 		const interviewer = makeInterviewer({
 			email: 'teste@email.com',
 			password: await hash('123456', 10),

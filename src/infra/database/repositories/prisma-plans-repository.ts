@@ -1,36 +1,27 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { PlansRepository } from '@/domain/administrator/application/repositories/plans-repository'
 import type { Plan } from '@/domain/administrator/enterprise/entities/plan'
+import { PrismaPlanMapper } from '../prisma/mappers/prisma-plan-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaPlansRepository implements PlansRepository {
 	async findAll({ page }: PaginationParams) {
-		return prisma.plan.findMany({
-			select: {
-				id: true,
-				name: true,
-				price: true,
-				description: true,
-				interview_limit: true,
-			},
+		const plans = await prisma.plan.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
-		}) as unknown as Plan[]
+		})
+
+		return plans.map(PrismaPlanMapper.toDomain)
 	}
 
 	async findById(planId: string) {
-		return prisma.plan.findUnique({
+		const plan = await prisma.plan.findUnique({
 			where: {
 				id: planId,
 			},
-			select: {
-				id: true,
-				name: true,
-				price: true,
-				description: true,
-				interview_limit: true,
-			},
-		}) as unknown as Plan
+		})
+
+		return plan ? PrismaPlanMapper.toDomain(plan) : null
 	}
 
 	async create(plan: Plan) {

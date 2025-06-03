@@ -17,7 +17,7 @@ enum DOCUMENT_TYPE {
 }
 
 enum ROLE {
-  ADMINISTRATOR
+  ADMIN
   COMPANY
   INTERVIEWER
   CLIENT
@@ -94,10 +94,10 @@ model Signature {
   end_validity   DateTime?
   status         STATUS_SIGNATURE
   invoice        Invoice[]
-  company_id     String?
-  company        Company?         @relation(fields: [company_id], references: [id])
-  plan_id        String?
-  Plan           Plan?            @relation(fields: [plan_id], references: [id])
+  company_id     String
+  company        Company          @relation(fields: [company_id], references: [id])
+  plan_id        String
+  Plan           Plan             @relation(fields: [plan_id], references: [id])
 }
 
 model Invoice {
@@ -111,8 +111,8 @@ model Invoice {
   created_at   DateTime       @default(now())
   updated_at   DateTime       @updatedAt
   deleted_at   DateTime?
-  signature_id String?
-  signature    Signature?     @relation(fields: [signature_id], references: [id])
+  signature_id String
+  signature    Signature      @relation(fields: [signature_id], references: [id])
 }
 
 model Contract {
@@ -142,20 +142,20 @@ model Interviewer {
 }
 
 model Client {
-  id           String        @id @default(uuid())
-  name         String
-  documentType DOCUMENT_TYPE
-  document     String        @unique
-  birthDate    DateTime
-  phone        String
-  email        String
-  role         ROLE
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
-  deleted_at   DateTime?
-  company_id   String
-  company      Company       @relation(fields: [company_id], references: [id])
-  interviews   Interview[]
+  id            String        @id @default(uuid())
+  name          String
+  document_type DOCUMENT_TYPE
+  document      String        @unique
+  birth_date    DateTime
+  phone         String
+  email         String
+  role          ROLE
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  deleted_at    DateTime?
+  company_id    String
+  company       Company       @relation(fields: [company_id], references: [id])
+  interviews    Interview[]
 }
 
 model Interview {

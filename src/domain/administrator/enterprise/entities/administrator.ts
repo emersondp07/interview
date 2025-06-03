@@ -28,6 +28,10 @@ export class Administrator extends Entity<AdministratorProps> {
 		return this.props.updatedAt
 	}
 
+	get deletedAt() {
+		return this.props.deletedAt
+	}
+
 	private touch() {
 		this.props.updatedAt = new Date()
 	}

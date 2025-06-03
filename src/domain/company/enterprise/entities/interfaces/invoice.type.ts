@@ -17,5 +17,4 @@ export interface InvoiceProps {
 	paymentDate?: Date
 	status: STATUS_PAYMENT
 	signatureId: UniqueEntityID
-	planId: UniqueEntityID
 }

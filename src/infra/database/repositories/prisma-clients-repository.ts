@@ -1,48 +1,37 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { Client } from '@/domain/client/enterprise/entities/client'
 import type { ClientsRepository } from '@/domain/company/application/repositories/clients-repository'
+import { PrismaClientMapper } from '../prisma/mappers/prisma-client-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaClientsRepository implements ClientsRepository {
 	async findAll({ page }: PaginationParams) {
-		return prisma.client.findMany({
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				phone: true,
-			},
+		const clients = await prisma.client.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
-		}) as unknown as Client[]
+		})
+
+		return clients.map(PrismaClientMapper.toDomain)
 	}
 
 	async findById(clientId: string) {
-		return prisma.client.findUnique({
+		const client = await prisma.client.findUnique({
 			where: {
 				id: clientId,
 			},
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				phone: true,
-			},
-		}) as unknown as Client
+		})
+
+		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
 	async findByDocument(document: string) {
-		return prisma.client.findUnique({
+		const client = await prisma.client.findUnique({
 			where: {
 				document,
 			},
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				phone: true,
-			},
-		}) as unknown as Client
+		})
+
+		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
 	async create(client: Client): Promise<void> {
@@ -52,8 +41,8 @@ export class PrismaClientsRepository implements ClientsRepository {
 				name: client.name,
 				email: client.email,
 				phone: client.phone,
-				birthDate: client.birthDate,
-				documentType: client.documentType,
+				birth_date: client.birthDate,
+				document_type: client.documentType,
 				document: client.document,
 				role: client.role,
 				company_id: client.companyId.toString(),

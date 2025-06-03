@@ -1,6 +1,6 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { CompaniesRepository } from '@/domain/administrator/application/repositories/companies-repository'
-import type { Company } from '../../domain/company/enterprise/entities/company'
+import type { Company } from '@/domain/company/enterprise/entities/company'
 
 export class InMemoryCompaniesRepository implements CompaniesRepository {
 	public items: Company[] = []
@@ -23,8 +23,8 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 		return company
 	}
 
-	async findByCnpj(cnpj: string) {
-		const company = this.items.find((company) => company.cnpj === cnpj)
+	async findByEmail(email: string) {
+		const company = this.items.find((company) => company.email === email)
 
 		if (!company) {
 			return null
