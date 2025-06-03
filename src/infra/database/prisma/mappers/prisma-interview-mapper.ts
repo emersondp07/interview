@@ -1,0 +1,31 @@
+import { UniqueEntityID } from '@/core/entities/unique-entity'
+import type { STATUS_INTERVIEW } from '@/domain/interviewer/enterprise/entities/interfaces/interview.type'
+import { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+import type { Interview as PrismaInterview } from '@prisma/client'
+
+export class PrismaInterviewMapper {
+	static toPrisma(interview: Interview): PrismaInterview {
+		return {
+			id: interview.id.toString(),
+			client_id: interview.clientId.toString(),
+			interviewer_id: interview.interviewerId?.toString() ?? null,
+			status: interview.status as STATUS_INTERVIEW,
+			created_at: interview.createdAt,
+			updated_at: interview.updatedAt,
+			deleted_at: interview.deletedAt ?? null,
+		}
+	}
+
+	static toDomain(raw: PrismaInterview): Interview {
+		return Interview.create(
+			{
+				clientId: new UniqueEntityID(raw.client_id),
+				interviewerId: raw.interviewer_id
+					? new UniqueEntityID(raw.interviewer_id)
+					: undefined,
+				status: raw.status as STATUS_INTERVIEW,
+			},
+			new UniqueEntityID(raw.id),
+		)
+	}
+}

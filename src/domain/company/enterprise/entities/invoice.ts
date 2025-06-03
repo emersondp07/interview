@@ -32,10 +32,6 @@ export class Invoice extends Entity<InvoiceProps> {
 		return this.props.signatureId
 	}
 
-	get planId() {
-		return this.props.planId
-	}
-
 	addPaymentDate(paymentDate: Date) {
 		this.props.paymentDate = paymentDate
 		this.props.status = STATUS_PAYMENT.PAID

@@ -47,7 +47,10 @@ export class Interview extends Entity<InterviewProps> {
 	}
 
 	static create(
-		props: Optional<InterviewProps, 'createdAt' | 'updatedAt'>,
+		props: Optional<
+			InterviewProps,
+			'createdAt' | 'updatedAt' | 'interviewerId'
+		>,
 		id?: UniqueEntityID,
 	) {
 		const interview = new Interview(

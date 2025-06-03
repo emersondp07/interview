@@ -36,7 +36,7 @@ export class RegisterCompanyUseCase {
 		phone,
 		planId,
 	}: RegisterCompanyUseCaseRequest): Promise<RegisterCompanyUseCaseResponse> {
-		let company = await this.companiesRepository.findByCnpj(cnpj)
+		let company = await this.companiesRepository.findByEmail(email)
 
 		const planExists = await this.plansRepository.findById(planId)
 

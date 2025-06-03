@@ -9,14 +9,12 @@ describe('Invoice Entity', () => {
 			value: '100.00',
 			status: STATUS_PAYMENT.PAID,
 			signatureId: new UniqueEntityID(),
-			planId: new UniqueEntityID(),
 		})
 
 		expect(invoice.id).toBeInstanceOf(UniqueEntityID)
 		expect(invoice.mounth).toEqual('January')
 		expect(invoice.value).toEqual('100.00')
 		expect(invoice.signatureId).toBeInstanceOf(UniqueEntityID)
-		expect(invoice.planId).toBeInstanceOf(UniqueEntityID)
 		expect(invoice.issueDate).toBeInstanceOf(Date)
 		expect(invoice.dueDate).toBeInstanceOf(Date)
 	})
@@ -27,7 +25,6 @@ describe('Invoice Entity', () => {
 			value: '100.00',
 			status: STATUS_PAYMENT.OPEN,
 			signatureId: new UniqueEntityID(),
-			planId: new UniqueEntityID(),
 		})
 
 		invoice.addPaymentDate(new Date())

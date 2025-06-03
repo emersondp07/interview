@@ -4,23 +4,23 @@ import { compare } from 'bcryptjs'
 import type { Interviewer } from '../../enterprise/entities/interviewer'
 import type { InterviewersRepository } from '../repositories/interviewers-repository'
 
-interface AuthenticateUseCaseRequest {
+interface AuthenticateInterviewerUseCaseRequest {
 	email: string
 	password: string
 }
 
-type AuthenticateUseCaseResponse = Either<
+type AuthenticateInterviewerUseCaseResponse = Either<
 	InvalidCredencialsError,
 	{ interviewer: Interviewer | null }
 >
 
-export class AuthenticateUseCase {
+export class AuthenticateInterviewerUseCase {
 	constructor(private interviewersRepository: InterviewersRepository) {}
 
 	async execute({
 		email,
 		password,
-	}: AuthenticateUseCaseRequest): Promise<AuthenticateUseCaseResponse> {
+	}: AuthenticateInterviewerUseCaseRequest): Promise<AuthenticateInterviewerUseCaseResponse> {
 		const interviewer = await this.interviewersRepository.findByEmail(email)
 
 		if (!interviewer) {

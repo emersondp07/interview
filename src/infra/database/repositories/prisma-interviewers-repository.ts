@@ -1,48 +1,37 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { InterviewersRepository } from '@/domain/interviewer/application/repositories/interviewers-repository'
 import type { Interviewer } from '@/domain/interviewer/enterprise/entities/interviewer'
+import { PrismaInterviewerMapper } from '../prisma/mappers/prisma-interviewer-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaInterviewersRepository implements InterviewersRepository {
 	async findAll({ page }: PaginationParams) {
-		return prisma.interviewer.findMany({
-			select: {
-				id: true,
-				name: true,
-				email: true,
-			},
+		const interviewers = await prisma.interviewer.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
-		}) as unknown as Interviewer[]
+		})
+
+		return interviewers.map(PrismaInterviewerMapper.toDomain)
 	}
 
 	async findById(interviewerId: string) {
-		return prisma.interviewer.findUnique({
+		const interviewer = await prisma.interviewer.findUnique({
 			where: {
 				id: interviewerId,
 			},
-			select: {
-				id: true,
-				name: true,
-				email: true,
-				password: true,
-			},
-		}) as unknown as Interviewer
+		})
+
+		return interviewer ? PrismaInterviewerMapper.toDomain(interviewer) : null
 	}
 
 	async findByEmail(email: string) {
-		return prisma.company.findUnique({
+		const interviewer = await prisma.interviewer.findUnique({
 			where: {
 				email,
 			},
-			select: {
-				id: true,
-				corporate_reason: true,
-				cnpj: true,
-				email: true,
-				phone: true,
-			},
-		}) as unknown as Interviewer
+		})
+
+		return interviewer ? PrismaInterviewerMapper.toDomain(interviewer) : null
 	}
 
 	async create(interviewer: Interviewer) {

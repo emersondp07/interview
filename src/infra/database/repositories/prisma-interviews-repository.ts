@@ -1,30 +1,27 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { InterviewsRepository } from '@/domain/interviewer/application/repositories/interviews-repository'
 import type { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+import { PrismaInterviewMapper } from '../prisma/mappers/prisma-interview-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaInterviewsRepository implements InterviewsRepository {
 	async findAll({ page }: PaginationParams) {
-		return prisma.interview.findMany({
-			select: {
-				id: true,
-				status: true,
-			},
+		const interviews = await prisma.interview.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
-		}) as unknown as Interview[]
+		})
+
+		return interviews.map(PrismaInterviewMapper.toDomain)
 	}
 
 	async findById(interviewId: string) {
-		return prisma.interview.findUnique({
+		const interview = await prisma.interview.findUnique({
 			where: {
 				id: interviewId,
 			},
-			select: {
-				id: true,
-				status: true,
-			},
-		}) as unknown as Interview
+		})
+
+		return interview ? PrismaInterviewMapper.toDomain(interview) : null
 	}
 
 	async create(interview: Interview) {
@@ -37,35 +34,35 @@ export class PrismaInterviewsRepository implements InterviewsRepository {
 	}
 
 	async finishInterview(interview: Interview) {
-		return prisma.interview.update({
+		await prisma.interview.update({
 			where: {
 				id: interview.id.toString(),
 			},
 			data: {
 				status: interview.status,
 			},
-		}) as unknown as Interview
+		})
 	}
 
 	async startInterview(interview: Interview) {
-		return prisma.interview.update({
+		await prisma.interview.update({
 			where: {
 				id: interview.id.toString(),
 			},
 			data: {
 				status: interview.status,
 			},
-		}) as unknown as Interview
+		})
 	}
 
 	async sendContract(interview: Interview) {
-		return prisma.interview.update({
+		await prisma.interview.update({
 			where: {
 				id: interview.id.toString(),
 			},
 			data: {
 				status: interview.status,
 			},
-		}) as unknown as Interview
+		})
 	}
 }

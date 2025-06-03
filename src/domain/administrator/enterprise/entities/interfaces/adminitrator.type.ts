@@ -12,4 +12,5 @@ export interface AdministratorProps {
 	role: ROLE.ADMIN
 	createdAt: Date
 	updatedAt: Date
+	deletedAt?: Date | null
 }

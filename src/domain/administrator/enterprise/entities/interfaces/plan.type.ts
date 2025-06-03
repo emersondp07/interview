@@ -5,4 +5,5 @@ export interface PlanProps {
 	description: string
 	createdAt: Date
 	updatedAt: Date
+	deletedAt?: Date
 }
