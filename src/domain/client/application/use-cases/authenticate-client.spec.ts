@@ -7,14 +7,14 @@ import { AuthenticateClientUseCase } from './authenticate-client'
 let inMemoryClientsRepository: InMemoryClientsRepository
 let sut: AuthenticateClientUseCase
 
-describe('Authenticate Administrator Use Case', () => {
+describe('Authenticate Client Use Case', () => {
 	beforeEach(() => {
 		inMemoryClientsRepository = new InMemoryClientsRepository()
 
 		sut = new AuthenticateClientUseCase(inMemoryClientsRepository)
 	})
 
-	it('Should be able to authenticate interviewer', async () => {
+	it('Should be able to authenticate client', async () => {
 		const client = makeClient({
 			documentType: DOCUMENT_TYPE.CPF,
 			document: '12345678901',
@@ -30,27 +30,11 @@ describe('Authenticate Administrator Use Case', () => {
 		expect(client.id.toString()).toEqual(expect.any(String))
 	})
 
-	it('Should not be able to authenticate with wrong email', async () => {
+	it('Should not be able to authenticate with wrong document', async () => {
 		const result = await sut.execute({
 			document: '12345678901',
 		})
 
-		expect(result.value).toBeInstanceOf(InvalidCredencialsError)
-	})
-
-	it('Should not be able to authenticate with wrong password', async () => {
-		const client = makeClient({
-			documentType: DOCUMENT_TYPE.CPF,
-			document: '12345678901',
-		})
-
-		await inMemoryClientsRepository.create(client)
-
-		const result = await sut.execute({
-			document: '123456789013',
-		})
-
-		expect(result.isFailed()).toBe(true)
 		expect(result.value).toBeInstanceOf(InvalidCredencialsError)
 	})
 })

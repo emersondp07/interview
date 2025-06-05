@@ -14,7 +14,7 @@ describe('Authenticate Company Use Case', () => {
 		sut = new AuthenticateCompanyUseCase(inMemoryCompaniesRepository)
 	})
 
-	it('Should be able to authenticate interviewer', async () => {
+	it('Should be able to authenticate company', async () => {
 		const company = makeCompany({
 			email: 'teste@email.com',
 			password: await hash('123456', 10),

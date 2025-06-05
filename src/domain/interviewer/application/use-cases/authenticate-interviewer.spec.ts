@@ -7,7 +7,7 @@ import { AuthenticateInterviewerUseCase } from './authenticate-interviewer'
 let interviewersRepository: InMemoryInterviewersRepository
 let sut: AuthenticateInterviewerUseCase
 
-describe('Authenticate Use Case', () => {
+describe('Authenticate Interviewer Use Case', () => {
 	beforeEach(() => {
 		interviewersRepository = new InMemoryInterviewersRepository()
 

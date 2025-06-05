@@ -1,30 +1,47 @@
-import { createPlanSchema } from '@/domain/administrator/application/validators/create-plan.schema'
+import { authenticateAdministratorSchema } from '@/domain/administrator/application/validators/authenticate-administrator.schema'
+import { createAdministratorSchema } from '@/domain/administrator/application/validators/create-administrator.schema'
 import { fetchCompaniesSchema } from '@/domain/administrator/application/validators/fetch-companies.schema'
 import { fetchPlansSchema } from '@/domain/administrator/application/validators/fetch-plans.schema'
 import { getCompanySchema } from '@/domain/administrator/application/validators/get-company.schema'
 import { registerCompanySchema } from '@/domain/administrator/application/validators/register-company.schema'
+import { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
 import type { FastifyTypedInstance } from '../../@types/instances.type'
-import { createPlan } from '../controllers/administrator/create-plan'
+import { authenticateAdministrator } from '../controllers/administrator/authenticate-administrator'
+import { createAdministrator } from '../controllers/administrator/create-administrator'
 import { fetchCompanies } from '../controllers/administrator/fetch-companies'
 import { fetchPlans } from '../controllers/administrator/fetch-plans'
 import { getComapany } from '../controllers/administrator/get-company'
+import { refresh } from '../controllers/administrator/refresh'
 import { registerCompany } from '../controllers/administrator/register-company'
+import { verifyUserRole } from '../middlewares/verify-user-role'
 
 export async function administratorRoutes(app: FastifyTypedInstance) {
-	// app.addHook('onRequest', verifyJWT)
-	// app.addHook('onRequest', verifyUserRole(ROLE.ADMIN))
-
 	app.post(
-		'/create-plan',
+		'/session-administrator',
 		{
 			schema: {
 				tags: ['Administrator'],
-				summary: 'Create a new plan',
-				description: 'This route allows an administrator to create a new plan.',
-				body: createPlanSchema,
+				summary: '',
+				description: '',
+				body: authenticateAdministratorSchema,
 			},
 		},
-		createPlan,
+		authenticateAdministrator,
+	)
+
+	app.patch('/token/refresh', refresh)
+
+	app.post(
+		'/create-administrator',
+		{
+			schema: {
+				tags: ['Administrator'],
+				summary: '',
+				description: '',
+				body: createAdministratorSchema,
+			},
+		},
+		createAdministrator,
 	)
 
 	app.post(
@@ -40,6 +57,9 @@ export async function administratorRoutes(app: FastifyTypedInstance) {
 		},
 		registerCompany,
 	)
+
+	// app.addHook('onRequest', verifyJWT)
+	app.addHook('onRequest', verifyUserRole(ROLE.ADMIN))
 
 	app.get(
 		'/fetch-companies',

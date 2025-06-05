@@ -7,7 +7,10 @@ import { deleteInterviewerParams } from '@/domain/company/application/validators
 import { fetchInterviewersSchema } from '@/domain/company/application/validators/fetch-interviewers.schema'
 import { fetchInvoicesSchema } from '@/domain/company/application/validators/fetch-invoices.schema'
 import { registerClientSchema } from '@/domain/company/application/validators/register-client.schema'
+import { ROLE } from '../../../domain/administrator/enterprise/entities/interfaces/adminitrator.type'
+import { authenticateCompanySchema } from '../../../domain/company/application/validators/authenticate-client.schema'
 import type { FastifyTypedInstance } from '../../@types/instances.type'
+import { authenticateCompany } from '../controllers/company/authenticate-company'
 import { cancelInvoice } from '../controllers/company/cancel-invoice'
 import { createContract } from '../controllers/company/create-contract'
 import { createInterviewer } from '../controllers/company/create-interviewer'
@@ -17,10 +20,23 @@ import { deleteInterviewer } from '../controllers/company/delete-interviewer'
 import { fetchInterviewers } from '../controllers/company/fetch-interviewers'
 import { fetchInvoices } from '../controllers/company/fetch-invoices'
 import { registerClient } from '../controllers/company/register-client'
+import { verifyUserRole } from '../middlewares/verify-user-role'
 
 export async function companyRoutes(app: FastifyTypedInstance) {
+	app.post(
+		'/session-company',
+		{
+			schema: {
+				tags: ['Company'],
+				summary: '',
+				description: '',
+				body: authenticateCompanySchema,
+			},
+		},
+		authenticateCompany,
+	)
 	// app.addHook('onRequest', verifyJWT)
-	// app.addHook('onRequest', verifyUserRole(ROLE.COMPANY))
+	app.addHook('onRequest', verifyUserRole(ROLE.COMPANY))
 
 	app.get(
 		'/fetch-interviewers',

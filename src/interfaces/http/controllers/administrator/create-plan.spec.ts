@@ -1,7 +1,7 @@
 import { app } from '@/infra/http/server'
 import request from 'supertest'
 
-describe('Create plan (e2e)', () => {
+describe('Create Plan (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
 	})
