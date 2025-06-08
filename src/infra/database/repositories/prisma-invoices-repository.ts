@@ -25,23 +25,22 @@ export class PrismaInvoicesRepository implements InvoicesRepository {
 	}
 
 	async create(invoice: Invoice) {
+		const prismaInvoice = PrismaInvoiceMapper.toPrisma(invoice)
+
 		await prisma.invoice.create({
-			data: {
-				mounth: invoice.mounth,
-				value: invoice.value,
-				issueDate: invoice.issueDate,
-				dueDate: invoice.dueDate,
-				paymentDate: invoice.paymentDate,
-				status: invoice.status,
-				signature_id: invoice.signatureId.toString(),
-			},
+			data: prismaInvoice,
 		})
 	}
 
 	async delete(invoice: Invoice) {
-		await prisma.invoice.delete({
+		const prismaInvoice = PrismaInvoiceMapper.toPrisma(invoice)
+
+		await prisma.invoice.update({
 			where: {
-				id: invoice.id.toString(),
+				id: prismaInvoice.id,
+			},
+			data: {
+				deleted_at: new Date(),
 			},
 		})
 	}

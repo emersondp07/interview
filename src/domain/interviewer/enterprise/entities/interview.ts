@@ -15,6 +15,10 @@ export class Interview extends Entity<InterviewProps> {
 		return this.props.interviewerId
 	}
 
+	get companyId() {
+		return this.props.companyId
+	}
+
 	get status() {
 		return this.props.status
 	}

@@ -3,10 +3,7 @@ import type { GetCompanySchema } from '@/domain/administrator/application/valida
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function getComapany(
-	request: FastifyRequest,
-	reply: FastifyReply,
-) {
+export async function getCompany(request: FastifyRequest, reply: FastifyReply) {
 	const { companyId } = request.params as GetCompanySchema
 
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()

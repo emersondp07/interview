@@ -13,6 +13,7 @@ export function makeInterview(
 		{
 			clientId: new UniqueEntityID(),
 			interviewerId: new UniqueEntityID(),
+			companyId: new UniqueEntityID(),
 			status: STATUS_INTERVIEW.SCHEDULED,
 			...override,
 		},

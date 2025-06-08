@@ -14,14 +14,14 @@ describe('Authenticate Administrator (e2e)', () => {
 		await request(app.server).post('/create-administrator').send({
 			name: 'John Doe',
 			email: 'johndoe@example.com',
-			password: '123456',
+			password: '12345678',
 		})
 
 		const response = await request(app.server)
 			.post('/session-administrator')
 			.send({
 				email: 'johndoe@example.com',
-				password: '123456',
+				password: '12345678',
 			})
 
 		expect(response.statusCode).toEqual(200)

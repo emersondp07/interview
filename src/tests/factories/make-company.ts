@@ -14,7 +14,7 @@ export function makeCompany(
 			documentType: DOCUMENT_TYPE.CNPJ,
 			cnpj: faker.helpers.replaceSymbols('##.###.###/####-##'),
 			email: faker.internet.email(),
-			password: faker.internet.password(),
+			password: faker.internet.password({ length: 8 }),
 			phone: faker.phone.number(),
 			planId: faker.string.uuid(),
 			...override,

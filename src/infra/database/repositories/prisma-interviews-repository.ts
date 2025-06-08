@@ -25,43 +25,48 @@ export class PrismaInterviewsRepository implements InterviewsRepository {
 	}
 
 	async create(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		await prisma.interview.create({
-			data: {
-				status: interview.status,
-				client_id: interview.clientId.toString(),
-			},
+			data: prismaInterview,
 		})
 	}
 
 	async finishInterview(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		await prisma.interview.update({
 			where: {
-				id: interview.id.toString(),
+				id: prismaInterview.id,
 			},
 			data: {
-				status: interview.status,
+				status: prismaInterview.status,
 			},
 		})
 	}
 
 	async startInterview(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		await prisma.interview.update({
 			where: {
-				id: interview.id.toString(),
+				id: prismaInterview.id,
 			},
 			data: {
-				status: interview.status,
+				status: prismaInterview.status,
 			},
 		})
 	}
 
 	async sendContract(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		await prisma.interview.update({
 			where: {
-				id: interview.id.toString(),
+				id: prismaInterview.id,
 			},
 			data: {
-				status: interview.status,
+				status: prismaInterview.status,
 			},
 		})
 	}

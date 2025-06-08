@@ -7,14 +7,11 @@ export class PrismaAdministratorsRepository
 	implements AdministratorsRepository
 {
 	async create(administrator: Administrator): Promise<void> {
+		const prismaAdministrator =
+			PrismaAdministratorMapper.toPrisma(administrator)
+
 		await prisma.administrator.create({
-			data: {
-				id: administrator.id.toString(),
-				name: administrator.name,
-				email: administrator.email,
-				password: administrator.password,
-				role: administrator.role,
-			},
+			data: prismaAdministrator,
 		})
 	}
 

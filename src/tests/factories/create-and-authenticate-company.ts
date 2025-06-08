@@ -1,11 +1,13 @@
-import { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
 import { prisma } from '@/infra/database/prisma/prisma'
+import { ROLE } from '@prisma/client'
 import { hash } from 'bcryptjs'
-import type { FastifyInstance } from 'fastify'
 import request from 'supertest'
+import type { FastifyTypedInstance } from '../../interfaces/@types/instances.type'
+import { makeCompany } from './make-company'
 import { makePlan } from './make-plan'
+import { makeSignature } from './make-signature'
 
-export async function createAndAuthenticateCompany(app: FastifyInstance) {
+export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 	const plan = makePlan()
 	await prisma.plan.create({
 		data: {
@@ -17,11 +19,14 @@ export async function createAndAuthenticateCompany(app: FastifyInstance) {
 		},
 	})
 
+	const company = makeCompany()
+
 	await prisma.company.create({
 		data: {
+			id: company.id.toString(),
 			corporate_reason: 'Corporate',
 			email: 'corporate@example.com',
-			password: await hash('123456', 10),
+			password: await hash('12345678', 10),
 			cnpj: '165165165156',
 			phone: '1231321321',
 			role: ROLE.COMPANY,
@@ -29,14 +34,27 @@ export async function createAndAuthenticateCompany(app: FastifyInstance) {
 		},
 	})
 
-	const authResponse = await request(app.server)
-		.post('/sessions-company')
-		.send({
-			email: 'johndoe@example.com',
-			password: '123456',
-		})
+	const signature = makeSignature()
+
+	await prisma.signature.create({
+		data: {
+			id: signature.id.toString(),
+			company_id: company.id.toString(),
+			plan_id: plan.id.toString(),
+			status: 'ACTIVE',
+		},
+	})
+
+	const authResponse = await request(app.server).post('/session-company').send({
+		email: 'corporate@example.com',
+		password: '12345678',
+	})
 
 	const { token } = authResponse.body
 
-	return { token }
+	return {
+		token,
+		companyId: company.id.toString(),
+		signatureId: signature.id.toString(),
+	}
 }

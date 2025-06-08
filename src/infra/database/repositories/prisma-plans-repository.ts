@@ -25,13 +25,10 @@ export class PrismaPlansRepository implements PlansRepository {
 	}
 
 	async create(plan: Plan) {
+		const prismaPlan = PrismaPlanMapper.toPrisma(plan)
+
 		await prisma.plan.create({
-			data: {
-				name: plan.name,
-				price: plan.price,
-				description: plan.description,
-				interview_limit: plan.interviewLimit,
-			},
+			data: prismaPlan,
 		})
 	}
 }

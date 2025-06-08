@@ -35,8 +35,8 @@ describe('Create Invoice', () => {
 
 		expect(inMemoryInvoicesRepository.items).toHaveLength(1)
 		expect(result.isSuccess()).toBe(true)
-		expect(inMemoryInvoicesRepository.items[0].signatureId).toEqual(
-			signature.id,
+		expect(inMemoryInvoicesRepository.items[0].signature_id).toEqual(
+			signature.id.toString(),
 		)
 	})
 

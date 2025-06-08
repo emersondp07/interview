@@ -1,8 +1,8 @@
 import { authenticateInterviewerSchema } from '@/domain/interviewer/application/validators/authenticate-interviewer.schema'
-import type { FastifyInstance } from 'fastify'
+import type { FastifyTypedInstance } from '../../@types/instances.type'
 import { authenticateInterviewer } from '../controllers/interviewer/authenticate-interviewer'
 
-export async function interviewerRoutes(app: FastifyInstance) {
+export async function interviewerRoutes(app: FastifyTypedInstance) {
 	app.post(
 		'/session-interviewer',
 		{
@@ -15,4 +15,17 @@ export async function interviewerRoutes(app: FastifyInstance) {
 		},
 		authenticateInterviewer,
 	)
+
+	// app.post(
+	// 	'/fetch-interviews',
+	// 	{
+	// 		schema: {
+	// 			tags: ['Interviewer'],
+	// 			summary: '',
+	// 			description: '',
+	// 			body: authenticateInterviewerSchema,
+	// 		},
+	// 	},
+	// 	authenticateInterviewer,
+	// )
 }

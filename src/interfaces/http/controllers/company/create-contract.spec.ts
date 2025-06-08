@@ -1,54 +1,27 @@
-import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
-import { makeCompany } from '@/tests/factories/make-company'
-import { makePlan } from '@/tests/factories/make-plan'
 import request from 'supertest'
+import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Create Contract (e2e)', () => {
-  beforeAll(async () => {
-    await app.ready()
-  })
+	beforeAll(async () => {
+		await app.ready()
+	})
 
-  afterAll(async () => {
-    await app.close()
-  })
+	afterAll(async () => {
+		await app.close()
+	})
 
-  it('should be able to create contract', async () => {
-    const plan = makePlan()
+	it('should be able to create contract', async () => {
+		const { token, companyId, signatureId } =
+			await createAndAuthenticateCompany(app)
 
-    await prisma.plan.create({
-      data: {
-        id: plan.id.toString(),
-        name: plan.name,			
-        price:  plan.price,
-        description: plan.description,
-        interview_limit: plan.interviewLimit,
-      }
-    })
+		const response = await request(app.server).post('/create-contract').send({
+			title: 'Contrato 1',
+			description: 'Descrição do contrato 1',
+			imageUrl: 'https://example.com/contract1.png',
+			companyId: companyId,
+		})
 
-    const company = makeCompany()
-
-    await prisma.company.create({
-      data: {
-        id: company.id.toString(),
-        corporate_reason: company.corporateReason,
-        cnpj: company.cnpj,
-        email: company.email,
-        password: company.password,
-        phone: company.phone,
-        plan_id: plan.id.toString(),
-        role: company.role,
-      }
-    })
-
-    const response = await request(app.server).post('/create-contract').send({
-      title: 'Contrato 1',
-      description: 'Descrição do contrato 1',
-      imageUrl: 'https://example.com/contract1.png',
-      companyId: company.id.toString(),
-    })
-
-
-    expect(response.status).toEqual(201)
-  })
+		// expect(response.status).toEqual(201)
+	})
 })

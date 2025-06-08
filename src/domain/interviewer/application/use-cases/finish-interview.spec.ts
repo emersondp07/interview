@@ -14,7 +14,9 @@ describe('Finish Interview', () => {
 	})
 
 	it('Should be able to finish interview', async () => {
-		const interviewPending = makeInterview()
+		const interviewPending = makeInterview({
+			status: STATUS_INTERVIEW.PENDING,
+		})
 
 		inMemoryInterviewsRepository.create(interviewPending)
 
@@ -23,6 +25,8 @@ describe('Finish Interview', () => {
 		const result = await sut.execute({
 			interviewId: interviewPending.id.toString(),
 		})
+
+		console.log(result)
 
 		expect(result.isSuccess()).toBe(true)
 		if (result.isSuccess()) {

@@ -35,25 +35,19 @@ export class PrismaClientsRepository implements ClientsRepository {
 	}
 
 	async create(client: Client): Promise<void> {
+		const prismaClient = PrismaClientMapper.toPrisma(client)
+
 		await prisma.client.create({
-			data: {
-				id: client.id.toString(),
-				name: client.name,
-				email: client.email,
-				phone: client.phone,
-				birth_date: client.birthDate,
-				document_type: client.documentType,
-				document: client.document,
-				role: client.role,
-				company_id: client.companyId.toString(),
-			},
+			data: prismaClient,
 		})
 	}
 
 	async delete(client: Client): Promise<void> {
+		const prismaClient = PrismaClientMapper.toPrisma(client)
+
 		await prisma.client.update({
 			where: {
-				id: client.id.toString(),
+				id: prismaClient.id,
 			},
 			data: {
 				deleted_at: new Date(),

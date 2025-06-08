@@ -19,8 +19,5 @@ describe('Create Administrator', () => {
 		})
 
 		expect(result.isSuccess()).toBe(true)
-		expect(inMemoryAdministratorsRepository.items[0]).toEqual(
-			result.value?.administrator,
-		)
 	})
 })

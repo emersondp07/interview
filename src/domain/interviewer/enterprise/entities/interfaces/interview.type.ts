@@ -11,6 +11,7 @@ export enum STATUS_INTERVIEW {
 export interface InterviewProps {
 	clientId: UniqueEntityID
 	interviewerId?: UniqueEntityID
+	companyId: UniqueEntityID
 	status: STATUS_INTERVIEW
 	createdAt: Date
 	updatedAt: Date
