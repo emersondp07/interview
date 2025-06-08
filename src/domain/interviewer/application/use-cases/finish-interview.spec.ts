@@ -26,8 +26,6 @@ describe('Finish Interview', () => {
 			interviewId: interviewPending.id.toString(),
 		})
 
-		console.log(result)
-
 		expect(result.isSuccess()).toBe(true)
 		if (result.isSuccess()) {
 			expect(result.value.interview.status).toEqual(STATUS_INTERVIEW.COMPLETED)
