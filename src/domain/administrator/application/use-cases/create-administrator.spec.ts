@@ -1,4 +1,5 @@
 import { InMemoryAdministratorsRepository } from '@/tests/repositories/in-memory-administrators-repository'
+import { faker } from '@faker-js/faker'
 import { CreateAdministratorUseCase } from './create-administrator'
 
 let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository
@@ -15,7 +16,7 @@ describe('Create Administrator', () => {
 		const result = await sut.execute({
 			name: 'Jonh Doe',
 			email: 'jonhdoe@email.com',
-			password: '123456',
+			password: faker.internet.password(),
 		})
 
 		expect(result.isSuccess()).toBe(true)

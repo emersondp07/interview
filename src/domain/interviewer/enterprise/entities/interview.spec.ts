@@ -10,6 +10,7 @@ describe('Interview Entity', () => {
 			clientId: new UniqueEntityID(),
 			interviewerId: new UniqueEntityID(),
 			status: faker.helpers.arrayElement(Object.values(STATUS_INTERVIEW)),
+			companyId: new UniqueEntityID(),
 		})
 
 		expect(interview.id).toBeInstanceOf(UniqueEntityID)
@@ -23,6 +24,7 @@ describe('Interview Entity', () => {
 			clientId: new UniqueEntityID(),
 			interviewerId: new UniqueEntityID(),
 			status: STATUS_INTERVIEW.SCHEDULED,
+			companyId: new UniqueEntityID(),
 		})
 
 		const oldUpdatedAt = company.updatedAt
@@ -40,6 +42,7 @@ describe('Interview Entity', () => {
 			clientId: new UniqueEntityID(),
 			interviewerId: new UniqueEntityID(),
 			status: STATUS_INTERVIEW.SCHEDULED,
+			companyId: new UniqueEntityID(),
 		})
 
 		const oldUpdatedAt = company.updatedAt

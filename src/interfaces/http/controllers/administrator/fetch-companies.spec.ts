@@ -1,6 +1,7 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and-authenticate-administrator'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Fetch Companies (e2e)', () => {
@@ -30,7 +31,7 @@ describe('Fetch Companies (e2e)', () => {
 				corporate_reason: 'Company Name 1',
 				cnpj: '00.000.000/0001-91',
 				email: 'company1@email.com',
-				password: '123456',
+				password: faker.internet.password(),
 				phone: '99999999999',
 				plan_id: plan[0].id,
 				role: 'COMPANY',
@@ -42,7 +43,7 @@ describe('Fetch Companies (e2e)', () => {
 				corporate_reason: 'Company Name 2',
 				cnpj: '00.000.000/0001-92',
 				email: 'company2@email.com',
-				password: '123456',
+				password: faker.internet.password(),
 				phone: '99999999999',
 				plan_id: plan[0].id,
 				role: 'COMPANY',

@@ -22,7 +22,7 @@ describe('Administrator Entity', () => {
 		const administrator = Administrator.create({
 			name: 'John Doe',
 			email: 'john.doe@gmail.com',
-			password: 'jd123',
+			password: faker.internet.password(),
 		})
 
 		const oldUpdatedAt = administrator.updatedAt
@@ -31,11 +31,12 @@ describe('Administrator Entity', () => {
 
 		administrator.changeName('John Smith')
 		administrator.changeEmail('john.smith@gmail.com')
-		administrator.changePassword('js123')
+		const newPassword = faker.internet.password()
+		administrator.changePassword(newPassword)
 
 		expect(administrator.name).toBe('John Smith')
 		expect(administrator.email).toBe('john.smith@gmail.com')
-		expect(administrator.password).toBe('js123')
+		expect(administrator.password).toBe(newPassword)
 		expect(administrator.updatedAt.getTime()).toBeGreaterThan(
 			oldUpdatedAt.getTime(),
 		)

@@ -1,4 +1,6 @@
 import { app } from '@/infra/http/server'
+import { makeAdministrator } from '@/tests/factories/make-administrator'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Authenticate Administrator (e2e)', () => {
@@ -11,17 +13,23 @@ describe('Authenticate Administrator (e2e)', () => {
 	})
 
 	it('should be able to authenticate administrator', async () => {
+		const administrator = makeAdministrator({
+			name: faker.person.fullName(),
+			email: faker.internet.email(),
+			password: faker.internet.password(),
+		})
+
 		await request(app.server).post('/create-administrator').send({
-			name: 'John Doe',
-			email: 'johndoe@example.com',
-			password: '12345678',
+			name: administrator.name,
+			email: administrator.email,
+			password: administrator.password,
 		})
 
 		const response = await request(app.server)
 			.post('/session-administrator')
 			.send({
-				email: 'johndoe@example.com',
-				password: '12345678',
+				email: administrator.email,
+				password: administrator.password,
 			})
 
 		expect(response.statusCode).toEqual(200)
