@@ -26,7 +26,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			id: company.id.toString(),
 			corporate_reason: 'Corporate',
 			email: 'corporate@example.com',
-			password: await hash('12345678', 10),
+			password: await hash(company.password, 10),
 			cnpj: '165165165156',
 			phone: '1231321321',
 			role: ROLE.COMPANY,
@@ -47,7 +47,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 
 	const authResponse = await request(app.server).post('/session-company').send({
 		email: 'corporate@example.com',
-		password: '12345678',
+		password: company.password,
 	})
 
 	const { token } = authResponse.body

@@ -3,15 +3,18 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import type { FastifyTypedInstance } from '@/interfaces/@types/instances.type'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
+import { makeAdministrator } from './make-administrator'
 
 export async function createAndAuthenticateAdministrator(
 	app: FastifyTypedInstance,
 ) {
+	const adm = makeAdministrator()
+
 	await prisma.administrator.create({
 		data: {
 			name: 'John Doe',
 			email: 'johndoe@example.com',
-			password: await hash('12345678', 10),
+			password: await hash(adm.password, 10),
 			role: ROLE.ADMIN,
 		},
 	})
@@ -20,7 +23,7 @@ export async function createAndAuthenticateAdministrator(
 		.post('/session-administrator')
 		.send({
 			email: 'johndoe@example.com',
-			password: '12345678',
+			password: adm.password,
 		})
 
 	const { token } = authResponse.body
