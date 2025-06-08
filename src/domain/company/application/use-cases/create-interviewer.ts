@@ -34,12 +34,11 @@ export class CreateInterviewerUseCase {
 		if (!company) {
 			return failed(new ResourceNotFoundError())
 		}
-		const passwordHash = await hash(password, 10)
 
 		const interviewer = Interviewer.create({
 			name,
 			email,
-			password: passwordHash,
+			password: await hash(password, 10),
 			companyId: company.id,
 		})
 

@@ -28,7 +28,7 @@ describe('Company Entity', () => {
 			documentType: DOCUMENT_TYPE.CNPJ,
 			cnpj: '12.345.678/0001-90',
 			email: 'company.x@gmail.com',
-			password: 'c123',
+			password: faker.internet.password(),
 			phone: '11 99999-9999',
 			planId: 'plan-id',
 		})
@@ -38,13 +38,14 @@ describe('Company Entity', () => {
 		await delay(10)
 
 		company.changeEmail('company.y@gmail.com')
-		company.changePassword('d123')
+		const newPassword = faker.internet.password()
+		company.changePassword(newPassword)
 		company.changePhone('11 98765-4321')
 
 		expect(company.corporateReason).toEqual('Company X')
 		expect(company.cnpj).toEqual('12.345.678/0001-90')
 		expect(company.email).toEqual('company.y@gmail.com')
-		expect(company.password).toEqual('d123')
+		expect(company.password).toEqual(newPassword)
 		expect(company.phone).toEqual('11 98765-4321')
 		expect(company.planId).toEqual('plan-id')
 		expect(company.updatedAt.getTime()).toBeGreaterThan(oldUpdatedAt.getTime())
@@ -56,7 +57,7 @@ describe('Company Entity', () => {
 			documentType: DOCUMENT_TYPE.CNPJ,
 			cnpj: faker.helpers.replaceSymbols('##.###.###/####-##'),
 			email: 'company.x@gmail.com',
-			password: 'c123',
+			password: faker.internet.password(),
 			phone: '11 99999-9999',
 			planId: faker.string.uuid(),
 		})

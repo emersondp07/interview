@@ -1,10 +1,14 @@
-import type { ContractsRepository } from '@/domain/company/application/repositories/contracts-repository'
 import type { Contract } from '@/domain/company/enterprise/entities/contract'
+import type { ContractsRepository } from '@/domain/interviewer/application/repositories/contracts-repository'
+import { PrismaContractMapper } from '@/infra/database/prisma/mappers/prisma-contract-mapper'
+import type { Contract as PrismaContract } from '@prisma/client'
 
 export class InMemoryContractsRepository implements ContractsRepository {
-	public items: Contract[] = []
+	public items: PrismaContract[] = []
 
 	async create(contract: Contract) {
-		this.items.push(contract)
+		const prismaContract = PrismaContractMapper.toPrisma(contract)
+
+		this.items.push(prismaContract)
 	}
 }

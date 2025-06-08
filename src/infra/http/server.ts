@@ -12,7 +12,9 @@ import {
 } from 'fastify-type-provider-zod'
 import { ZodError } from 'zod'
 import { administratorRoutes } from '../../interfaces/http/routes/administrator-routes'
+import { clientRoutes } from '../../interfaces/http/routes/client-routes'
 import { companyRoutes } from '../../interfaces/http/routes/company-routes'
+import { interviewerRoutes } from '../../interfaces/http/routes/interviewer-routes'
 import { env } from '../config'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -49,8 +51,10 @@ app.register(fastifyJwt, {
 
 app.register(fastifyCookie)
 
-app.register(companyRoutes)
 app.register(administratorRoutes)
+app.register(companyRoutes)
+app.register(clientRoutes)
+app.register(interviewerRoutes)
 
 app.setErrorHandler((error, _, reply) => {
 	if (error instanceof ZodError) {

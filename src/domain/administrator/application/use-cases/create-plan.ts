@@ -5,8 +5,8 @@ import type { PlansRepository } from '../repositories/plans-repository'
 interface CreatePlanUseCaseRequest {
 	planName: string
 	planPrice: string
-	planInterviewLimit: number
 	planDescription: string
+	planInterviewLimit: number
 }
 
 type CreatePlanUseCaseResponse = Either<null, { plan: Plan }>
@@ -17,8 +17,8 @@ export class CreatePlanUseCase {
 	async execute({
 		planName,
 		planPrice,
-		planInterviewLimit,
 		planDescription,
+		planInterviewLimit,
 	}: CreatePlanUseCaseRequest): Promise<CreatePlanUseCaseResponse> {
 		const plan = Plan.create({
 			name: planName,

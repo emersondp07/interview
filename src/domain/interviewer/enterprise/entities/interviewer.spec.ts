@@ -18,11 +18,11 @@ describe('Interviewer Entity', () => {
 		expect(interviewer.createdAt).toBeInstanceOf(Date)
 	})
 
-	it('Should be able', async () => {
+	it('Should be able to change the datas of an interviewer', async () => {
 		const interviewer = Interviewer.create({
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
-			password: 'abc123',
+			password: faker.internet.password(),
 			companyId: new UniqueEntityID(),
 		})
 
@@ -31,22 +31,23 @@ describe('Interviewer Entity', () => {
 		await delay(10)
 
 		interviewer.changeEmail('company02@gmail.com')
-		interviewer.changePassword('abc1234')
+		const newPassword = faker.internet.password()
+		interviewer.changePassword(newPassword)
 		interviewer.changeName('Joe Doe')
 
 		expect(interviewer.email).toEqual('company02@gmail.com')
-		expect(interviewer.password).toEqual('abc1234')
+		expect(interviewer.password).toEqual(newPassword)
 		expect(interviewer.name).toEqual('Joe Doe')
 		expect(interviewer.updatedAt.getTime()).toBeGreaterThan(
 			oldUpdatedAt.getTime(),
 		)
 	})
 
-	it('Should be able', async () => {
+	it('Should be able to delete an interviewer', async () => {
 		const interviewer = Interviewer.create({
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
-			password: 'abc123',
+			password: faker.internet.password(),
 			companyId: new UniqueEntityID(),
 		})
 

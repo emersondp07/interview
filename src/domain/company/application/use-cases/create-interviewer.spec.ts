@@ -34,8 +34,8 @@ describe('Create Interviewer', () => {
 
 		expect(inMemoryInterviewersRepository.items).toHaveLength(1)
 		expect(result.isSuccess()).toBe(true)
-		expect(inMemoryInterviewersRepository.items[0].companyId).toEqual(
-			company.id,
+		expect(inMemoryInterviewersRepository.items[0].company_id).toEqual(
+			company.id.toString(),
 		)
 	})
 

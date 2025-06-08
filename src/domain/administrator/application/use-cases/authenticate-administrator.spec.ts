@@ -1,6 +1,7 @@
 import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencials-error'
 import { makeAdministrator } from '@/tests/factories/make-administrator'
 import { InMemoryAdministratorsRepository } from '@/tests/repositories/in-memory-administrators-repository'
+import { faker } from '@faker-js/faker'
 import { hash } from 'bcryptjs'
 import { AuthenticateAdministratorUseCase } from './authenticate-administrator'
 
@@ -15,16 +16,16 @@ describe('Authenticate Administrator Use Case', () => {
 	})
 
 	it('Should be able to authenticate interviewer', async () => {
+		const password = faker.internet.password()
 		const administrator = makeAdministrator({
-			email: 'teste@email.com',
-			password: await hash('123456', 10),
+			password: await hash(password, 10),
 		})
 
 		await inMemoryAdministratorsRepository.create(administrator)
 
 		const result = await sut.execute({
 			email: administrator.email,
-			password: '123456',
+			password: password,
 		})
 
 		expect(result.isSuccess()).toBe(true)
@@ -32,9 +33,13 @@ describe('Authenticate Administrator Use Case', () => {
 	})
 
 	it('Should not be able to authenticate with wrong email', async () => {
+		const administrator = makeAdministrator({
+			password: await hash(faker.internet.password(), 10),
+		})
+
 		const result = await sut.execute({
 			email: 'johndoe@example.com',
-			password: '123456',
+			password: administrator.password,
 		})
 
 		expect(result.value).toBeInstanceOf(InvalidCredencialsError)
@@ -42,15 +47,16 @@ describe('Authenticate Administrator Use Case', () => {
 
 	it('Should not be able to authenticate with wrong password', async () => {
 		const administrator = makeAdministrator({
-			email: 'johndoe@example.com',
-			password: await hash('123456', 10),
+			password: await hash(faker.internet.password(), 10),
 		})
 
 		await inMemoryAdministratorsRepository.create(administrator)
 
+		administrator.changeEmail(await hash(faker.internet.password(), 10))
+
 		const result = await sut.execute({
 			email: 'johndoe@example.com',
-			password: '9874654',
+			password: administrator.password,
 		})
 
 		expect(result.isFailed()).toBe(true)

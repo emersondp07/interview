@@ -1,14 +1,16 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { PlansRepository } from '@/domain/administrator/application/repositories/plans-repository'
 import type { Plan } from '@/domain/administrator/enterprise/entities/plan'
+import { PrismaPlanMapper } from '@/infra/database/prisma/mappers/prisma-plan-mapper'
+import type { Plan as PrismaPlan } from '@prisma/client'
 
 export class InMemoryPlansRepository implements PlansRepository {
-	public items: Plan[] = []
+	public items: PrismaPlan[] = []
 
 	async findAll({ page }: PaginationParams) {
 		const plans = this.items.slice((page - 1) * 10, page * 10)
 
-		return plans
+		return plans.map(PrismaPlanMapper.toDomain)
 	}
 
 	async findById(planId: string) {
@@ -18,10 +20,12 @@ export class InMemoryPlansRepository implements PlansRepository {
 			return null
 		}
 
-		return plan
+		return plan ? PrismaPlanMapper.toDomain(plan) : null
 	}
 
 	async create(plan: Plan) {
-		this.items.push(plan)
+		const prismaClient = PrismaPlanMapper.toPrisma(plan)
+
+		this.items.push(prismaClient)
 	}
 }

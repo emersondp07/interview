@@ -35,14 +35,10 @@ export class PrismaInterviewersRepository implements InterviewersRepository {
 	}
 
 	async create(interviewer: Interviewer) {
+		const prismaInterviewer = PrismaInterviewerMapper.toPrisma(interviewer)
+
 		await prisma.interviewer.create({
-			data: {
-				name: interviewer.name,
-				email: interviewer.email,
-				password: interviewer.password,
-				role: interviewer.role,
-				company_id: interviewer.companyId.toString(),
-			},
+			data: prismaInterviewer,
 		})
 	}
 

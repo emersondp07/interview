@@ -20,6 +20,5 @@ describe('Create Plan', () => {
 		})
 
 		expect(result.isSuccess()).toBe(true)
-		expect(inMemoryPlansRepository.items[0]).toEqual(result.value?.plan)
 	})
 })

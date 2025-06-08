@@ -1,14 +1,16 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { InterviewsRepository } from '@/domain/interviewer/application/repositories/interviews-repository'
-import type { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+import type { Interview as PrismaInterview } from '@prisma/client'
+import type { Interview } from '../../domain/interviewer/enterprise/entities/interview'
+import { PrismaInterviewMapper } from '../../infra/database/prisma/mappers/prisma-interview-mapper'
 
 export class InMemoryInterviewsRepository implements InterviewsRepository {
-	public items: Interview[] = []
+	public items: PrismaInterview[] = []
 
 	async findAll({ page }: PaginationParams) {
 		const interviews = this.items.slice((page - 1) * 10, page * 10)
 
-		return interviews
+		return interviews.map(PrismaInterviewMapper.toDomain)
 	}
 
 	async findById(interviewId: string) {
@@ -20,46 +22,54 @@ export class InMemoryInterviewsRepository implements InterviewsRepository {
 			return null
 		}
 
-		return interview
+		return interview ? PrismaInterviewMapper.toDomain(interview) : null
 	}
 
 	async create(interview: Interview) {
-		this.items.push(interview)
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
+		this.items.push(prismaInterview)
 	}
 
 	async finishInterview(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		const interviewInIndex = this.items.findIndex(
-			(item) => item.id === interview.id,
+			(item) => item.id === prismaInterview.id,
 		)
 
 		if (interviewInIndex >= 0) {
-			this.items[interviewInIndex] = interview
+			this.items[interviewInIndex] = prismaInterview
 		}
 
-		return interview
+		// return interview
 	}
 
 	async startInterview(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		const interviewInIndex = this.items.findIndex(
-			(item) => item.id === interview.id,
+			(item) => item.id === prismaInterview.id,
 		)
 
 		if (interviewInIndex >= 0) {
-			this.items[interviewInIndex] = interview
+			this.items[interviewInIndex] = prismaInterview
 		}
 
-		return interview
+		// return interview
 	}
 
 	async sendContract(interview: Interview) {
+		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
+
 		const interviewInIndex = this.items.findIndex(
-			(item) => item.id === interview.id,
+			(item) => item.id === prismaInterview.id,
 		)
 
 		if (interviewInIndex >= 0) {
-			this.items[interviewInIndex] = interview
+			this.items[interviewInIndex] = prismaInterview
 		}
 
-		return interview
+		// return interview
 	}
 }

@@ -14,7 +14,9 @@ describe('Finish Interview', () => {
 	})
 
 	it('Should be able to finish interview', async () => {
-		const interviewPending = makeInterview()
+		const interviewPending = makeInterview({
+			status: STATUS_INTERVIEW.PENDING,
+		})
 
 		inMemoryInterviewsRepository.create(interviewPending)
 

@@ -1,14 +1,16 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { CompaniesRepository } from '@/domain/administrator/application/repositories/companies-repository'
-import type { Company } from '@/domain/company/enterprise/entities/company'
+import type { Company as PrismaCompany } from '@prisma/client'
+import type { Company } from '../../domain/company/enterprise/entities/company'
+import { PrismaCompanyMapper } from '../../infra/database/prisma/mappers/prisma-company-mapper'
 
 export class InMemoryCompaniesRepository implements CompaniesRepository {
-	public items: Company[] = []
+	public items: PrismaCompany[] = []
 
 	async findAll({ page }: PaginationParams) {
 		const companies = this.items.slice((page - 1) * 10, page * 10)
 
-		return companies
+		return companies.map(PrismaCompanyMapper.toDomain)
 	}
 
 	async findById(companyId: string) {
@@ -20,7 +22,7 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 			return null
 		}
 
-		return company
+		return company ? PrismaCompanyMapper.toDomain(company) : null
 	}
 
 	async findByEmail(email: string) {
@@ -30,10 +32,12 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 			return null
 		}
 
-		return company
+		return company ? PrismaCompanyMapper.toDomain(company) : null
 	}
 
 	async create(company: Company) {
-		this.items.push(company)
+		const prismaCompany = PrismaCompanyMapper.toPrisma(company)
+
+		this.items.push(prismaCompany)
 	}
 }

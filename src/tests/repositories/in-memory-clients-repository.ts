@@ -1,14 +1,16 @@
 import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { Client } from '@/domain/client/enterprise/entities/client'
 import type { ClientsRepository } from '@/domain/company/application/repositories/clients-repository'
+import type { Client as PrismaClient } from '@prisma/client'
+import type { Client } from '../../domain/client/enterprise/entities/client'
+import { PrismaClientMapper } from '../../infra/database/prisma/mappers/prisma-client-mapper'
 
 export class InMemoryClientsRepository implements ClientsRepository {
-	public items: Client[] = []
+	public items: PrismaClient[] = []
 
 	async findAll({ page }: PaginationParams) {
 		const clients = this.items.slice((page - 1) * 10, page * 10)
 
-		return clients
+		return clients.map(PrismaClientMapper.toDomain)
 	}
 
 	async findById(clientId: string) {
@@ -20,7 +22,7 @@ export class InMemoryClientsRepository implements ClientsRepository {
 			return null
 		}
 
-		return client
+		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
 	async findByDocument(document: string) {
@@ -30,15 +32,21 @@ export class InMemoryClientsRepository implements ClientsRepository {
 			return null
 		}
 
-		return client
+		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
 	async create(client: Client) {
-		this.items.push(client)
+		const prismaClient = PrismaClientMapper.toPrisma(client)
+
+		this.items.push(prismaClient)
 	}
 
 	async delete(client: Client) {
-		const itemIndex = this.items.findIndex((item) => item.id === client.id)
+		const prismaClient = PrismaClientMapper.toPrisma(client)
+
+		const itemIndex = this.items.findIndex(
+			(item) => item.id === prismaClient.id,
+		)
 
 		this.items.splice(itemIndex, 1)
 	}

@@ -84,8 +84,9 @@ model Company {
   plan_id          String
   interviewers     Interviewer[]
   clients          Client[]
-  contract         Contract[]
-  signature        Signature[]
+  contracts        Contract[]
+  signatures       Signature[]
+  interviewes      Interview[]
 }
 
 model Signature {
@@ -166,6 +167,8 @@ model Interview {
   deleted_at     DateTime?
   interviewer_id String?
   client_id      String
+  company_id     String
   interviewer    Interviewer?     @relation(fields: [interviewer_id], references: [id])
   client         Client           @relation(fields: [client_id], references: [id])
+  company        Company          @relation(fields: [company_id], references: [id])
 }

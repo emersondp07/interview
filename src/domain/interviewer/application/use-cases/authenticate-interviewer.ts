@@ -11,7 +11,7 @@ interface AuthenticateInterviewerUseCaseRequest {
 
 type AuthenticateInterviewerUseCaseResponse = Either<
 	InvalidCredencialsError,
-	{ interviewer: Interviewer | null }
+	{ interviewer: Interviewer }
 >
 
 export class AuthenticateInterviewerUseCase {

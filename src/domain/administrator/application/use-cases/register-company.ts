@@ -1,6 +1,7 @@
 import { type Either, failed, success } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { hash } from 'bcryptjs'
 import type { CompaniesRepository } from '../../../administrator/application/repositories/companies-repository'
 import type { PlansRepository } from '../../../administrator/application/repositories/plans-repository'
 import type { SignaturesRepository } from '../../../company/application/repositories/signatures-repository'
@@ -44,16 +45,18 @@ export class RegisterCompanyUseCase {
 			return failed(new NotAllowedError())
 		}
 
-		if (!company) {
-			company = Company.create({
-				corporateReason,
-				cnpj,
-				email,
-				password,
-				phone,
-				planId,
-			})
+		if (company) {
+			return failed(new NotAllowedError())
 		}
+
+		company = Company.create({
+			corporateReason,
+			cnpj,
+			email,
+			password: await hash(password, 10),
+			phone,
+			planId,
+		})
 
 		const signature = Signature.create({
 			companyId: company.id,

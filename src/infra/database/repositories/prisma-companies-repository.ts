@@ -10,6 +10,7 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
 			take: 10,
 			skip: (page - 1) * 10,
 		})
+
 		return companies.map(PrismaCompanyMapper.toDomain)
 	}
 
@@ -34,17 +35,10 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
 	}
 
 	async create(company: Company) {
+		const prismaCompany = PrismaCompanyMapper.toPrisma(company)
+
 		await prisma.company.create({
-			data: {
-				id: company.id.toString(),
-				corporate_reason: company.corporateReason,
-				cnpj: company.cnpj,
-				email: company.email,
-				phone: company.phone,
-				password: company.password,
-				plan_id: company.planId,
-				role: company.role,
-			},
+			data: prismaCompany,
 		})
 	}
 }

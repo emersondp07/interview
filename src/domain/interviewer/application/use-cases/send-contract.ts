@@ -6,6 +6,7 @@ import type { InterviewsRepository } from '../repositories/interviews-repository
 
 interface SendContractUseCaseRequest {
 	interviewId: string
+	companyId: string
 }
 
 type SendContractUseCaseResponse = Either<

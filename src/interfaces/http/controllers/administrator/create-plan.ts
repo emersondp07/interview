@@ -13,8 +13,8 @@ export async function createPlan(request: FastifyRequest, reply: FastifyReply) {
 	await createPlanUseCase.execute({
 		planName,
 		planPrice,
-		planInterviewLimit,
 		planDescription,
+		planInterviewLimit,
 	})
 
 	return reply.status(201).send()

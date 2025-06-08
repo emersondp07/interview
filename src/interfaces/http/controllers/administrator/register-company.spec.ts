@@ -1,6 +1,7 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { makePlan } from '@/tests/factories/make-plan'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Register Company (e2e)', () => {
@@ -29,7 +30,7 @@ describe('Register Company (e2e)', () => {
 			corporateReason: 'Company Name',
 			cnpj: '00.000.000/0001-91',
 			email: 'company@email.com',
-			password: '123456',
+			password: faker.internet.password(),
 			phone: '99999999999',
 			planId: plan.id.toString(),
 		})
