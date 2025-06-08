@@ -1,11 +1,20 @@
 import { env } from '../config'
-import { app } from './server'
+import { io, start } from './server'
 
-app
-	.listen({
-		host: '0.0.0.0',
-		port: env.PORT,
+io.on('connection', (socket) => {
+	console.log('Socket conectado:', socket.id)
+
+	socket.on('hello', (msg) => {
+		console.log('Mensagem hello recebida:', msg)
+		socket.emit('helloBack', { response: 'Olá do servidor!' })
 	})
-	.then(() => {
-		console.log('🚀 HTTP Server Runnig!')
+
+	socket.on('disconnect', () => console.log('Socket desconectado:', socket.id))
+})
+
+start()
+	.then(() => console.log(`🚀 Server + Socket.IO Running on port ${env.PORT}`))
+	.catch((err) => {
+		console.error('Erro ao iniciar o servidor:', err)
+		process.exit(1)
 	})

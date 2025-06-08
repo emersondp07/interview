@@ -1,3 +1,7 @@
+import { administratorRoutes } from '@/interfaces/http/routes/administrator-routes'
+import { clientRoutes } from '@/interfaces/http/routes/client-routes'
+import { companyRoutes } from '@/interfaces/http/routes/company-routes'
+import { interviewerRoutes } from '@/interfaces/http/routes/interviewer-routes'
 import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
@@ -10,11 +14,10 @@ import {
 	serializerCompiler,
 	validatorCompiler,
 } from 'fastify-type-provider-zod'
+import { createServer } from 'node:http'
+import { Server as IOServer } from 'socket.io'
 import { ZodError } from 'zod'
-import { administratorRoutes } from '../../interfaces/http/routes/administrator-routes'
-import { clientRoutes } from '../../interfaces/http/routes/client-routes'
-import { companyRoutes } from '../../interfaces/http/routes/company-routes'
-import { interviewerRoutes } from '../../interfaces/http/routes/interviewer-routes'
+import { registerInterviewNamespace } from '../../interfaces/events/socket/namespace/interview-namespace'
 import { env } from '../config'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -71,3 +74,25 @@ app.setErrorHandler((error, _, reply) => {
 
 	return reply.status(500).send({ message: 'Internal server error.' })
 })
+
+const httpServer = createServer(app.server)
+
+export const io = new IOServer(httpServer, {
+	cors: { origin: '*' },
+})
+
+export function initSocket() {
+	registerInterviewNamespace(io)
+}
+
+export async function start() {
+	initSocket()
+	await app.ready()
+	const port = env.PORT ?? 3333
+	await new Promise<void>((resolve, reject) => {
+		httpServer
+			.once('listening', () => resolve())
+			.once('error', (err) => reject(err))
+			.listen({ port, host: '0.0.0.0' })
+	})
+}
