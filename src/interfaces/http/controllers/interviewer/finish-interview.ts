@@ -1,5 +1,6 @@
 import { FinishInterviewUseCase } from '@/domain/interviewer/application/use-cases/finish-interview'
 import type { FinishInteviewSchema } from '@/domain/interviewer/application/validators/finish-interview.schema'
+import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
 import type { Socket } from 'socket.io'
 
@@ -9,12 +10,14 @@ export async function finishInterview(
 ) {
 	const { clientId, interviewId } = data
 
+	const prismaClientsRepository = new PrismaClientsRepository()
 	const prismaInterviewsRepository = new PrismaInterviewsRepository()
 	const finishInterviewUseCase = new FinishInterviewUseCase(
+		prismaClientsRepository,
 		prismaInterviewsRepository,
 	)
 
-	await finishInterviewUseCase.execute({ interviewId })
+	await finishInterviewUseCase.execute({ interviewId, clientId })
 
 	socket.leave(interviewId)
 

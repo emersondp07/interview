@@ -1,5 +1,6 @@
 import type { Server, Socket } from 'socket.io'
 import { getClientByDocument } from '../../controllers/client/get-client-by-document'
+import { fetchClientsOnline } from '../../controllers/interviewer/fetch-clients-online'
 import { finishInterview } from '../../controllers/interviewer/finish-interview'
 import { sendContract } from '../../controllers/interviewer/send-contract'
 import { startInterview } from '../../controllers/interviewer/start-interview'
@@ -14,9 +15,8 @@ export function registerInterviewNamespace(io: Server) {
 	// })
 
 	nsp.on('connection', (socket: Socket) => {
-		socket.on('list', async (event, socket) => {
-			const clientList = Array.from(waitingQueue.keys())
-			socket.emit('list-client:response', clientList)
+		socket.on('list-client', async (data, socket) => {
+			await fetchClientsOnline(data, socket)
 		})
 
 		socket.on('join-queue', async (data, socket) => {
