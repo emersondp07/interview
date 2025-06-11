@@ -14,6 +14,23 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return clients.map(PrismaClientMapper.toDomain)
 	}
 
+	async findAllOnline(
+		{ page }: PaginationParams,
+		clients: string[],
+	): Promise<Client[] | null> {
+		const clientsOnline = await prisma.client.findMany({
+			where: {
+				id: {
+					in: clients,
+				},
+			},
+			take: 10,
+			skip: (page - 1) * 10,
+		})
+
+		return clientsOnline.map(PrismaClientMapper.toDomain)
+	}
+
 	async findById(clientId: string) {
 		const client = await prisma.client.findUnique({
 			where: {

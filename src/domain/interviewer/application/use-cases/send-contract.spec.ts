@@ -1,7 +1,8 @@
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { makeClient } from '@/tests/factories/make-client'
+import { makeCompany } from '@/tests/factories/make-company'
 import { makeInterview } from '@/tests/factories/make-interview'
 import { InMemoryInterviewsRepository } from '@/tests/repositories/in-memory-interviews-repository'
-import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
-import { makeCompany } from '../../../../tests/factories/make-company'
 import { STATUS_INTERVIEW } from '../../enterprise/entities/interfaces/interview.type'
 import { SendContractUseCase } from './send-contract'
 
@@ -16,18 +17,18 @@ describe('Send Contract', () => {
 
 	it('Should be able to send contract in interview', async () => {
 		const company = makeCompany()
+		const client = makeCompany()
 		const interviewInProgress = makeInterview({
 			status: STATUS_INTERVIEW.IN_PROGRESS,
 			companyId: company.id,
+			clientId: client.id,
 		})
 
 		inMemoryInterviewsRepository.create(interviewInProgress)
 
-		interviewInProgress.changeStatus(STATUS_INTERVIEW.IN_PROGRESS)
-
 		const result = await sut.execute({
 			interviewId: interviewInProgress.id.toString(),
-			companyId: interviewInProgress.companyId.toString(),
+			clientId: interviewInProgress.clientId.toString(),
 		})
 
 		expect(result.isSuccess()).toBe(true)
@@ -38,11 +39,12 @@ describe('Send Contract', () => {
 
 	it('Should be able throw an error if interview is not found', async () => {
 		const company = makeCompany()
+		const client = makeClient()
 		const interviewScheduled = makeInterview()
 
 		const result = await sut.execute({
 			interviewId: interviewScheduled.id.toString(),
-			companyId: company.id.toString(),
+			clientId: company.id.toString(),
 		})
 
 		if (result.isFailed()) {
@@ -51,8 +53,9 @@ describe('Send Contract', () => {
 	})
 
 	it('Should be able throw an error if interview status is different from IN_PROGRESS', async () => {
-		const interviewScheduled = makeInterview()
 		const company = makeCompany()
+		const client = makeClient()
+		const interviewScheduled = makeInterview()
 
 		interviewScheduled.changeStatus(STATUS_INTERVIEW.SCHEDULED)
 
@@ -60,7 +63,7 @@ describe('Send Contract', () => {
 
 		const result = await sut.execute({
 			interviewId: interviewScheduled.id.toString(),
-			companyId: company.id.toString(),
+			clientId: company.id.toString(),
 		})
 
 		if (result.isFailed()) {

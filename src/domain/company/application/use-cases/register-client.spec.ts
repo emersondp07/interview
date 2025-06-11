@@ -4,20 +4,24 @@ import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-client
 import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-companies-repository'
 import { faker } from '@faker-js/faker'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { InMemoryInterviewsRepository } from '../../../../tests/repositories/in-memory-interviews-repository'
 import { DOCUMENT_TYPE } from '../../../client/enterprise/entities/interfaces/client.type'
 import { RegisterClientUseCase } from './register-client'
 
 let inMemoryClientsRepository: InMemoryClientsRepository
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+let inMemoryInterviewsRepository: InMemoryInterviewsRepository
 let sut: RegisterClientUseCase
 
 describe('Register Client', () => {
 	beforeEach(() => {
 		inMemoryClientsRepository = new InMemoryClientsRepository()
 		inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
 		sut = new RegisterClientUseCase(
 			inMemoryClientsRepository,
 			inMemoryCompaniesRepository,
+			inMemoryInterviewsRepository,
 		)
 	})
 

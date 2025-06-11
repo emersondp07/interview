@@ -3,6 +3,7 @@ import type { RegisterClientSchema } from '@/domain/company/application/validato
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
+import { PrismaInterviewsRepository } from '../../../../infra/database/repositories/prisma-interviews-repository'
 
 export async function registerClient(
 	request: FastifyRequest,
@@ -13,9 +14,11 @@ export async function registerClient(
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()
+	const prismaInterviewsRepository = new PrismaInterviewsRepository()
 	const registerCompanyUseCase = new RegisterClientUseCase(
 		prismaClientsRepository,
 		prismaCompaniesRepository,
+		prismaInterviewsRepository,
 	)
 
 	await registerCompanyUseCase.execute({

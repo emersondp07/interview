@@ -3,6 +3,9 @@ import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-e
 import type { CompaniesRepository } from '../../../administrator/application/repositories/companies-repository'
 import { Client } from '../../../client/enterprise/entities/client'
 import type { DOCUMENT_TYPE } from '../../../client/enterprise/entities/interfaces/client.type'
+import type { InterviewsRepository } from '../../../interviewer/application/repositories/interviews-repository'
+import { STATUS_INTERVIEW } from '../../../interviewer/enterprise/entities/interfaces/interview.type'
+import { Interview } from '../../../interviewer/enterprise/entities/interview'
 import type { ClientsRepository } from '../repositories/clients-repository'
 
 interface RegisterClientUseCaseRequest {
@@ -24,6 +27,7 @@ export class RegisterClientUseCase {
 	constructor(
 		private clientsRepository: ClientsRepository,
 		private companiesRepository: CompaniesRepository,
+		private interviewsRepository: InterviewsRepository,
 	) {}
 
 	async execute({
@@ -51,7 +55,14 @@ export class RegisterClientUseCase {
 			companyId: companyExists.id,
 		})
 
+		const interview = Interview.create({
+			clientId: client.id,
+			companyId: companyExists.id,
+			status: STATUS_INTERVIEW.SCHEDULED,
+		})
+
 		await this.clientsRepository.create(client)
+		await this.interviewsRepository.create(interview)
 
 		return success({
 			client,

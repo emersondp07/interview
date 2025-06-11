@@ -1,30 +1,52 @@
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { makeClient } from '@/tests/factories/make-client'
+import { makeCompany } from '@/tests/factories/make-company'
 import { makeInterview } from '@/tests/factories/make-interview'
+import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
+import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-companies-repository'
 import { InMemoryInterviewsRepository } from '@/tests/repositories/in-memory-interviews-repository'
-import { ResourceNotFoundError } from '../../../../core/errors/errors/resource-not-found-error'
 import { STATUS_INTERVIEW } from '../../enterprise/entities/interfaces/interview.type'
 import { FinishInterviewUseCase } from './finish-interview'
 
 let inMemoryInterviewsRepository: InMemoryInterviewsRepository
+let inMemoryClientsRepository: InMemoryClientsRepository
+let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let sut: FinishInterviewUseCase
 
 describe('Finish Interview', () => {
 	beforeEach(() => {
 		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
-		sut = new FinishInterviewUseCase(inMemoryInterviewsRepository)
+		inMemoryClientsRepository = new InMemoryClientsRepository()
+		inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+		sut = new FinishInterviewUseCase(
+			inMemoryClientsRepository,
+			inMemoryInterviewsRepository,
+		)
 	})
 
 	it('Should be able to finish interview', async () => {
+		const company = makeCompany()
+		const client = makeClient({
+			companyId: company.id,
+		})
 		const interviewPending = makeInterview({
 			status: STATUS_INTERVIEW.PENDING,
+			clientId: client.id,
+			companyId: company.id,
 		})
 
+		// inMemoryCompaniesRepository.create(company)
+		inMemoryClientsRepository.create(client)
 		inMemoryInterviewsRepository.create(interviewPending)
 
 		interviewPending.changeStatus(STATUS_INTERVIEW.PENDING)
 
 		const result = await sut.execute({
 			interviewId: interviewPending.id.toString(),
+			clientId: client.id.toString(),
 		})
+
+		console.log(result)
 
 		expect(result.isSuccess()).toBe(true)
 		if (result.isSuccess()) {
@@ -33,10 +55,12 @@ describe('Finish Interview', () => {
 	})
 
 	it('Should be able throw an error if interview is not found', async () => {
+		const client = makeClient()
 		const interviewScheduled = makeInterview()
 
 		const result = await sut.execute({
 			interviewId: interviewScheduled.id.toString(),
+			clientId: client.id.toString(),
 		})
 
 		if (result.isFailed()) {
@@ -45,7 +69,10 @@ describe('Finish Interview', () => {
 	})
 
 	it('Should be able throw an error if interview status is different from PENDING', async () => {
-		const interviewScheduled = makeInterview()
+		const client = makeClient()
+		const interviewScheduled = makeInterview({
+			clientId: client.id,
+		})
 
 		interviewScheduled.changeStatus(STATUS_INTERVIEW.SCHEDULED)
 
@@ -53,7 +80,10 @@ describe('Finish Interview', () => {
 
 		const result = await sut.execute({
 			interviewId: interviewScheduled.id.toString(),
+			clientId: client.id.toString(),
 		})
+
+		console.log(result)
 
 		if (result.isFailed()) {
 			expect(result.value).toBeInstanceOf(ResourceNotFoundError)
