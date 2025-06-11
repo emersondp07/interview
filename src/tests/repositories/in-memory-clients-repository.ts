@@ -13,6 +13,19 @@ export class InMemoryClientsRepository implements ClientsRepository {
 		return clients.map(PrismaClientMapper.toDomain)
 	}
 
+	async findAllOnline(
+		{ page }: PaginationParams,
+		clients: string[],
+	): Promise<Client[] | null> {
+		const filteredClients = this.items.filter((client) =>
+			clients.includes(client.id),
+		)
+
+		const paginatedClients = filteredClients.slice((page - 1) * 10, page * 10)
+
+		return paginatedClients.map(PrismaClientMapper.toDomain)
+	}
+
 	async findById(clientId: string) {
 		const client = this.items.find(
 			(client) => client.id.toString() === clientId,

@@ -5,8 +5,8 @@ import type { Interview } from '../../enterprise/entities/interview'
 import type { InterviewsRepository } from '../repositories/interviews-repository'
 
 interface SendContractUseCaseRequest {
+	clientId: string
 	interviewId: string
-	companyId: string
 }
 
 type SendContractUseCaseResponse = Either<
@@ -18,6 +18,7 @@ export class SendContractUseCase {
 	constructor(private interviewsRepository: InterviewsRepository) {}
 
 	async execute({
+		clientId,
 		interviewId,
 	}: SendContractUseCaseRequest): Promise<SendContractUseCaseResponse> {
 		const interview = await this.interviewsRepository.findById(interviewId)

@@ -1,20 +1,27 @@
 import { FinishInterviewUseCase } from '@/domain/interviewer/application/use-cases/finish-interview'
 import type { FinishInteviewSchema } from '@/domain/interviewer/application/validators/finish-interview.schema'
+import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
-import type { FastifyReply, FastifyRequest } from 'fastify'
+import type { Socket } from 'socket.io'
 
 export async function finishInterview(
-	request: FastifyRequest,
-	reply: FastifyReply,
+	data: FinishInteviewSchema,
+	socket: Socket,
 ) {
-	const { interviewId } = request.query as FinishInteviewSchema
+	const { clientId, interviewId } = data
 
+	const prismaClientsRepository = new PrismaClientsRepository()
 	const prismaInterviewsRepository = new PrismaInterviewsRepository()
 	const finishInterviewUseCase = new FinishInterviewUseCase(
+		prismaClientsRepository,
 		prismaInterviewsRepository,
 	)
 
-	const { value } = await finishInterviewUseCase.execute({ interviewId })
+	await finishInterviewUseCase.execute({ interviewId, clientId })
 
-	return reply.status(200).send(value)
+	socket.leave(interviewId)
+
+	socket.on('disconnect', (data) => {
+		socket.emit('finished', data)
+	})
 }

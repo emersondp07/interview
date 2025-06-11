@@ -15,17 +15,4 @@ export async function interviewerRoutes(app: FastifyTypedInstance) {
 		},
 		authenticateInterviewer,
 	)
-
-	// app.post(
-	// 	'/fetch-interviews',
-	// 	{
-	// 		schema: {
-	// 			tags: ['Interviewer'],
-	// 			summary: '',
-	// 			description: '',
-	// 			body: authenticateInterviewerSchema,
-	// 		},
-	// 	},
-	// 	authenticateInterviewer,
-	// )
 }

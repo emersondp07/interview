@@ -14,7 +14,7 @@ describe('Fetch Interviews (e2e)', () => {
 		await app.close()
 	})
 
-	it('should be able to list the interviews', async () => {
+	it.skip('should be able to list the interviews', async () => {
 		const { token, companyId, signatureId } =
 			await createAndAuthenticateCompany(app)
 

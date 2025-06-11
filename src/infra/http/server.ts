@@ -17,7 +17,7 @@ import {
 import { createServer } from 'node:http'
 import { Server as IOServer } from 'socket.io'
 import { ZodError } from 'zod'
-import { registerInterviewNamespace } from '../../interfaces/events/socket/namespace/interview-namespace'
+import { registerInterviewNamespace } from '../../interfaces/http/socket/namespace/interview-namespace'
 import { env } from '../config'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -75,7 +75,7 @@ app.setErrorHandler((error, _, reply) => {
 	return reply.status(500).send({ message: 'Internal server error.' })
 })
 
-const httpServer = createServer(app.server)
+export const httpServer = createServer(app.server)
 
 export const io = new IOServer(httpServer, {
 	cors: { origin: '*' },
