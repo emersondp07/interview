@@ -21,7 +21,7 @@ export async function authenticateCompany(
 	})
 
 	if (value instanceof InvalidCredencialsError) {
-		return reply.status(400).send({ message: value })
+		return value
 	}
 
 	const token = await reply.jwtSign(

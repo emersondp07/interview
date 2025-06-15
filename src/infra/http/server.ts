@@ -17,6 +17,7 @@ import {
 import { createServer } from 'node:http'
 import { Server as IOServer } from 'socket.io'
 import { ZodError } from 'zod'
+import { InvalidCredencialsError } from '../../core/errors/errors/invalid-credencials-error'
 import { registerInterviewNamespace } from '../../interfaces/http/socket/namespace/interview-namespace'
 import { env } from '../config'
 
@@ -64,6 +65,10 @@ app.setErrorHandler((error, _, reply) => {
 		return reply
 			.status(400)
 			.send({ message: 'Validation error.', issue: error.format() })
+	}
+
+	if (error instanceof InvalidCredencialsError) {
+		return reply.status(401).send(error.message)
 	}
 
 	if (env.NODE_ENV !== 'prod') {

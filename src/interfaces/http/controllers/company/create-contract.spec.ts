@@ -1,6 +1,6 @@
 import { app } from '@/infra/http/server'
+import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import request from 'supertest'
-import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Create Contract (e2e)', () => {
 	beforeAll(async () => {

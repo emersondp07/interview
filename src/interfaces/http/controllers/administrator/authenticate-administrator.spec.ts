@@ -37,4 +37,15 @@ describe('Authenticate Administrator (e2e)', () => {
 			token: expect.any(String),
 		})
 	})
+
+	it('should be able not to authenticate administrator if email or password was wrong', async () => {
+		const response = await request(app.server)
+			.post('/session-administrator')
+			.send({
+				email: faker.internet.email(),
+				password: faker.internet.password(),
+			})
+
+		expect(response.statusCode).toEqual(401)
+	})
 })

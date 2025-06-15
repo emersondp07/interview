@@ -19,8 +19,10 @@ export async function authenticateClient(
 		document,
 	})
 
+	console.log(value)
+
 	if (value instanceof InvalidCredencialsError) {
-		return reply.status(400).send({ message: value })
+		return reply.status(401).send(value)
 	}
 
 	const token = await reply.jwtSign(

@@ -22,5 +22,8 @@ export async function getClientByDocument(
 		return socket.emit('error', value)
 	}
 
-	return waitingQueue.set(value.client.id.toString(), socket)
+	waitingQueue.set(value.client.id.toString(), socket)
+	socket.emit('join-queue:response', {
+		message: 'Client added to the waiting queue',
+	})
 }

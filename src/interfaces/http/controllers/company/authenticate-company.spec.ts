@@ -2,6 +2,7 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { makeCompany } from '@/tests/factories/make-company'
 import { makePlan } from '@/tests/factories/make-plan'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Authenticate Company (e2e)', () => {
@@ -45,5 +46,14 @@ describe('Authenticate Company (e2e)', () => {
 		expect(response.body).toEqual({
 			token: expect.any(String),
 		})
+	})
+
+	it('should be able not to authenticate company if email or password was wrong', async () => {
+		const response = await request(app.server).post('/session-company').send({
+			email: faker.internet.email(),
+			password: faker.internet.password(),
+		})
+
+		expect(response.statusCode).toEqual(401)
 	})
 })
