@@ -16,6 +16,6 @@ export default defineConfig({
         "prisma/**",
       ],
     },
-    environmentMatchGlobs: [["src/interfaces/http/controllers/**", "prisma"]],
+    environmentMatchGlobs: [["src/interfaces/http/**", "prisma"]],
   },
 });

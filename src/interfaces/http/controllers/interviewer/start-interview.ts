@@ -10,7 +10,7 @@ export async function startInterview(
 	event: StartInterviewSchema,
 	socket: Socket,
 ) {
-	const { clientId, interviewId } = event as StartInterviewSchema
+	const { clientId, interviewId } = event
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const prismaInterviewsRepository = new PrismaInterviewsRepository()
@@ -37,5 +37,8 @@ export async function startInterview(
 
 	waitingQueue.delete(clientId)
 
-	socket.emit('start-interview:response')
+	socket.emit('start-interview:response', {
+		message: 'Interview started successfully',
+		interview: value,
+	})
 }

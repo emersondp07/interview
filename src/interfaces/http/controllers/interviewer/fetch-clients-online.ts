@@ -9,7 +9,7 @@ export async function fetchClientsOnline(
 	socket: Socket,
 ) {
 	const clientIds = Array.from(waitingQueue.keys())
-	const { page } = data as FetchInterviewsSchema
+	const { page } = data
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const fetchClientsOnlineUseCase = new FetchClientsOnlineUseCase(
@@ -18,5 +18,5 @@ export async function fetchClientsOnline(
 
 	const { value } = await fetchClientsOnlineUseCase.execute({ page, clientIds })
 
-	socket.emit('list-client:response', value)
+	socket.emit('list-client:response', value ?? [])
 }

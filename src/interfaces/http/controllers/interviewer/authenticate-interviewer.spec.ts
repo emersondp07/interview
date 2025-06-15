@@ -1,6 +1,7 @@
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { makeInterviewer } from '@/tests/factories/make-interviewer'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Authenticate Interviewer (e2e)', () => {
@@ -38,5 +39,16 @@ describe('Authenticate Interviewer (e2e)', () => {
 		expect(response.body).toEqual({
 			token: expect.any(String),
 		})
+	})
+
+	it('should be able not to authenticate interviewer if email or password was wrong', async () => {
+		const response = await request(app.server)
+			.post('/session-interviewer')
+			.send({
+				email: faker.internet.email(),
+				password: faker.internet.password(),
+			})
+
+		expect(response.statusCode).toEqual(401)
 	})
 })

@@ -1,7 +1,7 @@
+import { DOCUMENT_TYPE } from '@/domain/client/enterprise/entities/interfaces/client.type'
 import { app } from '@/infra/http/server'
+import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import request from 'supertest'
-import { DOCUMENT_TYPE } from '../../../../domain/client/enterprise/entities/interfaces/client.type'
-import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Authenticate Client (e2e)', () => {
 	beforeAll(async () => {
@@ -37,5 +37,13 @@ describe('Authenticate Client (e2e)', () => {
 		expect(response.body).toEqual({
 			token: expect.any(String),
 		})
+	})
+
+	it('should be able not to authenticate client if document was wrong', async () => {
+		const response = await request(app.server).post('/session-client').send({
+			document: '12345678912',
+		})
+
+		expect(response.statusCode).toEqual(401)
 	})
 })
