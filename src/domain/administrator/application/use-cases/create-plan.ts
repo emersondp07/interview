@@ -1,4 +1,5 @@
 import { type Either, success } from '@/core/either'
+import type { StripeProductsService } from '@/infra/services/stripe/products'
 import { Plan } from '../../enterprise/entities/plan'
 import type { PlansRepository } from '../repositories/plans-repository'
 
@@ -12,7 +13,10 @@ interface CreatePlanUseCaseRequest {
 type CreatePlanUseCaseResponse = Either<null, { plan: Plan }>
 
 export class CreatePlanUseCase {
-	constructor(private plansRepository: PlansRepository) {}
+	constructor(
+		private plansRepository: PlansRepository,
+		private stripeProductsService: StripeProductsService,
+	) {}
 
 	async execute({
 		planName,
@@ -20,11 +24,18 @@ export class CreatePlanUseCase {
 		planDescription,
 		planInterviewLimit,
 	}: CreatePlanUseCaseRequest): Promise<CreatePlanUseCaseResponse> {
+		const stripeProduct = await this.stripeProductsService.createProduct(
+			planName,
+			planPrice,
+			planDescription,
+		)
+
 		const plan = Plan.create({
 			name: planName,
 			price: planPrice,
 			interviewLimit: planInterviewLimit,
 			description: planDescription,
+			stripeProductId: stripeProduct.id,
 		})
 
 		await this.plansRepository.create(plan)

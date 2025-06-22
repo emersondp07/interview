@@ -46,6 +46,10 @@ export class Company extends Entity<CompanyProps> {
 		return this.props.deletedAt
 	}
 
+	get stripeCustomerId() {
+		return this.props.stripeCustomerId
+	}
+
 	private touch() {
 		this.props.updatedAt = new Date()
 	}
@@ -73,7 +77,7 @@ export class Company extends Entity<CompanyProps> {
 	static create(
 		props: Optional<
 			CompanyProps,
-			'createdAt' | 'updatedAt' | 'role' | 'documentType'
+			'createdAt' | 'updatedAt' | 'role' | 'documentType' | 'stripeCustomerId'
 		>,
 		id?: UniqueEntityID,
 	) {

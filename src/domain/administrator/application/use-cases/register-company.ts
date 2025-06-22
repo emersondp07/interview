@@ -2,6 +2,7 @@ import { type Either, failed, success } from '@/core/either'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
 import { hash } from 'bcryptjs'
+import type { StripeCustomersService } from '../../../../infra/services/stripe/customers'
 import type { CompaniesRepository } from '../../../administrator/application/repositories/companies-repository'
 import type { PlansRepository } from '../../../administrator/application/repositories/plans-repository'
 import type { SignaturesRepository } from '../../../company/application/repositories/signatures-repository'
@@ -19,7 +20,7 @@ interface RegisterCompanyUseCaseRequest {
 
 type RegisterCompanyUseCaseResponse = Either<
 	ResourceNotFoundError,
-	{ company: Company }
+	{ url: string }
 >
 
 export class RegisterCompanyUseCase {
@@ -27,6 +28,7 @@ export class RegisterCompanyUseCase {
 		private companiesRepository: CompaniesRepository,
 		private plansRepository: PlansRepository,
 		private signaturesRepository: SignaturesRepository,
+		private stripeCustomersService: StripeCustomersService,
 	) {}
 
 	async execute({
@@ -49,6 +51,11 @@ export class RegisterCompanyUseCase {
 			return failed(new NotAllowedError())
 		}
 
+		const customer = await this.stripeCustomersService.createCustomer(
+			email,
+			corporateReason,
+		)
+
 		company = Company.create({
 			corporateReason,
 			cnpj,
@@ -56,7 +63,15 @@ export class RegisterCompanyUseCase {
 			password: await hash(password, 10),
 			phone,
 			planId,
+			stripeCustomerId: customer.id,
 		})
+
+		const createCheckoutSession =
+			await this.stripeCustomersService.createCheckoutSession(
+				company.id.toString(),
+				customer.id,
+				planExists.stripeProductId,
+			)
 
 		const signature = Signature.create({
 			companyId: company.id,
@@ -67,7 +82,7 @@ export class RegisterCompanyUseCase {
 		await this.signaturesRepository.create(signature)
 
 		return success({
-			company,
+			url: createCheckoutSession.url || 'http://localhost:3000/success',
 		})
 	}
 }

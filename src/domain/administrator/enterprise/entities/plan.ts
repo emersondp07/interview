@@ -32,6 +32,10 @@ export class Plan extends Entity<PlanProps> {
 		return this.props.deletedAt
 	}
 
+	get stripeProductId() {
+		return this.props.stripeProductId
+	}
+
 	private touch() {
 		this.props.updatedAt = new Date()
 	}

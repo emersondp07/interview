@@ -4,15 +4,16 @@ import { fetchClientsOnline } from '../../controllers/interviewer/fetch-clients-
 import { finishInterview } from '../../controllers/interviewer/finish-interview'
 import { sendContract } from '../../controllers/interviewer/send-contract'
 import { startInterview } from '../../controllers/interviewer/start-interview'
+import { verifyJwtSocket } from '../../middlewares/verify-jwt-socket'
 
 export const waitingQueue: Map<string, Socket> = new Map()
 
 export function registerInterviewNamespace(io: Server) {
 	const nsp = io.of('/interview')
 
-	// nsp.use((socket, next) => {
-	// 	verifyJwtSocket(socket, next)
-	// })
+	nsp.use((socket, next) => {
+		verifyJwtSocket(socket, next)
+	})
 
 	nsp.on('connection', (socket: Socket) => {
 		socket.on('list-client', async (data, socket) => {

@@ -13,4 +13,5 @@ export interface CompanyProps {
 	createdAt: Date
 	updatedAt: Date
 	deletedAt?: Date
+	stripeCustomerId?: string
 }

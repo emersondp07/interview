@@ -27,19 +27,33 @@ export class Signature extends Entity<SignatureProps> {
 		return this.props.companyId
 	}
 
+	get stripeSubscriptionId() {
+		return this.props.stripeSubscriptionId
+	}
+
+	get stripeSubscriptionStatus() {
+		return this.props.stripeSubscriptionStatus
+	}
+
 	cancel() {
 		this.props.status = STATUS_SIGNATURE.CANCELED
 		this.props.endValidity = new Date()
 	}
 
 	static create(
-		props: Optional<SignatureProps, 'status' | 'startValidity'>,
+		props: Optional<
+			SignatureProps,
+			| 'status'
+			| 'startValidity'
+			| 'stripeSubscriptionId'
+			| 'stripeSubscriptionStatus'
+		>,
 		id?: UniqueEntityID,
 	) {
 		const signature = new Signature(
 			{
 				...props,
-				status: STATUS_SIGNATURE.ACTIVE,
+				status: STATUS_SIGNATURE.CHECKOUT,
 				startValidity: props.startValidity ?? new Date(),
 			},
 			id,

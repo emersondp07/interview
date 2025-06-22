@@ -20,6 +20,7 @@ export class PrismaCompanyMapper {
 			created_at: company.createdAt,
 			updated_at: company.updatedAt,
 			deleted_at: company.deletedAt ?? null,
+			stripe_customer_id: company.stripeCustomerId ?? null,
 		}
 	}
 
@@ -35,6 +36,7 @@ export class PrismaCompanyMapper {
 				planId: raw.plan_id,
 				createdAt: raw.created_at,
 				updatedAt: raw.updated_at,
+				stripeCustomerId: raw.stripe_customer_id ?? undefined
 			},
 			new UniqueEntityID(raw.id),
 		)

@@ -15,6 +15,8 @@ export class PrismaSignatureMapper {
 			end_validity: signature.endValidity ?? null,
 			start_validity: signature.startValidity,
 			status: signature.status as PrismaStatusSignature,
+			stripe_subscription_id: signature.stripeSubscriptionId ?? null,
+			stripe_subscription_status: signature.stripeSubscriptionStatus ?? null,
 		}
 	}
 
@@ -26,6 +28,8 @@ export class PrismaSignatureMapper {
 				startValidity: raw.start_validity,
 				endValidity: raw.end_validity ?? undefined,
 				status: raw.status as STATUS_SIGNATURE,
+				stripeSubscriptionId: raw.stripe_subscription_id ?? undefined,
+				stripeSubscriptionStatus: raw.stripe_subscription_status ?? undefined,
 			},
 			new UniqueEntityID(raw.id),
 		)
