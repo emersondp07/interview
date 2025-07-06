@@ -1,5 +1,5 @@
-import type { AdministratorsRepository } from '@/domain/administrator/application/repositories/administrators-repository'
-import type { Administrator } from '@/domain/administrator/enterprise/entities/administrator'
+import type { Administrator } from '@domain/administrator/entities/administrator'
+import type { AdministratorsRepository } from '@domain/administrator/repositories/administrators-repository'
 import { PrismaAdministratorMapper } from '../prisma/mappers/prisma-administrator-mapper'
 import { prisma } from '../prisma/prisma'
 

@@ -1,8 +1,8 @@
 import { prisma } from '@/infra/database/prisma/prisma'
+import type { FastifyTypedInstance } from '@/interfaces/@types/instances.type'
 import { ROLE } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
-import type { FastifyTypedInstance } from '../../interfaces/@types/instances.type'
 import { makeCompany } from './make-company'
 import { makePlan } from './make-plan'
 import { makeSignature } from './make-signature'
@@ -16,6 +16,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			price: plan.price,
 			description: plan.description,
 			interview_limit: plan.interviewLimit,
+			stripe_product_id: plan.stripeProductId,
 		},
 	})
 
@@ -41,7 +42,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			id: signature.id.toString(),
 			company_id: company.id.toString(),
 			plan_id: plan.id.toString(),
-			status: 'ACTIVE',
+			status: 'CHECKOUT',
 		},
 	})
 

@@ -1,8 +1,8 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { InterviewsRepository } from '@/domain/interviewer/application/repositories/interviews-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import type { Interview } from '@/domain/interviewer/entities/interview'
+import type { InterviewsRepository } from '@/domain/interviewer/repositories/interviews-repository'
+import { PrismaInterviewMapper } from '@/infra/database/prisma/mappers/prisma-interview-mapper'
 import type { Interview as PrismaInterview } from '@prisma/client'
-import type { Interview } from '../../domain/interviewer/enterprise/entities/interview'
-import { PrismaInterviewMapper } from '../../infra/database/prisma/mappers/prisma-interview-mapper'
 
 export class InMemoryInterviewsRepository implements InterviewsRepository {
 	public items: PrismaInterview[] = []

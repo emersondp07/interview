@@ -1,7 +1,7 @@
-import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencials-error'
-import { AuthenticateClientUseCase } from '@/domain/client/application/use-cases/authenticate-client'
-import type { AuthenticateClientSchema } from '@/domain/client/application/validators/authenticate-client.schema'
+import { AuthenticateClientUseCase } from '@/application/client/use-cases/authenticate-client'
+import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
+import type { AuthenticateClientSchema } from '@application/client/validators/authenticate-client.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function authenticateClient(
@@ -18,8 +18,6 @@ export async function authenticateClient(
 	const { value } = await authenticateClientUseCase.execute({
 		document,
 	})
-
-	console.log(value)
 
 	if (value instanceof InvalidCredencialsError) {
 		return reply.status(401).send(value)

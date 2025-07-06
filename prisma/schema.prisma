@@ -41,6 +41,7 @@ enum STATUS_PAYMENT {
 }
 
 enum STATUS_SIGNATURE {
+  CHECKOUT
   ACTIVE
   INACTIVE
   PENDING
@@ -70,7 +71,7 @@ model Plan {
   updated_at        DateTime    @updatedAt
   deleted_at        DateTime?
   signature         Signature[]
-  stripe_product_id String?     @unique
+  stripe_product_id String      @unique
 
   @@map("plans")
 }
@@ -90,8 +91,9 @@ model Company {
   interviewers       Interviewer[]
   clients            Client[]
   contracts          Contract[]
-  signatures         Signature[]
-  interviewes        Interview[]
+  signature_id       String        @unique
+  signature          Signature     @relation(fields: [signature_id], references: [id])
+  interviews         Interview[]
   stripe_customer_id String?       @unique
 
   @@map("companies")
@@ -103,8 +105,7 @@ model Signature {
   end_validity               DateTime?
   status                     STATUS_SIGNATURE
   invoice                    Invoice[]
-  company_id                 String
-  company                    Company          @relation(fields: [company_id], references: [id])
+  company                    Company?
   plan_id                    String
   plan                       Plan             @relation(fields: [plan_id], references: [id])
   stripe_subscription_id     String?          @unique
@@ -114,18 +115,19 @@ model Signature {
 }
 
 model Invoice {
-  id           String         @id @default(uuid())
-  mounth       String
-  value        String
-  issueDate    DateTime
-  dueDate      DateTime
-  paymentDate  DateTime?
-  status       STATUS_PAYMENT
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  deleted_at   DateTime?
-  signature_id String
-  signature    Signature      @relation(fields: [signature_id], references: [id])
+  id                String         @id @default(uuid())
+  mounth            String
+  value             String
+  issueDate         DateTime
+  dueDate           DateTime
+  paymentDate       DateTime?
+  status            STATUS_PAYMENT
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
+  deleted_at        DateTime?
+  signature_id      String
+  signature         Signature      @relation(fields: [signature_id], references: [id])
+  stripe_invoice_id String         @unique
 
   @@map("invoices")
 }

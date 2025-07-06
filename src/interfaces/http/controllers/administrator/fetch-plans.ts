@@ -1,6 +1,6 @@
-import { FetchPlansUseCase } from '@/domain/administrator/application/use-cases/fetch-plans'
-import type { FetchPlansSchema } from '@/domain/administrator/application/validators/fetch-plans.schema'
+import { FetchPlansUseCase } from '@/application/administrator/use-cases/fetch-plans'
 import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
+import type { FetchPlansSchema } from '@application/administrator/validators/fetch-plans.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function fetchPlans(request: FastifyRequest, reply: FastifyReply) {

@@ -1,7 +1,7 @@
-import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencials-error'
-import { AuthenticateAdministratorUseCase } from '@/domain/administrator/application/use-cases/authenticate-administrator'
-import type { AuthenticateAdministratorSchema } from '@/domain/administrator/application/validators/authenticate-administrator.schema'
+import { AuthenticateAdministratorUseCase } from '@/application/administrator/use-cases/authenticate-administrator'
+import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { PrismaAdministratorsRepository } from '@/infra/database/repositories/prisma-administrators-repository'
+import type { AuthenticateAdministratorSchema } from '@application/administrator/validators/authenticate-administrator.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function authenticateAdministrator(

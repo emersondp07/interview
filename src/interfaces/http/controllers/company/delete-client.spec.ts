@@ -1,8 +1,8 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
+import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { makeClient } from '@/tests/factories/make-client'
 import request from 'supertest'
-import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Delete Client (e2e)', () => {
 	beforeAll(async () => {

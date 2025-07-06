@@ -1,5 +1,5 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Contract } from '@/domain/company/enterprise/entities/contract'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Contract } from '@domain/company/entities/contract'
 import type { Contract as PrismaContract } from '@prisma/client'
 
 export class PrismaContractMapper {

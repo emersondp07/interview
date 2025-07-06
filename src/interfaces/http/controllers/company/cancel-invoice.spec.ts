@@ -27,6 +27,7 @@ describe('Cancel Invoice (e2e)', () => {
 				signature_id: signatureId,
 				dueDate: invoice1.dueDate,
 				issueDate: invoice1.issueDate,
+				stripe_invoice_id: invoice1.stripeInvoiceId,
 			},
 		})
 

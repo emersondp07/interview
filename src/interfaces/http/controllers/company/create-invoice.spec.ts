@@ -1,6 +1,7 @@
 import { app } from '@/infra/http/server'
+import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
-import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Create Invoice (e2e)', () => {
 	beforeAll(async () => {
@@ -23,8 +24,9 @@ describe('Create Invoice (e2e)', () => {
 				value: '29,90',
 				status: 'OPEN',
 				signatureId,
+				stripeInvoiceId: faker.string.uuid(),
 			})
 
-		// expect(response.status).toEqual(201)
+		expect(response.status).toEqual(201)
 	})
 })

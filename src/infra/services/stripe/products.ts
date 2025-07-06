@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import { env } from '../../config'
-import type { IStripeProducts } from './stripe-products'
+import type { IStripeProducts } from './interfaces/stripe-products'
 
 export class StripeProductsService implements IStripeProducts {
 	private stripe: Stripe

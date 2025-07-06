@@ -1,5 +1,5 @@
-import { FetchInvoicesUseCase } from '@/domain/company/application/use-cases/fetch-invoices'
-import type { FetchInvoicesSchema } from '@/domain/company/application/validators/fetch-invoices.schema'
+import { FetchInvoicesUseCase } from '@/application/company/use-cases/fetch-invoices'
+import type { FetchInvoicesSchema } from '@/application/company/validators/fetch-invoices.schema'
 import { PrismaInvoicesRepository } from '@/infra/database/repositories/prisma-invoices-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

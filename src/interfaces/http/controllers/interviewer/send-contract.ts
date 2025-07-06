@@ -1,7 +1,7 @@
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { SendContractUseCase } from '@/domain/interviewer/application/use-cases/send-contract'
-import type { SendContractSchema } from '@/domain/interviewer/application/validators/send-contract.schema'
+import { SendContractUseCase } from '@/application/interviewer/use-cases/send-contract'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
+import type { SendContractSchema } from '@application/interviewer/validators/send-contract.schema'
 import type { Socket } from 'socket.io'
 
 export async function sendContract(data: SendContractSchema, socket: Socket) {

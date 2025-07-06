@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import { env } from '../../config'
-import type { IStripeCustomers } from './stripe-customers'
+import type { IStripeCustomers } from './interfaces/stripe-customers'
 
 export class StripeCustomersService implements IStripeCustomers {
 	private stripe: Stripe
@@ -60,7 +60,7 @@ export class StripeCustomersService implements IStripeCustomers {
 		})
 	}
 
-	deleteCustomer(customerId: string): Promise<Stripe.DeletedCustomer> {
-		return this.stripe.customers.del(customerId)
+	async deleteCustomer(customerId: string): Promise<void> {
+		await this.stripe.customers.del(customerId)
 	}
 }

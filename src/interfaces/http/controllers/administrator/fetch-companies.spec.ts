@@ -21,6 +21,7 @@ describe('Fetch Companies (e2e)', () => {
 				price: '29,90',
 				description: 'Description plan',
 				interview_limit: 100,
+				stripe_product_id: faker.string.uuid(),
 			},
 		})
 

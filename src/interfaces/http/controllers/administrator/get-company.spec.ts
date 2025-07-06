@@ -2,6 +2,7 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and-authenticate-administrator'
 import { makeCompany } from '@/tests/factories/make-company'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Get Company (e2e)', () => {
@@ -22,6 +23,7 @@ describe('Get Company (e2e)', () => {
 				price: '29,90',
 				description: 'Description plan',
 				interview_limit: 100,
+				stripe_product_id: faker.string.uuid(),
 			},
 		})
 

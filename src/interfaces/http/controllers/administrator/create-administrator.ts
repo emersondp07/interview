@@ -1,6 +1,6 @@
-import { CreateAdministratorUseCase } from '@/domain/administrator/application/use-cases/create-administrator'
-import type { CreateAdministratorSchema } from '@/domain/administrator/application/validators/create-administrator.schema'
+import { CreateAdministratorUseCase } from '@/application/administrator/use-cases/create-administrator'
 import { PrismaAdministratorsRepository } from '@/infra/database/repositories/prisma-administrators-repository'
+import type { CreateAdministratorSchema } from '@application/administrator/validators/create-administrator.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function createAdministrator(

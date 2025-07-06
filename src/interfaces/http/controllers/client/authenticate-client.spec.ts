@@ -1,4 +1,4 @@
-import { DOCUMENT_TYPE } from '@/domain/client/enterprise/entities/interfaces/client.type'
+import { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import request from 'supertest'

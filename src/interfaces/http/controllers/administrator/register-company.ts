@@ -1,8 +1,9 @@
-import { RegisterCompanyUseCase } from '@/domain/administrator/application/use-cases/register-company'
-import type { RegisterCompanySchema } from '@/domain/administrator/application/validators/register-company.schema'
+import { RegisterCompanyUseCase } from '@/application/administrator/use-cases/register-company'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
 import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
+import { StripeCustomersService } from '@/infra/services/stripe/customers'
+import type { RegisterCompanySchema } from '@application/administrator/validators/register-company.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function registerCompany(
@@ -15,10 +16,12 @@ export async function registerCompany(
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()
 	const prismaPlansRepository = new PrismaPlansRepository()
 	const prismaSignaturesRepository = new PrismaSignaturesRepository()
+	const stripeCustomersService = new StripeCustomersService()
 	const registerCompanyUseCase = new RegisterCompanyUseCase(
 		prismaCompaniesRepository,
 		prismaPlansRepository,
 		prismaSignaturesRepository,
+		stripeCustomersService,
 	)
 
 	await registerCompanyUseCase.execute({

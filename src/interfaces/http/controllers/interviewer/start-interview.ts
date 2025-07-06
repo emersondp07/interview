@@ -1,8 +1,8 @@
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { StartInterviewUseCase } from '@/domain/interviewer/application/use-cases/start-interview'
-import type { StartInterviewSchema } from '@/domain/interviewer/application/validators/start-interview.schema'
+import { StartInterviewUseCase } from '@/application/interviewer/use-cases/start-interview'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
+import type { StartInterviewSchema } from '@application/interviewer/validators/start-interview.schema'
 import type { Socket } from 'socket.io'
 import { waitingQueue } from '../../socket/namespace/interview-namespace'
 

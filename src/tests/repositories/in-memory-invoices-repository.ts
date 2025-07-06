@@ -1,10 +1,13 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { InvoicesRepository } from '@/domain/company/application/repositories/invoices-repository'
+import type { Invoice } from '@/domain/company/entities/invoice'
+import type { InvoicesRepository } from '@/domain/company/repositories/invoices-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import { PrismaInvoiceMapper } from '@/infra/database/prisma/mappers/prisma-invoice-mapper'
 import type { Invoice as PrismaInvoice } from '@prisma/client'
-import type { Invoice } from '../../domain/company/enterprise/entities/invoice'
-import { PrismaInvoiceMapper } from '../../infra/database/prisma/mappers/prisma-invoice-mapper'
 
 export class InMemoryInvoicesRepository implements InvoicesRepository {
+	update(invoice: Invoice): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
 	public items: PrismaInvoice[] = []
 
 	async findAll({ page }: PaginationParams) {

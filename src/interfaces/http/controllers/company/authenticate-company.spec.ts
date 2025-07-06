@@ -23,6 +23,7 @@ describe('Authenticate Company (e2e)', () => {
 				price: plan.price,
 				description: plan.description,
 				interview_limit: plan.interviewLimit,
+				stripe_product_id: plan.stripeProductId,
 			},
 		})
 

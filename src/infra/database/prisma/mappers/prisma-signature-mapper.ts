@@ -1,6 +1,6 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { STATUS_SIGNATURE } from '@/domain/company/enterprise/entities/interfaces/signature.type'
-import { Signature } from '@/domain/company/enterprise/entities/signature'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type { STATUS_SIGNATURE } from '@domain/company/entities/interfaces/signature.type'
+import { Signature } from '@domain/company/entities/signature'
 import type {
 	Signature as PrismaSignature,
 	STATUS_SIGNATURE as PrismaStatusSignature,
@@ -10,7 +10,6 @@ export class PrismaSignatureMapper {
 	static toPrisma(signature: Signature): PrismaSignature {
 		return {
 			id: signature.id.toString(),
-			company_id: signature.companyId.toString(),
 			plan_id: signature.planId.toString(),
 			end_validity: signature.endValidity ?? null,
 			start_validity: signature.startValidity,
@@ -23,13 +22,13 @@ export class PrismaSignatureMapper {
 	static toDomain(raw: PrismaSignature): Signature {
 		return Signature.create(
 			{
-				companyId: new UniqueEntityID(raw.company_id),
 				planId: new UniqueEntityID(raw.plan_id),
 				startValidity: raw.start_validity,
 				endValidity: raw.end_validity ?? undefined,
 				status: raw.status as STATUS_SIGNATURE,
 				stripeSubscriptionId: raw.stripe_subscription_id ?? undefined,
 				stripeSubscriptionStatus: raw.stripe_subscription_status ?? undefined,
+				companyId: new UniqueEntityID(raw.id),
 			},
 			new UniqueEntityID(raw.id),
 		)

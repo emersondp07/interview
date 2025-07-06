@@ -1,10 +1,19 @@
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and-authenticate-administrator'
+import { InMemoryStripeProductsService } from '@/tests/repositories/in-memory-stripe-products-service'
 import request from 'supertest'
 
 describe('Create Plan (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
+
+		vi.mock('@/infra/services/stripe-products-service', () => {
+			return {
+				StripeProductsService: vi
+					.fn()
+					.mockImplementation(() => new InMemoryStripeProductsService()),
+			}
+		})
 	})
 
 	afterAll(async () => {

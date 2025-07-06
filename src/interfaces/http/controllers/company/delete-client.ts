@@ -1,5 +1,5 @@
-import { DeleteClientUseCase } from '@/domain/company/application/use-cases/delete-client'
-import type { DeleteClientParams } from '@/domain/company/application/validators/delete-client.schema'
+import { DeleteClientUseCase } from '@/application/company/use-cases/delete-client'
+import type { DeleteClientParams } from '@/application/company/validators/delete-client.schema'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

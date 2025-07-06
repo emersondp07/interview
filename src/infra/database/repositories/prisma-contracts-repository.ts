@@ -1,5 +1,5 @@
-import type { Contract } from '@/domain/company/enterprise/entities/contract'
 import type { ContractsRepository } from '@/domain/interviewer/application/repositories/contracts-repository'
+import type { Contract } from '@domain/company/entities/contract'
 import { PrismaContractMapper } from '../prisma/mappers/prisma-contract-mapper'
 import { prisma } from '../prisma/prisma'
 

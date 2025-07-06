@@ -1,5 +1,6 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Fetch Companies (e2e)', () => {
@@ -18,6 +19,7 @@ describe('Fetch Companies (e2e)', () => {
 				price: '29,90',
 				description: 'Description plan',
 				interview_limit: 100,
+				stripe_product_id: faker.string.uuid(),
 			},
 		})
 
@@ -27,6 +29,7 @@ describe('Fetch Companies (e2e)', () => {
 				price: '39,90',
 				description: 'Description plan',
 				interview_limit: 100,
+				stripe_product_id: faker.string.uuid(),
 			},
 		})
 

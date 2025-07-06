@@ -1,16 +1,16 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Contract } from '@/domain/company/enterprise/entities/contract'
-import type { ContractProps } from '@/domain/company/enterprise/entities/interfaces/contract.type'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Contract } from '@domain/company/entities/contract'
+import type { ContractProps } from '@domain/company/entities/interfaces/contract.type'
 
 export function makeContract(
-	override: Partial<ContractProps> = {},
+	override?: Partial<ContractProps>,
 	id?: UniqueEntityID,
 ) {
 	const contract = Contract.create(
 		{
 			title: 'Example Contract',
 			description: 'Example description',
-			imageId: 'url de imagem salva',
+			imageUrl: 'https://example.com/image.jpg',
 			companyId: new UniqueEntityID(),
 			...override,
 		},

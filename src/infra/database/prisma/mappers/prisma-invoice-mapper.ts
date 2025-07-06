@@ -1,6 +1,5 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { STATUS_PAYMENT } from '@/domain/company/enterprise/entities/interfaces/invoice.type'
-import { Invoice } from '@/domain/company/enterprise/entities/invoice'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Invoice } from '@domain/company/entities/invoice'
 import type {
 	Invoice as PrismaInvoice,
 	STATUS_PAYMENT as PrismaStatePayment,
@@ -20,6 +19,7 @@ export class PrismaInvoiceMapper {
 			created_at: new Date(),
 			updated_at: new Date(),
 			deleted_at: null,
+			stripe_invoice_id: invoice.stripeInvoiceId,
 		}
 	}
 
@@ -28,8 +28,8 @@ export class PrismaInvoiceMapper {
 			{
 				mounth: raw.mounth,
 				value: raw.value,
-				status: raw.status as STATUS_PAYMENT,
 				signatureId: new UniqueEntityID(raw.signature_id),
+				stripeInvoiceId: raw.stripe_invoice_id,
 			},
 			new UniqueEntityID(raw.id),
 		)

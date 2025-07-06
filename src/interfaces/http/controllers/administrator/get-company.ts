@@ -1,6 +1,6 @@
-import { GetCompanyUseCase } from '@/domain/administrator/application/use-cases/get-company'
-import type { GetCompanySchema } from '@/domain/administrator/application/validators/get-company.schema'
+import { GetCompanyUseCase } from '@/application/administrator/use-cases/get-company'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import type { GetCompanySchema } from '@application/administrator/validators/get-company.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function getCompany(request: FastifyRequest, reply: FastifyReply) {

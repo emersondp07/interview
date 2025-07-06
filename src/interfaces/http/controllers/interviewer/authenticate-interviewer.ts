@@ -1,7 +1,7 @@
-import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencials-error'
-import { AuthenticateInterviewerUseCase } from '@/domain/interviewer/application/use-cases/authenticate-interviewer'
-import type { AuthenticateInterviewerSchema } from '@/domain/interviewer/application/validators/authenticate-interviewer.schema'
+import { AuthenticateInterviewerUseCase } from '@/application/interviewer/use-cases/authenticate-interviewer'
+import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
+import type { AuthenticateInterviewerSchema } from '@application/interviewer/validators/authenticate-interviewer.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function authenticateInterviewer(

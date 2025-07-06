@@ -8,20 +8,29 @@ import fastifyJwt from '@fastify/jwt'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
+import fastifyRawBody from 'fastify-raw-body'
 import {
 	type ZodTypeProvider,
 	jsonSchemaTransform,
 	serializerCompiler,
 	validatorCompiler,
 } from 'fastify-type-provider-zod'
-import { createServer } from 'node:http'
-import { Server as IOServer } from 'socket.io'
 import { ZodError } from 'zod'
-import { InvalidCredencialsError } from '../../core/errors/errors/invalid-credencials-error'
+import { InvalidCredencialsError } from '../../domain/core/errors/errors/invalid-credencials-error'
+import { webhookRoutes } from '../../interfaces/http/routes/webhook-routes'
 import { registerInterviewNamespace } from '../../interfaces/http/socket/namespace/interview-namespace'
 import { env } from '../config'
 
+import { Server as SocketIOServer } from 'socket.io'
+
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
+
+app.register(fastifyRawBody, {
+	field: 'rawBody',
+	global: false,
+	runFirst: true,
+	encoding: 'utf8',
+})
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
@@ -60,6 +69,8 @@ app.register(companyRoutes)
 app.register(clientRoutes)
 app.register(interviewerRoutes)
 
+app.register(webhookRoutes)
+
 app.setErrorHandler((error, _, reply) => {
 	if (error instanceof ZodError) {
 		return reply
@@ -80,24 +91,30 @@ app.setErrorHandler((error, _, reply) => {
 	return reply.status(500).send({ message: 'Internal server error.' })
 })
 
-export const httpServer = createServer(app.server)
-
-export const io = new IOServer(httpServer, {
-	cors: { origin: '*' },
-})
-
-export function initSocket() {
+function initSocket(io: SocketIOServer) {
 	registerInterviewNamespace(io)
 }
 
 export async function start() {
-	initSocket()
-	await app.ready()
-	const port = env.PORT ?? 3333
-	await new Promise<void>((resolve, reject) => {
-		httpServer
-			.once('listening', () => resolve())
-			.once('error', (err) => reject(err))
-			.listen({ port, host: '0.0.0.0' })
-	})
+	try {
+		await app.ready()
+
+		const port = env.PORT ?? 3333
+		await app.listen({
+			port,
+			host: '0.0.0.0',
+			listenTextResolver: (address) => `Servidor rodando em ${address}`,
+		})
+
+		const io = new SocketIOServer(app.server, {
+			cors: {
+				origin: '*',
+			},
+		})
+
+		initSocket(io)
+	} catch (err) {
+		app.log.error(err)
+		process.exit(1)
+	}
 }
