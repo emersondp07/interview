@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start:dev": "tsx watch src/infra/http/main.ts",
-    "start": "node build/server.js",
+    "start": "node build/infra/http/main.js",
     "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
     "test:install-prisma-environment": "npm link vitest-environment-prisma",
     "build": "tsup src --out-dir build",
