@@ -1,6 +1,6 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { Client } from '@/domain/client/enterprise/entities/client'
-import type { ClientsRepository } from '@/domain/company/application/repositories/clients-repository'
+import type { Client } from '@/domain/client/entities/client'
+import type { ClientsRepository } from '@/domain/company/repositories/clients-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
 import { PrismaClientMapper } from '../prisma/mappers/prisma-client-mapper'
 import { prisma } from '../prisma/prisma'
 

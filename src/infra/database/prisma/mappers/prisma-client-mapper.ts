@@ -1,7 +1,7 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
-import { Client } from '@/domain/client/enterprise/entities/client'
-import type { DOCUMENT_TYPE } from '@/domain/client/enterprise/entities/interfaces/client.type'
+import { Client } from '@/domain/client/entities/client'
+import type { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type { Client as PrismaClient, ROLE as PrismaRole } from '@prisma/client'
 
 export class PrismaClientMapper {

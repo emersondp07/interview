@@ -1,4 +1,4 @@
-import { authenticateInterviewerSchema } from '@/domain/interviewer/application/validators/authenticate-interviewer.schema'
+import { authenticateInterviewerSchema } from '@application/interviewer/validators/authenticate-interviewer.schema'
 import type { FastifyTypedInstance } from '../../@types/instances.type'
 import { authenticateInterviewer } from '../controllers/interviewer/authenticate-interviewer'
 

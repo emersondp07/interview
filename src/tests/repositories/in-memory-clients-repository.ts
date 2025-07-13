@@ -1,8 +1,8 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { ClientsRepository } from '@/domain/company/application/repositories/clients-repository'
+import type { Client } from '@/domain/client/entities/client'
+import type { ClientsRepository } from '@/domain/company/repositories/clients-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import { PrismaClientMapper } from '@/infra/database/prisma/mappers/prisma-client-mapper'
 import type { Client as PrismaClient } from '@prisma/client'
-import type { Client } from '../../domain/client/enterprise/entities/client'
-import { PrismaClientMapper } from '../../infra/database/prisma/mappers/prisma-client-mapper'
 
 export class InMemoryClientsRepository implements ClientsRepository {
 	public items: PrismaClient[] = []

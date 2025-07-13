@@ -1,5 +1,5 @@
-import { CreateInterviewerUseCase } from '@/domain/company/application/use-cases/create-interviewer'
-import type { CreateInterviewerSchema } from '@/domain/company/application/validators/create-interviewer.schema'
+import { CreateInterviewerUseCase } from '@/application/company/use-cases/create-interviewer'
+import type { CreateInterviewerSchema } from '@/application/company/validators/create-interviewer.schema'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'

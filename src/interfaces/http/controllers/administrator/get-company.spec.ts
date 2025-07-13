@@ -2,7 +2,9 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and-authenticate-administrator'
 import { makeCompany } from '@/tests/factories/make-company'
+import { faker } from '@faker-js/faker'
 import request from 'supertest'
+import { makeSignature } from '../../../../tests/factories/make-signature'
 
 describe('Get Company (e2e)', () => {
 	beforeAll(async () => {
@@ -22,12 +24,23 @@ describe('Get Company (e2e)', () => {
 				price: '29,90',
 				description: 'Description plan',
 				interview_limit: 100,
+				stripe_product_id: faker.string.uuid(),
 			},
 		})
 
 		const plan = await prisma.plan.findMany()
 		const company = makeCompany({
 			planId: plan[0].id,
+		})
+
+		const signature = makeSignature()
+
+		await prisma.signature.create({
+			data: {
+				id: signature.id.toString(),
+				plan_id: plan[0].id,
+				status: 'CHECKOUT',
+			},
 		})
 
 		await prisma.company.create({
@@ -40,6 +53,11 @@ describe('Get Company (e2e)', () => {
 				phone: company.phone,
 				plan_id: company.planId,
 				role: company.role,
+				signature: {
+					connect: {
+						id: signature.id.toString(),
+					},
+				},
 			},
 		})
 

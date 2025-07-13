@@ -1,6 +1,6 @@
-import { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
 import { prisma } from '@/infra/database/prisma/prisma'
 import type { FastifyTypedInstance } from '@/interfaces/@types/instances.type'
+import { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
 import { makeAdministrator } from './make-administrator'

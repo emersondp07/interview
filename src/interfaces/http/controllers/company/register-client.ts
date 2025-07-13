@@ -1,9 +1,9 @@
-import { RegisterClientUseCase } from '@/domain/company/application/use-cases/register-client'
-import type { RegisterClientSchema } from '@/domain/company/application/validators/register-client.schema'
+import { RegisterClientUseCase } from '@/application/company/use-cases/register-client'
+import type { RegisterClientSchema } from '@/application/company/validators/register-client.schema'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { PrismaInterviewsRepository } from '../../../../infra/database/repositories/prisma-interviews-repository'
 
 export async function registerClient(
 	request: FastifyRequest,

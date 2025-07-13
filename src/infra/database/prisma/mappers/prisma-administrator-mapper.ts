@@ -1,6 +1,6 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Administrator } from '@/domain/administrator/enterprise/entities/administrator'
-import type { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Administrator } from '@domain/administrator/entities/administrator'
+import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type {
 	Administrator as PrismaAdministrator,
 	ROLE as PrismaRole,

@@ -1,8 +1,8 @@
 import { prisma } from '@/infra/database/prisma/prisma'
+import type { FastifyTypedInstance } from '@/interfaces/@types/instances.type'
 import { ROLE } from '@prisma/client'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
-import type { FastifyTypedInstance } from '../../interfaces/@types/instances.type'
 import { makeCompany } from './make-company'
 import { makePlan } from './make-plan'
 import { makeSignature } from './make-signature'
@@ -16,10 +16,21 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			price: plan.price,
 			description: plan.description,
 			interview_limit: plan.interviewLimit,
+			stripe_product_id: plan.stripeProductId,
 		},
 	})
 
+	const signature = makeSignature()
+
 	const company = makeCompany()
+
+	await prisma.signature.create({
+		data: {
+			id: signature.id.toString(),
+			plan_id: plan.id.toString(),
+			status: 'CHECKOUT',
+		},
+	})
 
 	await prisma.company.create({
 		data: {
@@ -31,17 +42,11 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			phone: '1231321321',
 			role: ROLE.COMPANY,
 			plan_id: plan.id.toString(),
-		},
-	})
-
-	const signature = makeSignature()
-
-	await prisma.signature.create({
-		data: {
-			id: signature.id.toString(),
-			company_id: company.id.toString(),
-			plan_id: plan.id.toString(),
-			status: 'ACTIVE',
+			signature: {
+				connect: {
+					id: signature.id.toString(),
+				},
+			},
 		},
 	})
 

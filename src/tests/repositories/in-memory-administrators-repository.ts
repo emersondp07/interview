@@ -1,7 +1,7 @@
-import type { AdministratorsRepository } from '@/domain/administrator/application/repositories/administrators-repository'
+import type { Administrator } from '@/domain/administrator/entities/administrator'
+import { PrismaAdministratorMapper } from '@/infra/database/prisma/mappers/prisma-administrator-mapper'
+import type { AdministratorsRepository } from '@domain/administrator/repositories/administrators-repository'
 import type { Administrator as PrismaAdministrator } from '@prisma/client'
-import type { Administrator } from '../../domain/administrator/enterprise/entities/administrator'
-import { PrismaAdministratorMapper } from '../../infra/database/prisma/mappers/prisma-administrator-mapper'
 
 export class InMemoryAdministratorsRepository
 	implements AdministratorsRepository

@@ -1,4 +1,4 @@
-import type { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
+import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export function verifyUserRole(roleToVerify: ROLE) {

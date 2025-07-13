@@ -1,6 +1,6 @@
-import { InvalidCredencialsError } from '@/core/errors/errors/invalid-credencials-error'
-import { AuthenticateCompanyUseCase } from '@/domain/company/application/use-cases/authenticate-company'
-import type { AuthenticateCompanySchema } from '@/domain/company/application/validators/authenticate-client.schema'
+import { AuthenticateCompanyUseCase } from '@/application/company/use-cases/authenticate-company'
+import type { AuthenticateCompanySchema } from '@/application/company/validators/authenticate-client.schema'
+import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

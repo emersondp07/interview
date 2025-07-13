@@ -1,6 +1,6 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { ROLE } from '@/domain/administrator/enterprise/entities/interfaces/adminitrator.type'
-import { Interviewer } from '@/domain/interviewer/enterprise/entities/interviewer'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Interviewer } from '@/domain/interviewer/entities/interviewer'
+import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type {
 	Interviewer as PrismaInterviewer,
 	ROLE as PrismaRole,

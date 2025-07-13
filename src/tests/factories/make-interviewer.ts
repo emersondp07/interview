@@ -1,10 +1,10 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { InterviewerProps } from '@/domain/interviewer/enterprise/entities/interfaces/interviewer.type'
-import { Interviewer } from '@/domain/interviewer/enterprise/entities/interviewer'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type { InterviewerProps } from '@/domain/interviewer/entities/interfaces/interviewer.type'
+import { Interviewer } from '@/domain/interviewer/entities/interviewer'
 import { faker } from '@faker-js/faker'
 
 export function makeInterviewer(
-	override: Partial<InterviewerProps> = {},
+	override?: Partial<InterviewerProps>,
 	id?: UniqueEntityID,
 ) {
 	const interviewer = Interviewer.create(

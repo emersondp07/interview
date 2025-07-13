@@ -1,6 +1,6 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { CompaniesRepository } from '@/domain/administrator/application/repositories/companies-repository'
-import type { Company } from '@/domain/company/enterprise/entities/company'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import type { CompaniesRepository } from '@domain/administrator/repositories/companies-repository'
+import type { Company } from '@domain/company/entities/company'
 import { PrismaCompanyMapper } from '../prisma/mappers/prisma-company-mapper'
 import { prisma } from '../prisma/prisma'
 

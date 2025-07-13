@@ -1,5 +1,5 @@
-import { DeleteInterviewerUseCase } from '@/domain/company/application/use-cases/delete-interviewer'
-import type { DeleteInterviewerParams } from '@/domain/company/application/validators/delete-interviewer.schema'
+import { DeleteInterviewerUseCase } from '@/application/company/use-cases/delete-interviewer'
+import type { DeleteInterviewerParams } from '@/application/company/validators/delete-interviewer.schema'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

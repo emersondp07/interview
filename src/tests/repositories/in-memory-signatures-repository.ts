@@ -1,7 +1,10 @@
-import type { SignaturesRepository } from '@/domain/company/application/repositories/signatures-repository'
-import type { Signature } from '@/domain/company/enterprise/entities/signature'
+import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
+import type { Signature } from '@domain/company/entities/signature'
 
 export class InMemorySignaturesRepository implements SignaturesRepository {
+	update(signature: Signature): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
 	public items: Signature[] = []
 
 	async findById(signatureId: string) {

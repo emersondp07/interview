@@ -1,7 +1,7 @@
 import { app } from '@/infra/http/server'
+import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { makeInterviewer } from '@/tests/factories/make-interviewer'
 import request from 'supertest'
-import { createAndAuthenticateCompany } from '../../../../tests/factories/create-and-authenticate-company'
 
 describe('Create Interviewer (e2e)', () => {
 	beforeAll(async () => {

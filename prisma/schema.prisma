@@ -41,6 +41,7 @@ enum STATUS_PAYMENT {
 }
 
 enum STATUS_SIGNATURE {
+  CHECKOUT
   ACTIVE
   INACTIVE
   PENDING
@@ -56,64 +57,79 @@ model Administrator {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   deleted_at DateTime?
+
+  @@map("administrators")
 }
 
 model Plan {
-  id              String      @id @default(uuid())
-  name            String
-  price           String
-  interview_limit Int
-  description     String
-  created_at      DateTime    @default(now())
-  updated_at      DateTime    @updatedAt
-  deleted_at      DateTime?
-  signature       Signature[]
+  id                String      @id @default(uuid())
+  name              String
+  price             String
+  interview_limit   Int
+  description       String
+  created_at        DateTime    @default(now())
+  updated_at        DateTime    @updatedAt
+  deleted_at        DateTime?
+  signature         Signature[]
+  stripe_product_id String      @unique
+
+  @@map("plans")
 }
 
 model Company {
-  id               String        @id @default(uuid())
-  corporate_reason String
-  cnpj             String        @unique
-  email            String        @unique
-  password         String
-  phone            String
-  role             ROLE
-  created_at       DateTime      @default(now())
-  updated_at       DateTime      @updatedAt
-  deleted_at       DateTime?
-  plan_id          String
-  interviewers     Interviewer[]
-  clients          Client[]
-  contracts        Contract[]
-  signatures       Signature[]
-  interviewes      Interview[]
+  id                 String        @id @default(uuid())
+  corporate_reason   String
+  cnpj               String        @unique
+  email              String        @unique
+  password           String
+  phone              String
+  role               ROLE
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
+  deleted_at         DateTime?
+  plan_id            String
+  interviewers       Interviewer[]
+  clients            Client[]
+  contracts          Contract[]
+  signature_id       String        @unique
+  signature          Signature     @relation(fields: [signature_id], references: [id])
+  interviews         Interview[]
+  stripe_customer_id String?       @unique
+
+  @@map("companies")
 }
 
 model Signature {
-  id             String           @id @default(uuid())
-  start_validity DateTime         @default(now())
-  end_validity   DateTime?
-  status         STATUS_SIGNATURE
-  invoice        Invoice[]
-  company_id     String
-  company        Company          @relation(fields: [company_id], references: [id])
-  plan_id        String
-  Plan           Plan             @relation(fields: [plan_id], references: [id])
+  id                         String           @id @default(uuid())
+  start_validity             DateTime         @default(now())
+  end_validity               DateTime?
+  status                     STATUS_SIGNATURE
+  invoice                    Invoice[]
+  company                    Company?
+  plan_id                    String
+  plan                       Plan             @relation(fields: [plan_id], references: [id])
+  stripe_subscription_id     String?          @unique
+  stripe_subscription_status String?
+
+  @@map("signatures")
 }
 
 model Invoice {
-  id           String         @id @default(uuid())
-  mounth       String
-  value        String
-  issueDate    DateTime
-  dueDate      DateTime
-  paymentDate  DateTime?
-  status       STATUS_PAYMENT
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
-  deleted_at   DateTime?
-  signature_id String
-  signature    Signature      @relation(fields: [signature_id], references: [id])
+  id                String         @id @default(uuid())
+  mounth            String
+  value             String
+  issueDate         DateTime
+  dueDate           DateTime
+  paymentDate       DateTime?
+  status            STATUS_PAYMENT
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
+  deleted_at        DateTime?
+  signature_id      String
+  signature         Signature      @relation(fields: [signature_id], references: [id])
+  stripe_invoice_id String         @unique
+
+  @@map("invoices")
 }
 
 model Contract {
@@ -126,6 +142,8 @@ model Contract {
   deleted_at  DateTime?
   company_id  String
   company     Company   @relation(fields: [company_id], references: [id])
+
+  @@map("contracts")
 }
 
 model Interviewer {
@@ -140,6 +158,8 @@ model Interviewer {
   company_id String
   company    Company     @relation(fields: [company_id], references: [id])
   interviews Interview[]
+
+  @@map("interviewers")
 }
 
 model Client {
@@ -157,6 +177,8 @@ model Client {
   company_id    String
   company       Company       @relation(fields: [company_id], references: [id])
   interviews    Interview[]
+
+  @@map("clients")
 }
 
 model Interview {
@@ -171,4 +193,6 @@ model Interview {
   interviewer    Interviewer?     @relation(fields: [interviewer_id], references: [id])
   client         Client           @relation(fields: [client_id], references: [id])
   company        Company          @relation(fields: [company_id], references: [id])
+
+  @@map("interviews")
 }

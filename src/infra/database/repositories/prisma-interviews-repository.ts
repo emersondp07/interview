@@ -1,6 +1,6 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { InterviewsRepository } from '@/domain/interviewer/application/repositories/interviews-repository'
-import type { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import type { Interview } from '@/domain/interviewer/entities/interview'
+import type { InterviewsRepository } from '@/domain/interviewer/repositories/interviews-repository'
 import { PrismaInterviewMapper } from '../prisma/mappers/prisma-interview-mapper'
 import { prisma } from '../prisma/prisma'
 

@@ -1,9 +1,13 @@
-import type { SignaturesRepository } from '@/domain/company/application/repositories/signatures-repository'
-import type { Signature } from '@/domain/company/enterprise/entities/signature'
+import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
+import type { Signature } from '@domain/company/entities/signature'
 import { PrismaSignatureMapper } from '../prisma/mappers/prisma-signature-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaSignaturesRepository implements SignaturesRepository {
+	update(signature: Signature): Promise<void> {
+		throw new Error('Method not implemented.')
+	}
+
 	async findById(signatureId: string) {
 		const signature = await prisma.signature.findUnique({
 			where: {

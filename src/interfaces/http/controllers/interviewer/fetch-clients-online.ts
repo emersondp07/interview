@@ -1,6 +1,6 @@
-import { FetchClientsOnlineUseCase } from '@/domain/client/application/use-cases/fetch-clients-online'
-import type { FetchInterviewsSchema } from '@/domain/interviewer/application/validators/fetch-interviews.schema'
+import { FetchClientsOnlineUseCase } from '@/application/client/use-cases/fetch-clients-online'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
+import type { FetchInterviewsSchema } from '@application/interviewer/validators/fetch-interviews.schema'
 import type { Socket } from 'socket.io'
 import { waitingQueue } from '../../socket/namespace/interview-namespace'
 

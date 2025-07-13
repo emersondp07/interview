@@ -1,5 +1,5 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Plan } from '@/domain/administrator/enterprise/entities/plan'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { Plan } from '@domain/administrator/entities/plan'
 import type { Plan as PrismaPlan } from '@prisma/client'
 
 export class PrismaPlanMapper {
@@ -13,6 +13,7 @@ export class PrismaPlanMapper {
 			created_at: plan.createdAt,
 			updated_at: plan.updatedAt,
 			deleted_at: plan.deletedAt ?? null,
+			stripe_product_id: plan.stripeProductId ?? null,
 		}
 	}
 
@@ -25,6 +26,8 @@ export class PrismaPlanMapper {
 				description: raw.description,
 				createdAt: raw.created_at,
 				updatedAt: raw.updated_at,
+				deletedAt: raw.deleted_at ?? undefined,
+				stripeProductId: raw.stripe_product_id,
 			},
 			new UniqueEntityID(raw.id),
 		)

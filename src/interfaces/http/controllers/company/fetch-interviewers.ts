@@ -1,5 +1,5 @@
-import { FetchInterviewersUseCase } from '@/domain/company/application/use-cases/fetch-interviewers'
-import type { FetchInterviewersSchema } from '@/domain/company/application/validators/fetch-interviewers.schema'
+import { FetchInterviewersUseCase } from '@/application/company/use-cases/fetch-interviewers'
+import type { FetchInterviewersSchema } from '@/application/company/validators/fetch-interviewers.schema'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

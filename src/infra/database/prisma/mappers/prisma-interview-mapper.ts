@@ -1,6 +1,6 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { STATUS_INTERVIEW } from '@/domain/interviewer/enterprise/entities/interfaces/interview.type'
-import { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type { STATUS_INTERVIEW } from '@/domain/interviewer/entities/interfaces/interview.type'
+import { Interview } from '@/domain/interviewer/entities/interview'
 import type { Interview as PrismaInterview } from '@prisma/client'
 
 export class PrismaInterviewMapper {

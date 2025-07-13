@@ -1,13 +1,13 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Client } from '@/domain/client/enterprise/entities/client'
+import { Client } from '@/domain/client/entities/client'
 import {
 	type ClientProps,
 	DOCUMENT_TYPE,
-} from '@/domain/client/enterprise/entities/interfaces/client.type'
+} from '@/domain/client/entities/interfaces/client.type'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import { faker } from '@faker-js/faker'
 
 export function makeClient(
-	override: Partial<ClientProps> = {},
+	override?: Partial<ClientProps>,
 	id?: UniqueEntityID,
 ) {
 	const company = Client.create(

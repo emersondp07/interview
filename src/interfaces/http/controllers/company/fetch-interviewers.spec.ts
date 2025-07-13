@@ -1,9 +1,9 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
+import { makeInterviewer } from '@/tests/factories/make-interviewer'
 import { hash } from 'bcryptjs'
 import request from 'supertest'
-import { makeInterviewer } from '../../../../tests/factories/make-interviewer'
 
 describe('Fetch Interviewers (e2e)', () => {
 	beforeAll(async () => {
@@ -47,6 +47,6 @@ describe('Fetch Interviewers (e2e)', () => {
 			.set('Authorization', `Bearer ${token}`)
 			.send()
 
-		// expect(response.status).toEqual(200)
+		expect(response.status).toEqual(200)
 	})
 })

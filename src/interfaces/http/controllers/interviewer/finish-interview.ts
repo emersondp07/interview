@@ -1,7 +1,7 @@
-import { FinishInterviewUseCase } from '@/domain/interviewer/application/use-cases/finish-interview'
-import type { FinishInteviewSchema } from '@/domain/interviewer/application/validators/finish-interview.schema'
+import { FinishInterviewUseCase } from '@/application/interviewer/use-cases/finish-interview'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
+import type { FinishInteviewSchema } from '@application/interviewer/validators/finish-interview.schema'
 import type { Socket } from 'socket.io'
 
 export async function finishInterview(

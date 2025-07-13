@@ -1,12 +1,12 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import {
 	type InterviewProps,
 	STATUS_INTERVIEW,
-} from '@/domain/interviewer/enterprise/entities/interfaces/interview.type'
-import { Interview } from '@/domain/interviewer/enterprise/entities/interview'
+} from '@/domain/interviewer/entities/interfaces/interview.type'
+import { Interview } from '@/domain/interviewer/entities/interview'
 
 export function makeInterview(
-	override: Partial<InterviewProps> = {},
+	override?: Partial<InterviewProps>,
 	id?: UniqueEntityID,
 ) {
 	const interview = Interview.create(

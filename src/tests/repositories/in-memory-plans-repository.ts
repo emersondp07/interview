@@ -1,6 +1,6 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { PlansRepository } from '@/domain/administrator/application/repositories/plans-repository'
-import type { Plan } from '@/domain/administrator/enterprise/entities/plan'
+import type { Plan } from '@/domain/administrator/entities/plan'
+import type { PlansRepository } from '@/domain/administrator/repositories/plans-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
 import { PrismaPlanMapper } from '@/infra/database/prisma/mappers/prisma-plan-mapper'
 import type { Plan as PrismaPlan } from '@prisma/client'
 

@@ -1,6 +1,7 @@
-import { app, httpServer, start } from '@/infra/http/server'
+import { app, start } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { io as Client, type Socket } from 'socket.io-client'
+import { env } from '../../../../infra/config'
 
 describe('Interview Namespace (e2e)', () => {
 	let clientSocket: Socket
@@ -10,8 +11,7 @@ describe('Interview Namespace (e2e)', () => {
 
 		const { token } = await createAndAuthenticateCompany(app)
 
-		const port = (httpServer.address() as any).port
-		clientSocket = Client(`http://localhost:${port}/interview`, {
+		clientSocket = Client(`http://localhost:${env.PORT}/interview`, {
 			auth: {
 				token: `Bearer ${token}`,
 			},
@@ -28,7 +28,6 @@ describe('Interview Namespace (e2e)', () => {
 		}
 
 		await app.close()
-		httpServer.close()
 	})
 
 	it('should connect to interview namespace', async () => {

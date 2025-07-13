@@ -1,7 +1,7 @@
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { GetClientByDocumentUseCase } from '@/domain/client/application/use-cases/get-client-by-document'
-import type { GetClientByDocumentSchema } from '@/domain/client/application/validators/get-client-by-document.schema'
+import { GetClientByDocumentUseCase } from '@/application/client/use-cases/get-client-by-document'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
+import type { GetClientByDocumentSchema } from '@application/client/validators/get-client-by-document.schema'
 import type { Socket } from 'socket.io'
 import { waitingQueue } from '../../socket/namespace/interview-namespace'
 

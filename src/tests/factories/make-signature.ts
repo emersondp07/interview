@@ -1,9 +1,9 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import type { SignatureProps } from '@/domain/company/enterprise/entities/interfaces/signature.type'
-import { Signature } from '@/domain/company/enterprise/entities/signature'
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type { SignatureProps } from '@domain/company/entities/interfaces/signature.type'
+import { Signature } from '@domain/company/entities/signature'
 
 export function makeSignature(
-	override: Partial<SignatureProps> = {},
+	override?: Partial<SignatureProps>,
 	id?: UniqueEntityID,
 ) {
 	const company = Signature.create(
