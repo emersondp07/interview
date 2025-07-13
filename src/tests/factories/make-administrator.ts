@@ -4,7 +4,7 @@ import type { AdministratorProps } from '@domain/administrator/entities/interfac
 import { faker } from '@faker-js/faker'
 
 export function makeAdministrator(
-	override: Partial<AdministratorProps>,
+	override?: Partial<AdministratorProps>,
 	id?: UniqueEntityID,
 ) {
 	const administrator = Administrator.create(

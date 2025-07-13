@@ -1,5 +1,5 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { InvoicesRepository } from '@/domain/company/application/repositories/invoices-repository'
+import type { InvoicesRepository } from '@/domain/company/repositories/invoices-repository'
+import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
 import type { Invoice } from '@domain/company/entities/invoice'
 import { PrismaInvoiceMapper } from '../prisma/mappers/prisma-invoice-mapper'
 import { prisma } from '../prisma/prisma'

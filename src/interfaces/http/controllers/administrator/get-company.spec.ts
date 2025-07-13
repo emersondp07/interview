@@ -4,6 +4,7 @@ import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and
 import { makeCompany } from '@/tests/factories/make-company'
 import { faker } from '@faker-js/faker'
 import request from 'supertest'
+import { makeSignature } from '../../../../tests/factories/make-signature'
 
 describe('Get Company (e2e)', () => {
 	beforeAll(async () => {
@@ -32,6 +33,16 @@ describe('Get Company (e2e)', () => {
 			planId: plan[0].id,
 		})
 
+		const signature = makeSignature()
+
+		await prisma.signature.create({
+			data: {
+				id: signature.id.toString(),
+				plan_id: plan[0].id,
+				status: 'CHECKOUT',
+			},
+		})
+
 		await prisma.company.create({
 			data: {
 				id: company.id.toString(),
@@ -42,6 +53,11 @@ describe('Get Company (e2e)', () => {
 				phone: company.phone,
 				plan_id: company.planId,
 				role: company.role,
+				signature: {
+					connect: {
+						id: signature.id.toString(),
+					},
+				},
 			},
 		})
 

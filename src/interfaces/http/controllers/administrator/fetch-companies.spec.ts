@@ -3,6 +3,8 @@ import { app } from '@/infra/http/server'
 import { createAndAuthenticateAdministrator } from '@/tests/factories/create-and-authenticate-administrator'
 import { faker } from '@faker-js/faker'
 import request from 'supertest'
+import { makePlan } from '../../../../tests/factories/make-plan'
+import { makeSignature } from '../../../../tests/factories/make-signature'
 
 describe('Fetch Companies (e2e)', () => {
 	beforeAll(async () => {
@@ -15,17 +17,28 @@ describe('Fetch Companies (e2e)', () => {
 
 	it('should be able to list the companies', async () => {
 		const { token } = await createAndAuthenticateAdministrator(app)
+		const plan = makePlan()
+
 		await prisma.plan.create({
 			data: {
-				name: 'Name plan',
-				price: '29,90',
-				description: 'Description plan',
-				interview_limit: 100,
-				stripe_product_id: faker.string.uuid(),
+				id: plan.id.toString(),
+				name: plan.name,
+				price: plan.price,
+				description: plan.description,
+				interview_limit: plan.interviewLimit,
+				stripe_product_id: plan.stripeProductId,
 			},
 		})
 
-		const plan = await prisma.plan.findMany()
+		const signature1 = makeSignature()
+
+		await prisma.signature.create({
+			data: {
+				id: signature1.id.toString(),
+				plan_id: plan.id.toString(),
+				status: 'CHECKOUT',
+			},
+		})
 
 		await prisma.company.create({
 			data: {
@@ -34,8 +47,23 @@ describe('Fetch Companies (e2e)', () => {
 				email: 'company1@email.com',
 				password: faker.internet.password(),
 				phone: '99999999999',
-				plan_id: plan[0].id,
+				plan_id: plan.id.toString(),
 				role: 'COMPANY',
+				signature: {
+					connect: {
+						id: signature1.id.toString(),
+					},
+				},
+			},
+		})
+
+		const signature2 = makeSignature()
+
+		await prisma.signature.create({
+			data: {
+				id: signature2.id.toString(),
+				plan_id: plan.id.toString(),
+				status: 'CHECKOUT',
 			},
 		})
 
@@ -46,8 +74,13 @@ describe('Fetch Companies (e2e)', () => {
 				email: 'company2@email.com',
 				password: faker.internet.password(),
 				phone: '99999999999',
-				plan_id: plan[0].id,
+				plan_id: plan.id.toString(),
 				role: 'COMPANY',
+				signature: {
+					connect: {
+						id: signature2.id.toString(),
+					},
+				},
 			},
 		})
 

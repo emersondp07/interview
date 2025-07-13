@@ -47,6 +47,6 @@ describe('Fetch Interviewers (e2e)', () => {
 			.set('Authorization', `Bearer ${token}`)
 			.send()
 
-		// expect(response.status).toEqual(200)
+		expect(response.status).toEqual(200)
 	})
 })

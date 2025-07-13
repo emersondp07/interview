@@ -1,5 +1,5 @@
-import type { PaginationParams } from '@/core/repositories/pagination-params'
-import type { Interviewer } from '../../enterprise/entities/interviewer'
+import type { PaginationParams } from '../../core/repositories/pagination-params'
+import type { Interviewer } from '../entities/interviewer'
 
 export interface InterviewersRepository {
 	findAll(params: PaginationParams): Promise<Interviewer[] | null>

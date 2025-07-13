@@ -37,6 +37,6 @@ describe('Delete Client (e2e)', () => {
 			.set('Authorization', `Bearer ${token}`)
 			.send()
 
-		// expect(response.status).toEqual(204)
+		expect(response.status).toEqual(204)
 	})
 })

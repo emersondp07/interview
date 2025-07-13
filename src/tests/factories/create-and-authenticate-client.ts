@@ -17,6 +17,16 @@ export async function createAndAuthenticateClient(app: FastifyTypedInstance) {
 			price: plan.price,
 			description: plan.description,
 			interview_limit: plan.interviewLimit,
+			stripe_product_id: plan.stripeProductId,
+		},
+	})
+	const signature = makeSignature()
+
+	await prisma.signature.create({
+		data: {
+			id: signature.id.toString(),
+			plan_id: plan.id.toString(),
+			status: 'CHECKOUT',
 		},
 	})
 
@@ -32,17 +42,11 @@ export async function createAndAuthenticateClient(app: FastifyTypedInstance) {
 			phone: '1231321321',
 			role: ROLE.COMPANY,
 			plan_id: plan.id.toString(),
-		},
-	})
-
-	const signature = makeSignature()
-
-	await prisma.signature.create({
-		data: {
-			id: signature.id.toString(),
-			company_id: company.id.toString(),
-			plan_id: plan.id.toString(),
-			status: 'ACTIVE',
+			signature: {
+				connect: {
+					id: signature.id.toString(),
+				},
+			},
 		},
 	})
 

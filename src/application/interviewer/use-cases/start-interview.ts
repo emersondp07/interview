@@ -1,9 +1,9 @@
 import type { ClientsRepository } from '@/domain/company/repositories/clients-repository'
 import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
+import { STATUS_INTERVIEW } from '@/domain/interviewer/entities/interfaces/interview.type'
 import type { Interview } from '@/domain/interviewer/entities/interview'
 import type { InterviewsRepository } from '@/domain/interviewer/repositories/interviews-repository'
-import { STATUS_INTERVIEW } from '@prisma/client'
 
 interface StartInterviewUseCaseRequest {
 	clientId: string

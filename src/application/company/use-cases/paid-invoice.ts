@@ -24,12 +24,12 @@ export class PaidInvoiceUseCase {
 	}: PaidInvoiceUseCaseRequest): Promise<PaidInvoiceUseCaseResponse> {
 		const isExistCompany = await this.companiesRepository.findById(companyId)
 
-		if (!isExistCompany || !isExistCompany.signatureId) {
+		if (!isExistCompany || !isExistCompany.signature) {
 			return failed(new ResourceNotFoundError())
 		}
 
 		const invoice = await this.invoicesRepository.findById(
-			isExistCompany.signatureId,
+			isExistCompany.signature.id.toString(),
 		)
 
 		if (!invoice) {

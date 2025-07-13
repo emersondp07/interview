@@ -2,12 +2,21 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { makeCompany } from '@/tests/factories/make-company'
 import { makePlan } from '@/tests/factories/make-plan'
+import { InMemoryStripeCustomersService } from '@/tests/repositories/in-memory-stripe-customers-service'
 import { faker } from '@faker-js/faker'
 import request from 'supertest'
 
 describe('Authenticate Company (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
+
+		vi.mock('@/infra/services/stripe/customers', () => {
+			return {
+				StripeCustomersService: vi
+					.fn()
+					.mockImplementation(() => new InMemoryStripeCustomersService()),
+			}
+		})
 	})
 
 	afterAll(async () => {

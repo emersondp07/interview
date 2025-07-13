@@ -9,15 +9,16 @@
   "scripts": {
     "start:dev": "tsx watch src/infra/http/main.ts",
     "start": "node build/infra/http/main.js",
-    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
-    "test:install-prisma-environment": "npm link vitest-environment-prisma",
+    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma --force",
+    "test:install-prisma-environment": "npm link vitest-environment-prisma --force",
     "build": "tsup src --out-dir build",
-    "test": "vitest run --dir src/application",
-    "test:watch": "vitest --dir src/application",
+    "test": "vitest run --project unit",
+    "test:watch": "vitest run --project unit --watch",
+    "typecheck": "tsc --noEmit",
     "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "vitest run --dir src/interfaces/",
-    "test:e2e:watch": "vitest --dir src/interfaces/",
+    "test:e2e": "vitest run --project e2e",
+    "test:e2e:watch": "vitest run --project e2e --watch",
     "test:ui": "vitest --ui"
   },
   "keywords": [],
@@ -33,7 +34,7 @@
     "@types/socket.io-client": "3.0.0",
     "@types/stripe": "^8.0.417",
     "@types/supertest": "^6.0.3",
-    "@vitest/coverage-v8": "0.34.6",
+    "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "0.34.6",
     "dotenv": "^16.4.7",
     "globals": "^16.0.0",
@@ -45,7 +46,7 @@
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "0.34.6"
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

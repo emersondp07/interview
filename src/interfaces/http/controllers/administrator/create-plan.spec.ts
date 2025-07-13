@@ -7,7 +7,7 @@ describe('Create Plan (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
 
-		vi.mock('@/infra/services/stripe-products-service', () => {
+		vi.mock('@/infra/services/stripe/products', () => {
 			return {
 				StripeProductsService: vi
 					.fn()

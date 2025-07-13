@@ -22,8 +22,7 @@ describe('Create Invoice (e2e)', () => {
 			.send({
 				mounth: 'JAN',
 				value: '29,90',
-				status: 'OPEN',
-				signatureId,
+				companyId,
 				stripeInvoiceId: faker.string.uuid(),
 			})
 

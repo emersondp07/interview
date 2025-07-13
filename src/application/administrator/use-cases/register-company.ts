@@ -80,8 +80,8 @@ export class RegisterCompanyUseCase {
 				planExists.stripeProductId,
 			)
 
-		await this.companiesRepository.create(company)
 		await this.signaturesRepository.create(signature)
+		await this.companiesRepository.create(company)
 
 		// eviar url para pagamento via email
 

@@ -1,7 +1,6 @@
 import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { makeClient } from '@/tests/factories/make-client'
 import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
-import { DOCUMENT_TYPE } from '@prisma/client'
 import { AuthenticateClientUseCase } from './authenticate-client'
 
 let inMemoryClientsRepository: InMemoryClientsRepository
@@ -16,7 +15,6 @@ describe('Authenticate Client Use Case', () => {
 
 	it('Should be able to authenticate client', async () => {
 		const client = makeClient({
-			documentType: DOCUMENT_TYPE.CPF,
 			document: '12345678901',
 		})
 

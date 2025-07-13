@@ -1,4 +1,4 @@
-import type { SignaturesRepository } from '@/domain/company/application/repositories/signatures-repository'
+import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
 import type { Signature } from '@domain/company/entities/signature'
 import { PrismaSignatureMapper } from '../prisma/mappers/prisma-signature-mapper'
 import { prisma } from '../prisma/prisma'

@@ -20,7 +20,17 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 		},
 	})
 
+	const signature = makeSignature()
+
 	const company = makeCompany()
+
+	await prisma.signature.create({
+		data: {
+			id: signature.id.toString(),
+			plan_id: plan.id.toString(),
+			status: 'CHECKOUT',
+		},
+	})
 
 	await prisma.company.create({
 		data: {
@@ -32,17 +42,11 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			phone: '1231321321',
 			role: ROLE.COMPANY,
 			plan_id: plan.id.toString(),
-		},
-	})
-
-	const signature = makeSignature()
-
-	await prisma.signature.create({
-		data: {
-			id: signature.id.toString(),
-			company_id: company.id.toString(),
-			plan_id: plan.id.toString(),
-			status: 'CHECKOUT',
+			signature: {
+				connect: {
+					id: signature.id.toString(),
+				},
+			},
 		},
 	})
 

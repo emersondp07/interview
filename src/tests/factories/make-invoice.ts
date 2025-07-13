@@ -4,6 +4,7 @@ import {
 	STATUS_PAYMENT,
 } from '@domain/company/entities/interfaces/invoice.type'
 import { Invoice } from '@domain/company/entities/invoice'
+import { faker } from '@faker-js/faker'
 
 export function makeInvoice(
 	override?: Partial<InvoiceProps>,
@@ -15,7 +16,7 @@ export function makeInvoice(
 			value: '100.00',
 			status: STATUS_PAYMENT.OPEN,
 			signatureId: new UniqueEntityID(),
-			stripeInvoiceId: 'stripe-invoice-id',
+			stripeInvoiceId: faker.string.uuid(),
 			...override,
 		},
 		id,
