@@ -33,14 +33,14 @@ jobs:
       - name: Install project dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Load .env values from secret
+        run: echo "${{ secrets.COVERAGE_TEST }}" > .env
+
       - name: create link
         run: yarn pretest:e2e
 
       - name: Run test coverage
         run: yarn test:coverage
-        env:
-          JWT_SECRET: testing
-          DATABASE_URL: "postgresql://docker:docker@localhost:5432/interview?schema=public"
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
