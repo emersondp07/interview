@@ -4,7 +4,7 @@ import type Stripe from 'stripe'
 export class InMemoryStripeCustomersService implements IStripeCustomers {
 	public items: Stripe.Customer[] = []
 
-	createCustomer(email: string, name?: string) {
+	async createCustomer(email: string, name?: string) {
 		const customer: Stripe.Customer = {
 			id: `cus_${Math.random().toString(36).substring(2, 15)}`,
 			email,
@@ -24,7 +24,7 @@ export class InMemoryStripeCustomersService implements IStripeCustomers {
 
 		this.items.push(customer)
 
-		return Promise.resolve(customer)
+		return customer
 	}
 
 	async createCheckoutSession(
@@ -50,20 +50,20 @@ export class InMemoryStripeCustomersService implements IStripeCustomers {
 			created: Math.floor(Date.now() / 1000),
 		}
 
-		return Promise.resolve(session) as unknown as Stripe.Checkout.Session
+		return session as unknown as Stripe.Checkout.Session
 	}
 
-	getCustomer(customerId: string) {
+	async getCustomer(customerId: string) {
 		const customer = this.items.find((customer) => customer.id === customerId)
 
 		if (!customer) {
-			return Promise.resolve(null)
+			return null
 		}
 
-		return Promise.resolve(customer)
+		return customer
 	}
 
-	updateCustomer(customerId: string, email?: string, name?: string) {
+	async updateCustomer(customerId: string, email?: string, name?: string) {
 		const customerIndex = this.items.findIndex(
 			(customer) => customer.id === customerId,
 		)
@@ -82,7 +82,7 @@ export class InMemoryStripeCustomersService implements IStripeCustomers {
 		}
 
 		this.items[customerIndex] = customer
-		return Promise.resolve(customer)
+		return customer
 	}
 
 	async deleteCustomer(customerId: string) {

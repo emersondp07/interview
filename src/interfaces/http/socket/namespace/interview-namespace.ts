@@ -16,23 +16,23 @@ export function registerInterviewNamespace(io: Server) {
 	})
 
 	nsp.on('connection', (socket: Socket) => {
-		socket.on('list-client', async (data, socket) => {
-			await fetchClientsOnline(data, socket)
-		})
-
-		socket.on('join-queue', async (data, socket) => {
+		socket.on('join-queue', async (data) => {
 			await getClientByDocument(data, socket)
 		})
 
-		socket.on('start-interview', async (data, socket) => {
+		socket.on('list-client', async (data) => {
+			await fetchClientsOnline(data, socket)
+		})
+
+		socket.on('start-interview', async (data) => {
 			await startInterview(data, socket)
 		})
 
-		socket.on('send-contract', async (data, socket) => {
+		socket.on('send-contract', async (data) => {
 			await sendContract(data, socket)
 		})
 
-		socket.on('finish-interview', async (data, socket) => {
+		socket.on('finish-interview', async (data) => {
 			await finishInterview(data, socket)
 		})
 	})

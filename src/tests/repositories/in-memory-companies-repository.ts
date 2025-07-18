@@ -25,6 +25,18 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 		return company ? PrismaCompanyMapper.toDomain(company) : null
 	}
 
+	async findByCustomerId(customerId: string) {
+		const company = this.items.find(
+			(company) => company.id.toString() === customerId,
+		)
+
+		if (!company) {
+			return null
+		}
+
+		return company ? PrismaCompanyMapper.toDomain(company) : null
+	}
+
 	async findByEmail(email: string) {
 		const company = this.items.find((company) => company.email === email)
 

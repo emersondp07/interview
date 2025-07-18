@@ -11,6 +11,7 @@ export function makePlan(override?: Partial<PlanProps>, id?: UniqueEntityID) {
 			interviewLimit: faker.number.int({ min: 1, max: 100 }),
 			description: faker.lorem.paragraph(),
 			stripeProductId: faker.string.uuid(),
+			stripePriceId: faker.string.uuid(),
 			...override,
 		},
 		id,

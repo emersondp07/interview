@@ -5,9 +5,6 @@ import { PrismaInvoiceMapper } from '@/infra/database/prisma/mappers/prisma-invo
 import type { Invoice as PrismaInvoice } from '@prisma/client'
 
 export class InMemoryInvoicesRepository implements InvoicesRepository {
-	update(invoice: Invoice): Promise<void> {
-		throw new Error('Method not implemented.')
-	}
 	public items: PrismaInvoice[] = []
 
 	async findAll({ page }: PaginationParams) {
@@ -28,10 +25,32 @@ export class InMemoryInvoicesRepository implements InvoicesRepository {
 		return invoice ? PrismaInvoiceMapper.toDomain(invoice) : null
 	}
 
+	async findBySignatureId(invoiceId: string) {
+		const invoice = this.items.find(
+			(invoice) => invoice.id.toString() === invoiceId,
+		)
+
+		if (!invoice) {
+			return null
+		}
+
+		return invoice ? PrismaInvoiceMapper.toDomain(invoice) : null
+	}
+
 	async create(invoice: Invoice) {
 		const prismaInvoice = PrismaInvoiceMapper.toPrisma(invoice)
 
 		this.items.push(prismaInvoice)
+	}
+
+	async update(invoice: Invoice) {
+		const prismaClient = PrismaInvoiceMapper.toPrisma(invoice)
+
+		const itemIndex = this.items.findIndex(
+			(item) => item.id === prismaClient.id,
+		)
+
+		this.items[itemIndex] = prismaClient
 	}
 
 	async delete(invoice: Invoice) {

@@ -28,7 +28,8 @@ export class CreateInvoiceUseCase {
 		companyId,
 		stripeInvoiceId,
 	}: CreateInvoiceUseCaseRequest): Promise<CreateInvoiceUseCaseResponse> {
-		const isExistCompany = await this.companiesRepository.findById(companyId)
+		const isExistCompany =
+			await this.companiesRepository.findByCustomerId(companyId)
 
 		if (!isExistCompany || !isExistCompany.signature?.id.toString()) {
 			return failed(new ResourceNotFoundError())

@@ -2,7 +2,13 @@ import { Client } from '@/domain/client/entities/client'
 import type { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
-import type { Client as PrismaClient, ROLE as PrismaRole } from '@prisma/client'
+import type {
+	Client as PrismaClient,
+	Interview as PrismaInterview,
+	ROLE as PrismaRole,
+} from '@prisma/client'
+import { InterviewList } from '../../../../application/company/use-cases/interview-list'
+import { PrismaInterviewMapper } from './prisma-interview-mapper'
 
 export class PrismaClientMapper {
 	static toPrisma(client: Client): PrismaClient {
@@ -22,7 +28,17 @@ export class PrismaClientMapper {
 		}
 	}
 
-	static toDomain(raw: PrismaClient): Client {
+	static toDomain(
+		raw: PrismaClient & { interviews?: PrismaInterview[] },
+	): Client {
+		const interviewList = new InterviewList()
+
+		const interviews = raw.interviews?.map((interview) =>
+			PrismaInterviewMapper.toDomain(interview),
+		)
+
+		interviewList.currentItems = interviews || []
+
 		return Client.create(
 			{
 				name: raw.name,
@@ -33,6 +49,7 @@ export class PrismaClientMapper {
 				phone: raw.phone,
 				companyId: new UniqueEntityID(raw.company_id),
 				role: raw.role as ROLE.CLIENT,
+				interviews: interviewList,
 				createdAt: raw.created_at,
 				updatedAt: raw.updated_at,
 			},

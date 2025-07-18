@@ -36,6 +36,15 @@ export class Plan extends Entity<PlanProps> {
 		return this.props.stripeProductId
 	}
 
+	get stripePriceId() {
+		return this.props.stripePriceId
+	}
+
+	addPriceId(priceId: string) {
+		this.props.stripePriceId = priceId
+		this.touch()
+	}
+
 	private touch() {
 		this.props.updatedAt = new Date()
 	}

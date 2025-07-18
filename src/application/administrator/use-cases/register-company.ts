@@ -20,7 +20,7 @@ interface RegisterCompanyUseCaseRequest {
 
 type RegisterCompanyUseCaseResponse = Either<
 	ResourceNotFoundError,
-	{ url: string }
+	{ company: Company }
 >
 
 export class RegisterCompanyUseCase {
@@ -43,7 +43,7 @@ export class RegisterCompanyUseCase {
 
 		const planExists = await this.plansRepository.findById(planId)
 
-		if (!planExists) {
+		if (!planExists || !planExists.stripePriceId) {
 			return failed(new NotAllowedError())
 		}
 
@@ -77,7 +77,7 @@ export class RegisterCompanyUseCase {
 			await this.stripeCustomersService.createCheckoutSession(
 				company.id.toString(),
 				customer.id,
-				planExists.stripeProductId,
+				planExists.stripePriceId,
 			)
 
 		await this.signaturesRepository.create(signature)
@@ -85,8 +85,8 @@ export class RegisterCompanyUseCase {
 
 		// eviar url para pagamento via email
 
-		return success({
-			url: createCheckoutSession.url || 'http://localhost:3000/success',
-		})
+		console.log(createCheckoutSession.url)
+
+		return success({ company })
 	}
 }

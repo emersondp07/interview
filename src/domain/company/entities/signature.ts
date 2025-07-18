@@ -35,8 +35,10 @@ export class Signature extends Entity<SignatureProps> {
 		return this.props.stripeSubscriptionStatus
 	}
 
-	changeActive() {
+	changeActive(subscriptionId: string, stripeSubscriptionStatus: string) {
 		this.props.status = STATUS_SIGNATURE.ACTIVE
+		this.props.stripeSubscriptionId = subscriptionId
+		this.props.stripeSubscriptionStatus = stripeSubscriptionStatus
 		this.props.endValidity = new Date()
 	}
 

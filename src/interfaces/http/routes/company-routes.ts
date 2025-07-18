@@ -1,20 +1,18 @@
-import { authenticateCompanySchema } from '../../../application/company/validators/authenticate-client.schema'
-import { cancelInvoiceParams } from '../../../application/company/validators/cancel-invoice.schema'
-import { createContractSchema } from '../../../application/company/validators/create-contract.schema'
-import { createInterviewerSchema } from '../../../application/company/validators/create-interviewer.schema'
-import { createInvoiceSchema } from '../../../application/company/validators/create-invoice.schema'
-import { deleteClientParams } from '../../../application/company/validators/delete-client.schema'
-import { deleteInterviewerParams } from '../../../application/company/validators/delete-interviewer.schema'
-import { fetchInterviewersSchema } from '../../../application/company/validators/fetch-interviewers.schema'
-import { fetchInvoicesSchema } from '../../../application/company/validators/fetch-invoices.schema'
-import { registerClientSchema } from '../../../application/company/validators/register-client.schema'
-import { ROLE } from '../../../domain/administrator/entities/interfaces/adminitrator.type'
+import { authenticateCompanySchema } from '@/application/company/validators/authenticate-client.schema'
+import { cancelInvoiceParams } from '@/application/company/validators/cancel-invoice.schema'
+import { createContractSchema } from '@/application/company/validators/create-contract.schema'
+import { createInterviewerSchema } from '@/application/company/validators/create-interviewer.schema'
+import { deleteClientParams } from '@/application/company/validators/delete-client.schema'
+import { deleteInterviewerParams } from '@/application/company/validators/delete-interviewer.schema'
+import { fetchInterviewersSchema } from '@/application/company/validators/fetch-interviewers.schema'
+import { fetchInvoicesSchema } from '@/application/company/validators/fetch-invoices.schema'
+import { registerClientSchema } from '@/application/company/validators/register-client.schema'
+import { ROLE } from '@/domain/administrator/entities/interfaces/adminitrator.type'
 import type { FastifyTypedInstance } from '../../@types/instances.type'
 import { authenticateCompany } from '../controllers/company/authenticate-company'
 import { cancelInvoice } from '../controllers/company/cancel-invoice'
 import { createContract } from '../controllers/company/create-contract'
 import { createInterviewer } from '../controllers/company/create-interviewer'
-import { createInvoice } from '../controllers/company/create-invoice'
 import { deleteClient } from '../controllers/company/delete-client'
 import { deleteInterviewer } from '../controllers/company/delete-interviewer'
 import { fetchInterviewers } from '../controllers/company/fetch-interviewers'
@@ -78,20 +76,6 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 			onRequest: [verifyJWT, verifyUserRole(ROLE.COMPANY)],
 		},
 		registerClient,
-	)
-
-	app.post(
-		'/create-invoice',
-		{
-			schema: {
-				tags: ['Company'],
-				summary: 'Create a new invoice',
-				description: 'This route allows a company to create a new invoice.',
-				body: createInvoiceSchema,
-			},
-			onRequest: [verifyJWT, verifyUserRole(ROLE.COMPANY)],
-		},
-		createInvoice,
 	)
 
 	app.post(

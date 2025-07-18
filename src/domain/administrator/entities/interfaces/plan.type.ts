@@ -7,4 +7,5 @@ export interface PlanProps {
 	updatedAt: Date
 	deletedAt?: Date
 	stripeProductId: string
+	stripePriceId?: string
 }

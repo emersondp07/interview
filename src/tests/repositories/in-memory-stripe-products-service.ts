@@ -4,7 +4,7 @@ import type Stripe from 'stripe'
 export class InMemoryStripeProductsService implements IStripeProducts {
 	public items: Stripe.Product[] = []
 
-	createProduct(name: string, price: string, description: string) {
+	async createProduct(name: string, price: string, description: string) {
 		const product = {
 			id: `prod_${Math.random().toString(36).substring(2, 15)}`,
 			name,
@@ -25,17 +25,20 @@ export class InMemoryStripeProductsService implements IStripeProducts {
 
 		this.items.push(product)
 
-		return Promise.resolve(product)
+		return product
 	}
 
-	getProduct(productId: string) {
+	async getProduct(productId: string) {
 		const product = this.items.find((product) => product.id === productId)
+
 		if (!product) {
-			return Promise.resolve(null)
+			return null
 		}
-		return Promise.resolve(product)
+
+		return product
 	}
-	updateProduct(
+
+	async updateProduct(
 		productId: string,
 		name?: string,
 		description?: string,
@@ -58,7 +61,7 @@ export class InMemoryStripeProductsService implements IStripeProducts {
 
 		this.items[productIndex] = updatedProduct
 
-		return Promise.resolve(updatedProduct)
+		return updatedProduct
 	}
 
 	deleteProduct(productId: string) {
@@ -71,7 +74,9 @@ export class InMemoryStripeProductsService implements IStripeProducts {
 		}
 
 		const deletedProduct = this.items[productIndex]
+
 		this.items.splice(productIndex, 1)
+
 		return Promise.resolve({
 			id: deletedProduct.id,
 			object: 'deleted_product',

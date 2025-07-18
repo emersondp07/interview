@@ -19,12 +19,16 @@ export async function finishInterview(
 
 	await finishInterviewUseCase.execute({ interviewId, clientId })
 
-	socket.leave(interviewId)
+	// socket.leave(interviewId)
 	socket.to(`room-${interviewId}`).emit('finish-interview:response', {
 		message: 'Interview finished successfully',
 	})
 
+	socket.emit('finish-interview:response', {
+		message: 'Interview finished successfully',
+	})
+
 	socket.on('disconnect', (data) => {
-		socket.emit('finished', data)
+		socket.emit('finish-interview:response', data)
 	})
 }

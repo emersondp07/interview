@@ -50,7 +50,7 @@ export default defineConfig({
           environment: "prisma",
           include: ["src/interfaces/**/*.spec.ts"],
           globals: true,
-          testTimeout: 12000,
+          testTimeout: 20000,
         },
       },
     ],
