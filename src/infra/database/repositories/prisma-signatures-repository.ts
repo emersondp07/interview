@@ -4,8 +4,15 @@ import { PrismaSignatureMapper } from '../prisma/mappers/prisma-signature-mapper
 import { prisma } from '../prisma/prisma'
 
 export class PrismaSignaturesRepository implements SignaturesRepository {
-	update(signature: Signature): Promise<void> {
-		throw new Error('Method not implemented.')
+	async update(signature: Signature) {
+		const prismaSignature = PrismaSignatureMapper.toPrisma(signature)
+
+		await prisma.signature.update({
+			where: {
+				id: signature.id.toString(),
+			},
+			data: prismaSignature,
+		})
 	}
 
 	async findById(signatureId: string) {

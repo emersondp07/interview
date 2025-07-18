@@ -5,7 +5,7 @@ import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 
 interface PaidInvoiceUseCaseRequest {
-	companyId: string
+	customerId: string
 }
 
 type PaidInvoiceUseCaseResponse = Either<
@@ -20,15 +20,16 @@ export class PaidInvoiceUseCase {
 	) {}
 
 	async execute({
-		companyId,
+		customerId,
 	}: PaidInvoiceUseCaseRequest): Promise<PaidInvoiceUseCaseResponse> {
-		const isExistCompany = await this.companiesRepository.findById(companyId)
+		const isExistCompany =
+			await this.companiesRepository.findByCustomerId(customerId)
 
 		if (!isExistCompany || !isExistCompany.signature) {
 			return failed(new ResourceNotFoundError())
 		}
 
-		const invoice = await this.invoicesRepository.findById(
+		const invoice = await this.invoicesRepository.findBySignatureId(
 			isExistCompany.signature.id.toString(),
 		)
 

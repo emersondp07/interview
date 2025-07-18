@@ -6,6 +6,8 @@ import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-
 
 interface ActiveSignatureUseCaseRequest {
 	companyId: string
+	subscriptionId: string
+	stripeSubscriptionStatus: string
 }
 
 type ActiveSignatureUseCaseResponse = Either<
@@ -21,8 +23,11 @@ export class ActiveSignatureUseCase {
 
 	async execute({
 		companyId,
+		subscriptionId,
+		stripeSubscriptionStatus,
 	}: ActiveSignatureUseCaseRequest): Promise<ActiveSignatureUseCaseResponse> {
-		const isExistCompany = await this.companiesRepository.findById(companyId)
+		const isExistCompany =
+			await this.companiesRepository.findByCustomerId(companyId)
 
 		if (!isExistCompany || !isExistCompany.signature) {
 			return failed(new ResourceNotFoundError())
@@ -36,7 +41,7 @@ export class ActiveSignatureUseCase {
 			return failed(new ResourceNotFoundError())
 		}
 
-		signature.changeActive()
+		signature.changeActive(subscriptionId, stripeSubscriptionStatus)
 
 		await this.signaturesRepository.update(signature)
 

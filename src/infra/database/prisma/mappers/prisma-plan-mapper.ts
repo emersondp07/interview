@@ -14,6 +14,7 @@ export class PrismaPlanMapper {
 			updated_at: plan.updatedAt,
 			deleted_at: plan.deletedAt ?? null,
 			stripe_product_id: plan.stripeProductId ?? null,
+			stripe_price_id: plan.stripePriceId ?? null,
 		}
 	}
 
@@ -28,6 +29,7 @@ export class PrismaPlanMapper {
 				updatedAt: raw.updated_at,
 				deletedAt: raw.deleted_at ?? undefined,
 				stripeProductId: raw.stripe_product_id,
+				stripePriceId: raw.stripe_price_id ?? undefined,
 			},
 			new UniqueEntityID(raw.id),
 		)

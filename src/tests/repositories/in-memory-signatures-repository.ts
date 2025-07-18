@@ -1,11 +1,10 @@
 import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
 import type { Signature } from '@domain/company/entities/signature'
+import type { Signature as PrismaSignature } from '@prisma/client'
+import { PrismaSignatureMapper } from '../../infra/database/prisma/mappers/prisma-signature-mapper'
 
 export class InMemorySignaturesRepository implements SignaturesRepository {
-	update(signature: Signature): Promise<void> {
-		throw new Error('Method not implemented.')
-	}
-	public items: Signature[] = []
+	public items: PrismaSignature[] = []
 
 	async findById(signatureId: string) {
 		const signature = this.items.find(
@@ -16,10 +15,22 @@ export class InMemorySignaturesRepository implements SignaturesRepository {
 			return null
 		}
 
-		return signature
+		return signature ? PrismaSignatureMapper.toDomain(signature) : null
 	}
 
 	async create(signature: Signature) {
-		this.items.push(signature)
+		const prismaClient = PrismaSignatureMapper.toPrisma(signature)
+
+		this.items.push(prismaClient)
+	}
+
+	async update(signature: Signature) {
+		const prismaClient = PrismaSignatureMapper.toPrisma(signature)
+
+		const itemIndex = this.items.findIndex(
+			(item) => item.id === prismaClient.id,
+		)
+
+		this.items[itemIndex] = prismaClient
 	}
 }

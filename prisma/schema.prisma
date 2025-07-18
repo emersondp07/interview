@@ -72,6 +72,7 @@ model Plan {
   deleted_at        DateTime?
   signature         Signature[]
   stripe_product_id String      @unique
+  stripe_price_id   String?     @unique
 
   @@map("plans")
 }

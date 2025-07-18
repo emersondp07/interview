@@ -23,9 +23,29 @@ export class InMemoryPlansRepository implements PlansRepository {
 		return plan ? PrismaPlanMapper.toDomain(plan) : null
 	}
 
+	async findByProductId(productId: string) {
+		const plan = this.items.find((plan) => plan.id.toString() === productId)
+
+		if (!plan) {
+			return null
+		}
+
+		return plan ? PrismaPlanMapper.toDomain(plan) : null
+	}
+
 	async create(plan: Plan) {
 		const prismaClient = PrismaPlanMapper.toPrisma(plan)
 
 		this.items.push(prismaClient)
+	}
+
+	async update(plan: Plan) {
+		const prismaClient = PrismaPlanMapper.toPrisma(plan)
+
+		const itemIndex = this.items.findIndex(
+			(item) => item.id === prismaClient.id,
+		)
+
+		this.items[itemIndex] = prismaClient
 	}
 }

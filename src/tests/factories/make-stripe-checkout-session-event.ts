@@ -1,0 +1,88 @@
+import { faker } from '@faker-js/faker'
+
+export function makeStripeCheckoutSessionCompletedEvent(
+	overrides?: Partial<Record<string, any>>,
+) {
+	const created = overrides?.created ?? Math.floor(Date.now() / 1000)
+
+	return {
+		id: overrides?.id ?? `evt_${faker.string.alphanumeric(14)}`,
+		object: 'event',
+		api_version: '2025-05-28.basil',
+		created,
+		data: {
+			object: {
+				id: overrides?.sessionId ?? `cs_test_${faker.string.alphanumeric(32)}`,
+				object: 'checkout.session',
+				adaptive_pricing: null,
+				after_expiration: null,
+				allow_promotion_codes: null,
+				amount_subtotal: 3990,
+				amount_total: 3990,
+				automatic_tax: {
+					enabled: false,
+					status: null,
+				},
+				billing_address_collection: null,
+				cancel_url: 'http://localhost:3000/cancel',
+				client_reference_id: faker.string.uuid(),
+				client_secret: null,
+				collected_information: {},
+				consent: null,
+				consent_collection: null,
+				created,
+				currency: 'brl',
+				currency_conversion: null,
+				custom_fields: [],
+				custom_text: {},
+				customer:
+					overrides?.customerId ?? `cus_${faker.string.alphanumeric(14)}`,
+				customer_creation: null,
+				customer_details: {},
+				customer_email: null,
+				discounts: [],
+				expires_at: created + 86400,
+				invoice: overrides?.invoiceId ?? `in_${faker.string.alphanumeric(14)}`,
+				invoice_creation: null,
+				livemode: false,
+				locale: null,
+				metadata: {},
+				mode: 'subscription',
+				origin_context: null,
+				payment_intent: null,
+				payment_link: null,
+				payment_method_collection: 'always',
+				payment_method_configuration_details: null,
+				payment_method_options: {},
+				payment_method_types: ['card'],
+				payment_status: 'paid',
+				permissions: null,
+				phone_number_collection: {
+					enabled: false,
+				},
+				recovered_from: null,
+				saved_payment_method_options: {},
+				setup_intent: null,
+				shipping_address_collection: null,
+				shipping_cost: null,
+				shipping_options: [],
+				status: 'complete',
+				submit_type: null,
+				subscription:
+					overrides?.subscriptionId ?? `sub_${faker.string.alphanumeric(14)}`,
+				success_url: 'http://localhost:3000/success',
+				total_details: {},
+				ui_mode: 'hosted',
+				url: null,
+				wallet_options: null,
+			},
+		},
+		livemode: false,
+		pending_webhooks: 2,
+		request: {
+			id: null,
+			idempotency_key: null,
+		},
+		type: 'checkout.session.completed',
+	}
+}

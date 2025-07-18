@@ -28,6 +28,6 @@ describe('Create Interviewer (e2e)', () => {
 				companyId: companyId,
 			})
 
-		// expect(response.status).toEqual(201)
+		expect(response.status).toEqual(201)
 	})
 })

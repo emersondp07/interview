@@ -21,7 +21,7 @@ export class StripeCustomersService implements IStripeCustomers {
 	createCheckoutSession(
 		companyId: string,
 		customerId: string,
-		productId: string,
+		priceId: string,
 	): Promise<Stripe.Checkout.Session> {
 		return this.stripe.checkout.sessions.create({
 			customer: customerId,
@@ -29,7 +29,7 @@ export class StripeCustomersService implements IStripeCustomers {
 			client_reference_id: companyId,
 			line_items: [
 				{
-					price: productId,
+					price: priceId,
 					quantity: 1,
 				},
 			],

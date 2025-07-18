@@ -24,11 +24,30 @@ export class PrismaPlansRepository implements PlansRepository {
 		return plan ? PrismaPlanMapper.toDomain(plan) : null
 	}
 
+	async findByProductId(productId: string): Promise<Plan | null> {
+		const plan = await prisma.plan.findUnique({
+			where: {
+				stripe_product_id: productId,
+			},
+		})
+
+		return plan ? PrismaPlanMapper.toDomain(plan) : null
+	}
+
 	async create(plan: Plan) {
 		const prismaPlan = PrismaPlanMapper.toPrisma(plan)
 
 		await prisma.plan.create({
 			data: prismaPlan,
+		})
+	}
+
+	async update(plan: Plan) {
+		await prisma.plan.update({
+			where: {
+				id: plan.id.toString(),
+			},
+			data: PrismaPlanMapper.toPrisma(plan),
 		})
 	}
 }

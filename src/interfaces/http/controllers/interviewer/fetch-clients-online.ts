@@ -18,5 +18,5 @@ export async function fetchClientsOnline(
 
 	const { value } = await fetchClientsOnlineUseCase.execute({ page, clientIds })
 
-	socket.emit('list-client:response', value ?? [])
+	socket.emit('list-client:response', value?.clients ?? [])
 }

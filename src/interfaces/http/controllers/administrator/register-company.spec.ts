@@ -33,6 +33,7 @@ describe('Register Company (e2e)', () => {
 				description: 'Description plan',
 				interview_limit: 100,
 				stripe_product_id: faker.string.uuid(),
+				stripe_price_id: faker.string.uuid(),
 			},
 		})
 

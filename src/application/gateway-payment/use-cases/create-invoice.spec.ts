@@ -4,9 +4,10 @@ import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-comp
 import { InMemoryInvoicesRepository } from '@/tests/repositories/in-memory-invoices-repository'
 import { faker } from '@faker-js/faker'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { UniqueEntityID } from '../../../domain/core/entities/unique-entity'
-import { makeSignature } from '../../../tests/factories/make-signature'
-import { InMemorySignaturesRepository } from '../../../tests/repositories/in-memory-signatures-repository'
+
+import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import { makeSignature } from '@/tests/factories/make-signature'
+import { InMemorySignaturesRepository } from '@/tests/repositories/in-memory-signatures-repository'
 import { CreateInvoiceUseCase } from './create-invoice'
 
 let inMemoryInvoicesRepository: InMemoryInvoicesRepository

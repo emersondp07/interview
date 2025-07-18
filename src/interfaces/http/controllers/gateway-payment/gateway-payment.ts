@@ -1,12 +1,10 @@
-import { ActiveSignatureUseCase } from '@/application/company/use-cases/active-signature'
-import { CreateInvoiceUseCase } from '@/application/company/use-cases/create-invoice'
-import { PaidInvoiceUseCase } from '@/application/company/use-cases/paid-invoice'
 import { env } from '@/infra/config'
-import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
-import { PrismaInvoicesRepository } from '@/infra/database/repositories/prisma-invoices-repository'
-import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import Stripe from 'stripe'
+import { checkouCompleted } from './checkout-completed'
+import { createInvoice } from './create-invoice'
+import { paidInvoice } from './paid-invoice'
+import { registerStripePriceId } from './register-stripe-price-id'
 
 export async function gatewayPayment(
 	request: FastifyRequest,
@@ -39,43 +37,20 @@ export async function gatewayPayment(
 		return reply.status(400).send(`Webhook Error: ${(err as Error).message}`)
 	}
 
-	if (event.type === 'checkout.session.completed') {
-		const prismaSignaturesRepository = new PrismaSignaturesRepository()
-		const prismaCompaniesRepository = new PrismaCompaniesRepository()
-		const activeSignatureUseCase = new ActiveSignatureUseCase(
-			prismaSignaturesRepository,
-			prismaCompaniesRepository,
-		)
-		await activeSignatureUseCase.execute({
-			companyId: event.data.object.customer as string,
-		})
+	if (event.type === 'price.created') {
+		await registerStripePriceId(event as Stripe.PriceCreatedEvent)
+	} else if (event.type === 'checkout.session.completed') {
+		await checkouCompleted(event as Stripe.CheckoutSessionCompletedEvent)
+	} else if (event.type === 'payment_intent.succeeded') {
+		// await checkouCompleted(event as Stripe.PaymentIntentSucceededEvent)
+	} else if (event.type === 'payment_intent.payment_failed') {
+		// await checkouCompleted(event as Stripe.PaymentIntentPaymentFailedEvent)
 	} else if (event.type === 'invoice.created') {
-		const prismaInvoicesRepository = new PrismaInvoicesRepository()
-		const prismaCompaniesRepository = new PrismaCompaniesRepository()
-		const createInvoiceUseCase = new CreateInvoiceUseCase(
-			prismaInvoicesRepository,
-			prismaCompaniesRepository,
-		)
-		await createInvoiceUseCase.execute({
-			mounth: event.data.object.lines.data[0].period.start.toString(),
-			value: event.data.object.amount_paid.toString(),
-			companyId: event.data.object.customer as string,
-			stripeInvoiceId: event.data.object.id as string,
-		})
+		await createInvoice(event as Stripe.InvoiceCreatedEvent)
 	} else if (event.type === 'invoice.paid') {
-		const prismaInvoicesRepository = new PrismaInvoicesRepository()
-		const prismaCompaniesRepository = new PrismaCompaniesRepository()
-		const paidInvoiceUseCase = new PaidInvoiceUseCase(
-			prismaInvoicesRepository,
-			prismaCompaniesRepository,
-		)
-		await paidInvoiceUseCase.execute({
-			companyId: event.data.object.customer as string,
-		})
+		await paidInvoice(event as Stripe.InvoicePaidEvent)
 	} else if (event.type === 'invoice.payment_failed') {
-	} else if (event.type === 'customer.subscription.created') {
-	} else if (event.type === 'customer.subscription.updated') {
-	} else if (event.type === 'customer.subscription.deleted') {
+		console.warn(`Unhandled event type: ${event.type}`)
 	} else {
 		console.warn(`Unhandled event type: ${event.type}`)
 	}

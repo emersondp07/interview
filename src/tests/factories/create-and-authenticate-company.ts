@@ -17,6 +17,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 			description: plan.description,
 			interview_limit: plan.interviewLimit,
 			stripe_product_id: plan.stripeProductId,
+			stripe_price_id: plan.stripePriceId,
 		},
 	})
 
@@ -28,7 +29,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 		data: {
 			id: signature.id.toString(),
 			plan_id: plan.id.toString(),
-			status: 'CHECKOUT',
+			status: 'ACTIVE',
 		},
 	})
 

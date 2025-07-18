@@ -14,15 +14,15 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return clients.map(PrismaClientMapper.toDomain)
 	}
 
-	async findAllOnline(
-		{ page }: PaginationParams,
-		clients: string[],
-	): Promise<Client[] | null> {
+	async findAllOnline({ page }: PaginationParams, clients: string[]) {
 		const clientsOnline = await prisma.client.findMany({
 			where: {
 				id: {
 					in: clients,
 				},
+			},
+			include: {
+				interviews: true,
 			},
 			take: 10,
 			skip: (page - 1) * 10,
@@ -51,7 +51,7 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
-	async create(client: Client): Promise<void> {
+	async create(client: Client) {
 		const prismaClient = PrismaClientMapper.toPrisma(client)
 
 		await prisma.client.create({
@@ -59,7 +59,7 @@ export class PrismaClientsRepository implements ClientsRepository {
 		})
 	}
 
-	async delete(client: Client): Promise<void> {
+	async delete(client: Client) {
 		const prismaClient = PrismaClientMapper.toPrisma(client)
 
 		await prisma.client.update({
