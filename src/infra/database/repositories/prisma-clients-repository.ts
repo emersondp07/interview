@@ -31,7 +31,17 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return clientsOnline.map(PrismaClientMapper.toDomain)
 	}
 
-	async findById(companyId: string, clientId: string) {
+	async findById(clientId: string) {
+		const client = await prisma.client.findUnique({
+			where: {
+				id: clientId,
+			},
+		})
+
+		return client ? PrismaClientMapper.toDomain(client) : null
+	}
+
+	async findByIdAndCompanyId(companyId: string, clientId: string) {
 		const client = await prisma.client.findUnique({
 			where: {
 				id: clientId,

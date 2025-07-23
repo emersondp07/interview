@@ -46,10 +46,12 @@ export class PrismaInterviewersRepository implements InterviewersRepository {
 		})
 	}
 
-	async delete(interviewerId: string) {
+	async delete(interviewer: Interviewer) {
+		const prismaInterviewer = PrismaInterviewerMapper.toPrisma(interviewer)
+
 		await prisma.interviewer.update({
 			where: {
-				id: interviewerId,
+				id: prismaInterviewer.id,
 			},
 			data: {
 				deleted_at: new Date(),
