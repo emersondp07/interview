@@ -4,6 +4,7 @@ import { NotAllowedError } from '@/domain/core/errors/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 
 interface DeleteClientUseCaseRequest {
+	companyId: string
 	clientId: string
 }
 
@@ -13,9 +14,13 @@ export class DeleteClientUseCase {
 	constructor(private clientsRepository: ClientsRepository) {}
 
 	async execute({
+		companyId,
 		clientId,
 	}: DeleteClientUseCaseRequest): Promise<DeleteClientUseCaseResponse> {
-		const client = await this.clientsRepository.findById(clientId)
+		const client = await this.clientsRepository.findByIdAndCompanyId(
+			companyId,
+			clientId,
+		)
 
 		if (!client) {
 			return failed(new NotAllowedError())

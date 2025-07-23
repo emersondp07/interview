@@ -14,8 +14,11 @@ export class PrismaInvoicesRepository implements InvoicesRepository {
 		})
 	}
 
-	async findAll({ page }: PaginationParams) {
+	async findAll(signatureId: string, { page }: PaginationParams) {
 		const invoices = await prisma.invoice.findMany({
+			where: {
+				signature_id: signatureId,
+			},
 			take: 10,
 			skip: (page - 1) * 10,
 		})

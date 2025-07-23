@@ -16,14 +16,16 @@ export class DeleteInterviewerUseCase {
 		interviewerId,
 		companyId,
 	}: DeleteInterviewerUseCaseRequest): Promise<DeleteInterviewerUseCaseResponse> {
-		const interviewer =
-			await this.interviewersRepository.findById(interviewerId)
+		const interviewer = await this.interviewersRepository.findById(
+			companyId,
+			interviewerId,
+		)
 
 		if (!interviewer) {
 			return failed(new ResourceNotFoundError())
 		}
 
-		await this.interviewersRepository.delete(interviewerId)
+		await this.interviewersRepository.delete(interviewer)
 
 		return success({})
 	}

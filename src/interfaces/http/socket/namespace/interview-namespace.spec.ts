@@ -139,7 +139,6 @@ describe('Interview Namespace (e2e)', () => {
 		const response = await new Promise((resolve) => {
 			interviewerSocket.once('finish-interview:response', resolve)
 		})
-		console.log(response)
 
 		expect(response).toBeDefined()
 	})

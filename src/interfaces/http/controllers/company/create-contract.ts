@@ -8,8 +8,9 @@ export async function createContract(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { title, description, imageUrl, companyId } =
-		request.body as CreateContractSchema
+	const { sub: companyId } = request.user
+
+	const { title, description, imageUrl } = request.body as CreateContractSchema
 
 	const prismaContractsRepository = new PrismaContractsRepository()
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()

@@ -8,8 +8,8 @@ export async function createInterviewer(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { name, email, password, companyId } =
-		request.body as CreateInterviewerSchema
+	const { sub: companyId } = request.user
+	const { name, email, password } = request.body as CreateInterviewerSchema
 
 	const prismaInterviewersRepository = new PrismaInterviewersRepository()
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()

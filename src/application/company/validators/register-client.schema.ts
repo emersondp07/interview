@@ -18,7 +18,6 @@ export const registerClientSchema = z.object({
 		),
 	phone: z.string().min(1, 'Phone is required'),
 	email: z.string().email('Invalid email format'),
-	companyId: z.string().uuid('Company ID is required'),
 })
 
 export type RegisterClientSchema = z.infer<typeof registerClientSchema>

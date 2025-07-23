@@ -7,6 +7,8 @@ export async function fetchInterviewers(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
+	const { sub: companyId } = request.user
+
 	const { page } = request.query as FetchInterviewersSchema
 
 	const prismaInterviewersRepository = new PrismaInterviewersRepository()
@@ -14,7 +16,7 @@ export async function fetchInterviewers(
 		prismaInterviewersRepository,
 	)
 
-	const { value } = await fetchInterviewersUseCase.execute({ page })
+	const { value } = await fetchInterviewersUseCase.execute({ companyId, page })
 
 	return reply.status(200).send(value)
 }

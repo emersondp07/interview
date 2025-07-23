@@ -41,6 +41,17 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return client ? PrismaClientMapper.toDomain(client) : null
 	}
 
+	async findByIdAndCompanyId(companyId: string, clientId: string) {
+		const client = await prisma.client.findUnique({
+			where: {
+				id: clientId,
+				company_id: companyId,
+			},
+		})
+
+		return client ? PrismaClientMapper.toDomain(client) : null
+	}
+
 	async findByDocument(document: string) {
 		const client = await prisma.client.findUnique({
 			where: {
