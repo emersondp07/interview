@@ -7,7 +7,8 @@ export async function deleteInterviewer(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { companyId, interviewerId } = request.params as DeleteInterviewerParams
+	const { sub: companyId } = request.user
+	const { interviewerId } = request.params as DeleteInterviewerParams
 
 	const prismaInterviewersRepository = new PrismaInterviewersRepository()
 	const deleteInterviewerUseCase = new DeleteInterviewerUseCase(
@@ -15,8 +16,8 @@ export async function deleteInterviewer(
 	)
 
 	await deleteInterviewerUseCase.execute({
-		companyId,
 		interviewerId,
+		companyId,
 	})
 
 	return reply.status(204).send()

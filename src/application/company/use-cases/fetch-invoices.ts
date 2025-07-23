@@ -1,20 +1,39 @@
+import type { CompaniesRepository } from '@/domain/administrator/repositories/companies-repository'
 import type { Invoice } from '@/domain/company/entities/invoice'
 import type { InvoicesRepository } from '@/domain/company/repositories/invoices-repository'
-import { type Either, success } from '@/domain/core/either'
+import { type Either, failed, success } from '@/domain/core/either'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 
 interface FetchInvoicesUseCaseRequest {
+	companyId: string
 	page: number
 }
 
-type FetchInvoicesUseCaseResponse = Either<null, { invoices: Invoice[] | null }>
+type FetchInvoicesUseCaseResponse = Either<
+	ResourceNotFoundError,
+	{ invoices: Invoice[] | null }
+>
 
 export class FetchInvoicesUseCase {
-	constructor(private invoicesRepository: InvoicesRepository) {}
+	constructor(
+		private invoicesRepository: InvoicesRepository,
+		private companiesRepository: CompaniesRepository,
+	) {}
 
 	async execute({
+		companyId,
 		page,
 	}: FetchInvoicesUseCaseRequest): Promise<FetchInvoicesUseCaseResponse> {
-		const invoices = await this.invoicesRepository.findAll({ page })
+		const company = await this.companiesRepository.findById(companyId)
+
+		if (!company || !company.signature) {
+			return failed(new ResourceNotFoundError())
+		}
+
+		const invoices = await this.invoicesRepository.findAll(
+			company.signature.id.toString(),
+			{ page },
+		)
 
 		return success({ invoices })
 	}

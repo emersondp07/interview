@@ -31,10 +31,11 @@ export class PrismaClientsRepository implements ClientsRepository {
 		return clientsOnline.map(PrismaClientMapper.toDomain)
 	}
 
-	async findById(clientId: string) {
+	async findById(companyId: string, clientId: string) {
 		const client = await prisma.client.findUnique({
 			where: {
 				id: clientId,
+				company_id: companyId,
 			},
 		})
 

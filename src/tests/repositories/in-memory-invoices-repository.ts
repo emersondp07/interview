@@ -7,10 +7,14 @@ import type { Invoice as PrismaInvoice } from '@prisma/client'
 export class InMemoryInvoicesRepository implements InvoicesRepository {
 	public items: PrismaInvoice[] = []
 
-	async findAll({ page }: PaginationParams) {
-		const invoices = this.items.slice((page - 1) * 10, page * 10)
+	async findAll(signatureId: string, { page }: PaginationParams) {
+		const invoices = this.items.filter(
+			(invoice) => invoice.signature_id === signatureId,
+		)
 
-		return invoices.map(PrismaInvoiceMapper.toDomain)
+		const invoicesInPage = invoices.slice((page - 1) * 10, page * 10)
+
+		return invoicesInPage.map(PrismaInvoiceMapper.toDomain)
 	}
 
 	async findById(invoiceId: string) {
@@ -60,6 +64,6 @@ export class InMemoryInvoicesRepository implements InvoicesRepository {
 			(item) => item.id === prismaInvoice.id,
 		)
 
-		this.items.splice(itemIndex, 1)
+		this.items[itemIndex] = { ...prismaInvoice, deleted_at: new Date() }
 	}
 }

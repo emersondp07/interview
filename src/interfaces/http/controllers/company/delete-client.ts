@@ -7,12 +7,15 @@ export async function deleteClient(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
+	const { sub: companyId } = request.user
+
 	const { clientId } = request.params as DeleteClientParams
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const deleteClientUseCase = new DeleteClientUseCase(prismaClientsRepository)
 
 	await deleteClientUseCase.execute({
+		companyId,
 		clientId,
 	})
 

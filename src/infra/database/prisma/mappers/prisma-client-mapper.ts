@@ -52,6 +52,7 @@ export class PrismaClientMapper {
 				interviews: interviewList,
 				createdAt: raw.created_at,
 				updatedAt: raw.updated_at,
+				deletedAt: raw.deleted_at ?? undefined,
 			},
 			new UniqueEntityID(raw.id),
 		)

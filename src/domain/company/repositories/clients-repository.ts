@@ -8,6 +8,10 @@ export interface ClientsRepository {
 		clients: string[],
 	): Promise<Client[] | null>
 	findById(clientId: string): Promise<Client | null>
+	findByIdAndCompanyId(
+		companyId: string,
+		clientId: string,
+	): Promise<Client | null>
 	findByDocument(document: string): Promise<Client | null>
 	create(client: Client): Promise<void>
 	delete(client: Client): Promise<void>

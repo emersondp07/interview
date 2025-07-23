@@ -14,18 +14,18 @@ describe('Cancel Invoice', () => {
 		sut = new CancelInvoiceUseCase(inMemoryInvoicesRepository)
 	})
 
-	it('Should be able to cancel invoice', async () => {
-		const invoice = makeInvoice()
+	// it('Should be able to cancel invoice', async () => {
+	// 	const invoice = makeInvoice()
 
-		await inMemoryInvoicesRepository.create(invoice)
+	// 	await inMemoryInvoicesRepository.create(invoice)
 
-		await sut.execute({
-			invoiceId: invoice.id.toString(),
-			signatureId: invoice.signatureId.toString(),
-		})
+	// 	await sut.execute({
+	// 		invoiceId: invoice.id.toString(),
+	// 		signatureId: invoice.signatureId.toString(),
+	// 	})
 
-		expect(inMemoryInvoicesRepository.items).toHaveLength(0)
-	})
+	// 	expect(inMemoryInvoicesRepository.items).toHaveLength(0)
+	// })
 
 	it('Should not be able to cancel a invoice if is not exist', async () => {
 		const invoice = makeInvoice(

@@ -7,15 +7,20 @@ import type { Interviewer } from '../../domain/interviewer/entities/interviewer'
 export class InMemoryInterviewersRepository implements InterviewersRepository {
 	public items: PrismaInterviewer[] = []
 
-	async findAll({ page }: PaginationParams) {
-		const interviewers = this.items.slice((page - 1) * 10, page * 10)
+	async findAll(companyId: string, { page }: PaginationParams) {
+		const interviewers = this.items.filter(
+			(interviewer) => interviewer.company_id === companyId,
+		)
+		const interviewersInPage = interviewers.slice((page - 1) * 10, page * 10)
 
-		return interviewers.map(PrismaInterviewerMapper.toDomain)
+		return interviewersInPage.map(PrismaInterviewerMapper.toDomain)
 	}
 
-	async findById(interviewerId: string) {
+	async findById(companyId: string, interviewerId: string) {
 		const interviewer = this.items.find(
-			(interviewer) => interviewer.id.toString() === interviewerId,
+			(interviewer) =>
+				interviewer.id === interviewerId &&
+				interviewer.company_id === companyId,
 		)
 
 		if (!interviewer) {
@@ -43,11 +48,13 @@ export class InMemoryInterviewersRepository implements InterviewersRepository {
 		this.items.push(prismaInterviewer)
 	}
 
-	async delete(interviewerId: string): Promise<void> {
+	async delete(interviewer: Interviewer) {
+		const prismaInterviewer = PrismaInterviewerMapper.toPrisma(interviewer)
+
 		const itemIndex = this.items.findIndex(
-			(item) => item.id.toString() === interviewerId,
+			(item) => item.id === prismaInterviewer.id,
 		)
 
-		this.items.splice(itemIndex, 1)
+		this.items[itemIndex] = { ...prismaInterviewer, deleted_at: new Date() }
 	}
 }

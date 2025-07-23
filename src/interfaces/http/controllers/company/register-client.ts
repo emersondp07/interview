@@ -9,7 +9,8 @@ export async function registerClient(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const { name, email, birthDate, phone, documentType, document, companyId } =
+	const { sub: companyId } = request.user
+	const { name, email, birthDate, phone, documentType, document } =
 		request.body as RegisterClientSchema
 
 	const prismaClientsRepository = new PrismaClientsRepository()

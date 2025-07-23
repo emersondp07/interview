@@ -5,8 +5,11 @@ import { PrismaInterviewerMapper } from '../prisma/mappers/prisma-interviewer-ma
 import { prisma } from '../prisma/prisma'
 
 export class PrismaInterviewersRepository implements InterviewersRepository {
-	async findAll({ page }: PaginationParams) {
+	async findAll(companyId: string, { page }: PaginationParams) {
 		const interviewers = await prisma.interviewer.findMany({
+			where: {
+				company_id: companyId,
+			},
 			take: 10,
 			skip: (page - 1) * 10,
 		})
@@ -14,10 +17,11 @@ export class PrismaInterviewersRepository implements InterviewersRepository {
 		return interviewers.map(PrismaInterviewerMapper.toDomain)
 	}
 
-	async findById(interviewerId: string) {
+	async findById(companyId: string, interviewerId: string) {
 		const interviewer = await prisma.interviewer.findUnique({
 			where: {
 				id: interviewerId,
+				company_id: companyId,
 			},
 		})
 

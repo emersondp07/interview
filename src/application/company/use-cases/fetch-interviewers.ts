@@ -3,6 +3,7 @@ import type { Interviewer } from '@/domain/interviewer/entities/interviewer'
 import type { InterviewersRepository } from '@/domain/interviewer/repositories/interviewers-repository'
 
 interface FetchInterviewersUseCaseRequest {
+	companyId: string
 	page: number
 }
 
@@ -15,9 +16,12 @@ export class FetchInterviewersUseCase {
 	constructor(private interviewersRepository: InterviewersRepository) {}
 
 	async execute({
+		companyId,
 		page,
 	}: FetchInterviewersUseCaseRequest): Promise<FetchInterviewersUseCaseResponse> {
-		const interviewers = await this.interviewersRepository.findAll({ page })
+		const interviewers = await this.interviewersRepository.findAll(companyId, {
+			page,
+		})
 
 		return success({ interviewers })
 	}

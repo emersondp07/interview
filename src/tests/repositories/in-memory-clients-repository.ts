@@ -27,8 +27,18 @@ export class InMemoryClientsRepository implements ClientsRepository {
 	}
 
 	async findById(clientId: string) {
+		const client = this.items.find((client) => client.id === clientId)
+
+		if (!client) {
+			return null
+		}
+
+		return client ? PrismaClientMapper.toDomain(client) : null
+	}
+
+	async findByIdAndCompanyId(companyId: string, clientId: string) {
 		const client = this.items.find(
-			(client) => client.id.toString() === clientId,
+			(client) => client.id === clientId && client.company_id === companyId,
 		)
 
 		if (!client) {
@@ -61,6 +71,6 @@ export class InMemoryClientsRepository implements ClientsRepository {
 			(item) => item.id === prismaClient.id,
 		)
 
-		this.items.splice(itemIndex, 1)
+		this.items[itemIndex] = { ...prismaClient, deleted_at: new Date() }
 	}
 }
