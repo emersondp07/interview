@@ -1,17 +1,18 @@
+import { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { makeCompany } from '@/tests/factories/make-company'
 import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
 import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-companies-repository'
+import { InMemoryInterviewsRepository } from '@/tests/repositories/in-memory-interviews-repository'
+import { InMemoryResendEmailsService } from '@/tests/repositories/in-memory-resend-emails-service'
 import { faker } from '@faker-js/faker'
 import { beforeEach, describe, expect, it } from 'vitest'
-
-import { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
-import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
-import { InMemoryInterviewsRepository } from '@/tests/repositories/in-memory-interviews-repository'
 import { RegisterClientUseCase } from './register-client'
 
 let inMemoryClientsRepository: InMemoryClientsRepository
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let inMemoryInterviewsRepository: InMemoryInterviewsRepository
+let inMemoryResendEmailsService: InMemoryResendEmailsService
 let sut: RegisterClientUseCase
 
 describe('Register Client', () => {
@@ -19,10 +20,13 @@ describe('Register Client', () => {
 		inMemoryClientsRepository = new InMemoryClientsRepository()
 		inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
 		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
+		inMemoryResendEmailsService = new InMemoryResendEmailsService()
+
 		sut = new RegisterClientUseCase(
 			inMemoryClientsRepository,
 			inMemoryCompaniesRepository,
 			inMemoryInterviewsRepository,
+			inMemoryResendEmailsService,
 		)
 	})
 

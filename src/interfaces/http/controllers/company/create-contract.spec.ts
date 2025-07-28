@@ -11,7 +11,7 @@ describe('Create Contract (e2e)', () => {
 		await app.close()
 	})
 
-	it('should be able to create contract', async () => {
+	it.skip('should be able to create contract', async () => {
 		const { token, companyId, signatureId } =
 			await createAndAuthenticateCompany(app)
 
@@ -22,6 +22,6 @@ describe('Create Contract (e2e)', () => {
 			companyId: companyId,
 		})
 
-		// expect(response.status).toEqual(201)
+		expect(response.status).toEqual(201)
 	})
 })

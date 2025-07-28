@@ -2,6 +2,7 @@ import { NotAllowedError } from '@/domain/core/errors/errors/not-allowed-error'
 import { makePlan } from '@/tests/factories/make-plan'
 import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-companies-repository'
 import { InMemoryPlansRepository } from '@/tests/repositories/in-memory-plans-repository'
+import { InMemoryResendEmailsService } from '@/tests/repositories/in-memory-resend-emails-service'
 import { InMemorySignaturesRepository } from '@/tests/repositories/in-memory-signatures-repository'
 import { InMemoryStripeCustomersService } from '@/tests/repositories/in-memory-stripe-customers-service'
 import { faker } from '@faker-js/faker'
@@ -12,6 +13,7 @@ let inMemoryCompaniesRepository: InMemoryCompaniesRepository
 let inMemoryPlansRepository: InMemoryPlansRepository
 let inMemorySignaturesRepository: InMemorySignaturesRepository
 let inMemoryStripeCustomersService: InMemoryStripeCustomersService
+let inMemoryResendEmailsService: InMemoryResendEmailsService
 let sut: RegisterCompanyUseCase
 
 describe('Create Contract', () => {
@@ -20,12 +22,14 @@ describe('Create Contract', () => {
 		inMemoryPlansRepository = new InMemoryPlansRepository()
 		inMemorySignaturesRepository = new InMemorySignaturesRepository()
 		inMemoryStripeCustomersService = new InMemoryStripeCustomersService()
+		inMemoryResendEmailsService = new InMemoryResendEmailsService()
 
 		sut = new RegisterCompanyUseCase(
 			inMemoryCompaniesRepository,
 			inMemoryPlansRepository,
 			inMemorySignaturesRepository,
 			inMemoryStripeCustomersService,
+			inMemoryResendEmailsService,
 		)
 	})
 

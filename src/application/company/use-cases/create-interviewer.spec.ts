@@ -4,19 +4,24 @@ import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-comp
 import { InMemoryInterviewersRepository } from '@/tests/repositories/in-memory-interviewers-repository'
 import { faker } from '@faker-js/faker'
 import { beforeEach, describe, it } from 'vitest'
+import { InMemoryResendEmailsService } from '../../../tests/repositories/in-memory-resend-emails-service'
 import { CreateInterviewerUseCase } from './create-interviewer'
 
 let inMemoryInterviewersRepository: InMemoryInterviewersRepository
 let inMemoryCompaniesRepository: InMemoryCompaniesRepository
+let inMemoryResendEmailsService: InMemoryResendEmailsService
 let sut: CreateInterviewerUseCase
 
 describe('Create Interviewer', () => {
 	beforeEach(() => {
 		inMemoryInterviewersRepository = new InMemoryInterviewersRepository()
 		inMemoryCompaniesRepository = new InMemoryCompaniesRepository()
+		inMemoryResendEmailsService = new InMemoryResendEmailsService()
+
 		sut = new CreateInterviewerUseCase(
 			inMemoryInterviewersRepository,
 			inMemoryCompaniesRepository,
+			inMemoryResendEmailsService,
 		)
 	})
 

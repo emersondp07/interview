@@ -7,6 +7,7 @@ import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-
 import { STATUS_INTERVIEW } from '@/domain/interviewer/entities/interfaces/interview.type'
 import { Interview } from '@/domain/interviewer/entities/interview'
 import type { InterviewsRepository } from '@/domain/interviewer/repositories/interviews-repository'
+import type { IResendEmails } from '@/infra/services/email/interfaces/resend-emails'
 
 interface RegisterClientUseCaseRequest {
 	name: string
@@ -28,6 +29,7 @@ export class RegisterClientUseCase {
 		private clientsRepository: ClientsRepository,
 		private companiesRepository: CompaniesRepository,
 		private interviewsRepository: InterviewsRepository,
+		private resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({
@@ -63,6 +65,14 @@ export class RegisterClientUseCase {
 
 		await this.clientsRepository.create(client)
 		await this.interviewsRepository.create(interview)
+
+		await this.resendEmailsService.sendEmail(
+			client.email,
+			'Cliente cadastrado com sucesso',
+			`<p>Olá ${client.name},</p>
+			<p>Seu cadastro foi realizado com sucesso. Acesse o sistema utilizando seu ${documentType} para entrar na fila e realizar a entrevista.</p>
+			<p>Obrigado por escolher nossos serviços!</p>`,
+		)
 
 		return success({
 			client,

@@ -1,11 +1,20 @@
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { makeInterviewer } from '@/tests/factories/make-interviewer'
+import { InMemoryResendEmailsService } from '@/tests/repositories/in-memory-resend-emails-service'
 import request from 'supertest'
 
 describe('Create Interviewer (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
+
+		vi.mock('@/infra/services/email/emails', () => {
+			return {
+				ResendEmailsService: vi
+					.fn()
+					.mockImplementation(() => new InMemoryResendEmailsService()),
+			}
+		})
 	})
 
 	afterAll(async () => {

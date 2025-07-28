@@ -8,6 +8,8 @@ const envSchema = z.object({
 	DATABASE_URL: z.string(),
 	STRIPE_SECRET_KEY: z.string(),
 	STRIPE_WEBHOOK_SECRET_KEY: z.string(),
+	EMAIL_ADM: z.string(),
+	RESEND_EMAIL_API_KEY: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)
