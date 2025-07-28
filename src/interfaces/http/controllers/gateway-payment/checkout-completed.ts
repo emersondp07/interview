@@ -2,6 +2,7 @@ import { ActiveSignatureUseCase } from '@/application/gateway-payment/use-cases/
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
 import type Stripe from 'stripe'
+import { ResendEmailsService } from '../../../../infra/services/email/emails'
 
 export async function checkouCompleted(
 	event: Stripe.CheckoutSessionCompletedEvent,
@@ -11,9 +12,11 @@ export async function checkouCompleted(
 
 	const prismaSignaturesRepository = new PrismaSignaturesRepository()
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()
+	const resendEmailsService = new ResendEmailsService()
 	const activeSignatureUseCase = new ActiveSignatureUseCase(
 		prismaSignaturesRepository,
 		prismaCompaniesRepository,
+		resendEmailsService,
 	)
 
 	await activeSignatureUseCase.execute({

@@ -3,6 +3,7 @@ import type { Signature } from '@/domain/company/entities/signature'
 import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
 import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
+import type { IResendEmails } from '@/infra/services/email/interfaces/resend-emails'
 
 interface ActiveSignatureUseCaseRequest {
 	companyId: string
@@ -19,6 +20,7 @@ export class ActiveSignatureUseCase {
 	constructor(
 		private signaturesRepository: SignaturesRepository,
 		private companiesRepository: CompaniesRepository,
+		private resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({
@@ -44,6 +46,13 @@ export class ActiveSignatureUseCase {
 		signature.changeActive(subscriptionId, stripeSubscriptionStatus)
 
 		await this.signaturesRepository.update(signature)
+
+		await this.resendEmailsService.sendEmail(
+			isExistCompany.email,
+			'Sua assinatura foi ativada',
+			`<p>Olá ${isExistCompany.corporateReason},</p>
+			<p>Sua assinatura foi ativada com sucesso. Agradecemos por escolher nossos serviços!</p>`,
+		)
 
 		return success({ signature })
 	}

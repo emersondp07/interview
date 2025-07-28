@@ -1,13 +1,14 @@
 import type { CompaniesRepository } from '@/domain/administrator/repositories/companies-repository'
 import type { PlansRepository } from '@/domain/administrator/repositories/plans-repository'
 import { Company } from '@/domain/company/entities/company'
+import { Signature } from '@/domain/company/entities/signature'
 import type { SignaturesRepository } from '@/domain/company/repositories/signatures-repository'
 import { type Either, failed, success } from '@/domain/core/either'
 import { NotAllowedError } from '@/domain/core/errors/errors/not-allowed-error'
 import type { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
+import type { IResendEmails } from '@/infra/services/email/interfaces/resend-emails'
 import type { IStripeCustomers } from '@/infra/services/stripe/interfaces/stripe-customers'
 import { hash } from 'bcryptjs'
-import { Signature } from '../../../domain/company/entities/signature'
 
 interface RegisterCompanyUseCaseRequest {
 	corporateReason: string
@@ -29,6 +30,7 @@ export class RegisterCompanyUseCase {
 		private plansRepository: PlansRepository,
 		private signaturesRepository: SignaturesRepository,
 		private stripeCustomersService: IStripeCustomers,
+		private resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({
@@ -83,9 +85,14 @@ export class RegisterCompanyUseCase {
 		await this.signaturesRepository.create(signature)
 		await this.companiesRepository.create(company)
 
-		// eviar url para pagamento via email
-
-		console.log(createCheckoutSession.url)
+		await this.resendEmailsService.sendEmail(
+			company.email,
+			'Assinatura criada com sucesso',
+			`<p>Olá ${company.corporateReason},</p>
+			<p>Sua assinatura foi criada com sucesso. Acesse o seguinte link para completar o processo de pagamento:</p>
+			<p><a href="${createCheckoutSession.url}">Pagar Assinatura</a></p>
+			<p>Obrigado por escolher nossos serviços!</p>`,
+		)
 
 		return success({ company })
 	}

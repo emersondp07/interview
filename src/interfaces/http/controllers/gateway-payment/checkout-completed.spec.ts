@@ -5,6 +5,7 @@ import { makeCompany } from '@/tests/factories/make-company'
 import { makePlan } from '@/tests/factories/make-plan'
 import { makeSignature } from '@/tests/factories/make-signature'
 import { makeStripeCheckoutSessionCompletedEvent } from '@/tests/factories/make-stripe-checkout-session-event'
+import { InMemoryResendEmailsService } from '@/tests/repositories/in-memory-resend-emails-service'
 import { faker } from '@faker-js/faker'
 import Stripe from 'stripe'
 import request from 'supertest'
@@ -16,6 +17,14 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 describe('Stripe Webhook - checkout.session.completed (e2e)', () => {
 	beforeAll(async () => {
 		await app.ready()
+
+		vi.mock('@/infra/services/email/emails', () => {
+			return {
+				ResendEmailsService: vi
+					.fn()
+					.mockImplementation(() => new InMemoryResendEmailsService()),
+			}
+		})
 	})
 
 	afterAll(async () => {

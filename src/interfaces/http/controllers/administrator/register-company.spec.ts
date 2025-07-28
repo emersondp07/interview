@@ -1,6 +1,7 @@
 import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { makePlan } from '@/tests/factories/make-plan'
+import { InMemoryResendEmailsService } from '@/tests/repositories/in-memory-resend-emails-service'
 import { InMemoryStripeCustomersService } from '@/tests/repositories/in-memory-stripe-customers-service'
 import { faker } from '@faker-js/faker'
 import request from 'supertest'
@@ -14,6 +15,14 @@ describe('Register Company (e2e)', () => {
 				StripeCustomersService: vi
 					.fn()
 					.mockImplementation(() => new InMemoryStripeCustomersService()),
+			}
+		})
+
+		vi.mock('@/infra/services/email/emails', () => {
+			return {
+				ResendEmailsService: vi
+					.fn()
+					.mockImplementation(() => new InMemoryResendEmailsService()),
 			}
 		})
 	})
