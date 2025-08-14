@@ -14,7 +14,11 @@ export function makeCompany(
 			documentType: DOCUMENT_TYPE.CNPJ,
 			cnpj: faker.helpers.replaceSymbols('##.###.###/####-##'),
 			email: faker.internet.email(),
-			password: faker.internet.password({ length: 8 }),
+			password: faker.internet.password({
+				length: 16,
+				memorable: false,
+				pattern: /[A-Za-z0-9!@#$%^&*()_+]{16}/,
+			}),
 			phone: faker.phone.number(),
 			planId: faker.string.uuid(),
 			stripeCustomerId: faker.string.uuid(),
