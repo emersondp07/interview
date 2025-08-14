@@ -1,6 +1,10 @@
 import type { CompaniesRepository } from '@/domain/administrator/repositories/companies-repository'
 import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
+import type {
+	PROFESSIONAL_REGISTRATIONS,
+	SPECIALTIES,
+} from '@/domain/interviewer/entities/interfaces/interviewer.type'
 import { Interviewer } from '@/domain/interviewer/entities/interviewer'
 import type { InterviewersRepository } from '@/domain/interviewer/repositories/interviewers-repository'
 import type { IResendEmails } from '@/infra/services/email/interfaces/resend-emails'
@@ -10,6 +14,11 @@ interface CreateInterviewerUseCaseRequest {
 	name: string
 	email: string
 	password: string
+	specialty: SPECIALTIES
+	profissionalRegistration: PROFESSIONAL_REGISTRATIONS
+	numberRegistration: string
+	experience?: string
+	bio: string
 	companyId: string
 }
 
@@ -29,6 +38,11 @@ export class CreateInterviewerUseCase {
 		name,
 		email,
 		password,
+		specialty,
+		profissionalRegistration,
+		numberRegistration,
+		experience,
+		bio,
 		companyId,
 	}: CreateInterviewerUseCaseRequest): Promise<CreateInterviewerUseCaseResponse> {
 		const company = await this.companiesRepository.findById(companyId)
@@ -43,6 +57,11 @@ export class CreateInterviewerUseCase {
 			name,
 			email,
 			password: passwordHash,
+			bio,
+			experience,
+			numberRegistration,
+			profissionalRegistration,
+			specialty,
 			companyId: company.id,
 		})
 

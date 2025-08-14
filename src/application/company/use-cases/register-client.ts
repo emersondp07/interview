@@ -1,6 +1,9 @@
 import type { CompaniesRepository } from '@/domain/administrator/repositories/companies-repository'
 import { Client } from '@/domain/client/entities/client'
-import type { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
+import type {
+	DOCUMENT_TYPE,
+	GENDER,
+} from '@/domain/client/entities/interfaces/client.type'
 import type { ClientsRepository } from '@/domain/company/repositories/clients-repository'
 import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
@@ -13,9 +16,16 @@ interface RegisterClientUseCaseRequest {
 	name: string
 	documentType: DOCUMENT_TYPE
 	document: string
-	birthDate: Date
 	phone: string
+	birthDate: Date
+	age: number
+	gender: GENDER
 	email: string
+	emergencyContact?: string
+	emergencyPhone?: string
+	medicalHistory?: string
+	allergies?: string
+	medications?: string
 	companyId: string
 }
 
@@ -36,9 +46,16 @@ export class RegisterClientUseCase {
 		name,
 		documentType,
 		document,
-		birthDate,
 		phone,
+		birthDate,
+		age,
+		gender,
 		email,
+		emergencyContact,
+		emergencyPhone,
+		medicalHistory,
+		allergies,
+		medications,
 		companyId,
 	}: RegisterClientUseCaseRequest): Promise<RegisterClientUseCaseResponse> {
 		const companyExists = await this.companiesRepository.findById(companyId)
@@ -51,9 +68,16 @@ export class RegisterClientUseCase {
 			name,
 			documentType,
 			document,
-			birthDate,
 			phone,
+			birthDate,
+			age,
+			gender,
 			email,
+			emergencyContact,
+			emergencyPhone,
+			medicalHistory,
+			allergies,
+			medications,
 			companyId: companyExists.id,
 		})
 

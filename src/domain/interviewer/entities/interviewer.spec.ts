@@ -2,6 +2,10 @@ import { delay } from '@/tests/utils/delay'
 import { faker } from '@faker-js/faker'
 import { ROLE } from '../../administrator/entities/interfaces/adminitrator.type'
 import { UniqueEntityID } from '../../core/entities/unique-entity'
+import {
+	PROFESSIONAL_REGISTRATIONS,
+	SPECIALTIES,
+} from './interfaces/interviewer.type'
 import { Interviewer } from './interviewer'
 
 describe('Interviewer Entity', () => {
@@ -10,6 +14,13 @@ describe('Interviewer Entity', () => {
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			password: faker.internet.password(),
+			specialty: faker.helpers.arrayElement(Object.values(SPECIALTIES)),
+			profissionalRegistration: faker.helpers.arrayElement(
+				Object.values(PROFESSIONAL_REGISTRATIONS),
+			),
+			numberRegistration: faker.string.numeric(6),
+			experience: faker.lorem.sentence(),
+			bio: faker.lorem.paragraph(),
 			companyId: new UniqueEntityID(),
 		})
 
@@ -23,6 +34,13 @@ describe('Interviewer Entity', () => {
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			password: faker.internet.password(),
+			specialty: faker.helpers.arrayElement(Object.values(SPECIALTIES)),
+			profissionalRegistration: faker.helpers.arrayElement(
+				Object.values(PROFESSIONAL_REGISTRATIONS),
+			),
+			numberRegistration: faker.string.numeric(6),
+			experience: faker.lorem.sentence(),
+			bio: faker.lorem.paragraph(),
 			companyId: new UniqueEntityID(),
 		})
 
@@ -48,6 +66,13 @@ describe('Interviewer Entity', () => {
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			password: faker.internet.password(),
+			specialty: faker.helpers.arrayElement(Object.values(SPECIALTIES)),
+			profissionalRegistration: faker.helpers.arrayElement(
+				Object.values(PROFESSIONAL_REGISTRATIONS),
+			),
+			numberRegistration: faker.string.numeric(6),
+			experience: faker.lorem.sentence(),
+			bio: faker.lorem.paragraph(),
 			companyId: new UniqueEntityID(),
 		})
 

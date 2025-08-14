@@ -10,6 +10,7 @@ const envSchema = z.object({
 	STRIPE_WEBHOOK_SECRET_KEY: z.string(),
 	EMAIL_ADM: z.string(),
 	RESEND_EMAIL_API_KEY: z.string(),
+	URL_FRONTEND: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

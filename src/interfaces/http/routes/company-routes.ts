@@ -15,6 +15,7 @@ import { createContract } from '../controllers/company/create-contract'
 import { createInterviewer } from '../controllers/company/create-interviewer'
 import { deleteClient } from '../controllers/company/delete-client'
 import { deleteInterviewer } from '../controllers/company/delete-interviewer'
+import { fetchClients } from '../controllers/company/fetch-clients'
 import { fetchInterviewers } from '../controllers/company/fetch-interviewers'
 import { fetchInvoices } from '../controllers/company/fetch-invoices'
 import { registerClient } from '../controllers/company/register-client'
@@ -48,6 +49,21 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 			onRequest: [verifyJWT, verifyUserRole(ROLE.COMPANY)],
 		},
 		fetchInterviewers,
+	)
+
+	app.get(
+		'/fetch-clients',
+		{
+			schema: {
+				tags: ['Company'],
+				summary: 'Fetch all interviewers',
+				description:
+					'This route allows a company to fetch all registered clients.',
+				querystring: fetchInterviewersSchema,
+			},
+			onRequest: [verifyJWT, verifyUserRole(ROLE.COMPANY)],
+		},
+		fetchClients,
 	)
 
 	app.get(
@@ -136,7 +152,7 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 	)
 
 	app.delete(
-		'/delete-interviewer/:companyId/:interviewerId',
+		'/delete-interviewer/:interviewerId',
 		{
 			schema: {
 				tags: ['Company'],

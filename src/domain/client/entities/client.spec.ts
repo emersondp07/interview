@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker'
 import { ROLE } from '../../administrator/entities/interfaces/adminitrator.type'
 import { UniqueEntityID } from '../../core/entities/unique-entity'
 import { Client } from './client'
-import { DOCUMENT_TYPE } from './interfaces/client.type'
+import { DOCUMENT_TYPE, GENDER } from './interfaces/client.type'
 
 describe('Client Entity', () => {
 	it('Should be able to create a client with valid data', () => {
@@ -14,6 +14,13 @@ describe('Client Entity', () => {
 			birthDate: new Date('1990-01-01'),
 			phone: faker.phone.number(),
 			email: faker.internet.email(),
+			age: faker.number.int({ min: 18, max: 65 }),
+			gender: faker.helpers.arrayElement(Object.values(GENDER)),
+			allergies: faker.lorem.sentence(),
+			emergencyContact: faker.person.fullName(),
+			emergencyPhone: faker.phone.number(),
+			medicalHistory: faker.lorem.paragraph(),
+			medications: faker.lorem.sentence(),
 			companyId: new UniqueEntityID(),
 		})
 
@@ -33,6 +40,13 @@ describe('Client Entity', () => {
 			birthDate: new Date('1990-01-01'),
 			phone: '11 91234-5678',
 			email: 'john.doe@gmail.com',
+			age: 30,
+			gender: GENDER.FEM,
+			allergies: 'None',
+			emergencyContact: 'Jane Doe',
+			emergencyPhone: '11 91234-5678',
+			medicalHistory: 'No known conditions',
+			medications: 'None',
 			companyId: new UniqueEntityID(),
 		})
 
@@ -58,6 +72,13 @@ describe('Client Entity', () => {
 			birthDate: new Date('1990-01-01'),
 			phone: '11 91234-5678',
 			email: 'john.doe@gmail.com',
+			age: 30,
+			gender: GENDER.FEM,
+			allergies: 'None',
+			emergencyContact: 'Jane Doe',
+			emergencyPhone: '11 91234-5678',
+			medicalHistory: 'No known conditions',
+			medications: 'None',
 			companyId: new UniqueEntityID(),
 		})
 

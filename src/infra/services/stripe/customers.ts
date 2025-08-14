@@ -34,7 +34,7 @@ export class StripeCustomersService implements IStripeCustomers {
 				},
 			],
 			mode: 'subscription',
-			success_url: 'http://localhost:3000/success',
+			success_url: `${env.URL_FRONTEND}/sign-in`,
 			cancel_url: 'http://localhost:3000/cancel',
 		})
 	}

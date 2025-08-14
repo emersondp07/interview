@@ -48,6 +48,33 @@ enum STATUS_SIGNATURE {
   CANCELED
 }
 
+enum GENDER {
+  MALE
+  FEM
+  OTHER
+}
+
+enum SPECIALTIES {
+  CARDIOLOGIA
+  DERMATOLOGIA
+  ENDOCRINOLOGIA
+  GASTROENTEROLOGIA
+  GINECOLOGIA
+  NEUROLOGIA
+  OFTALMOLOGIA
+  ORTOPEDIA
+  PEDIATRIA
+  PSIQUIATRIA
+  CLINICA_GERAL
+  MEDICINA_DO_TRABALHO
+  MEDICINA_PREVENTIVA
+}
+
+enum PROFESSIONAL_REGISTRATIONS {
+  CRM
+  COREM
+}
+
 model Administrator {
   id         String    @id @default(uuid())
   name       String
@@ -148,36 +175,48 @@ model Contract {
 }
 
 model Interviewer {
-  id         String      @id @default(uuid())
-  name       String
-  email      String      @unique
-  password   String
-  role       ROLE
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  deleted_at DateTime?
-  company_id String
-  company    Company     @relation(fields: [company_id], references: [id])
-  interviews Interview[]
+  id                        String                     @id @default(uuid())
+  name                      String
+  email                     String                     @unique
+  password                  String
+  specialty                 SPECIALTIES
+  profissional_registration PROFESSIONAL_REGISTRATIONS
+  number_registration       String
+  experience                String?
+  bio                       String
+  role                      ROLE
+  created_at                DateTime                   @default(now())
+  updated_at                DateTime                   @updatedAt
+  deleted_at                DateTime?
+  company_id                String
+  company                   Company                    @relation(fields: [company_id], references: [id])
+  interviews                Interview[]
 
   @@map("interviewers")
 }
 
 model Client {
-  id            String        @id @default(uuid())
-  name          String
-  document_type DOCUMENT_TYPE
-  document      String        @unique
-  birth_date    DateTime
-  phone         String
-  email         String
-  role          ROLE
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
-  deleted_at    DateTime?
-  company_id    String
-  company       Company       @relation(fields: [company_id], references: [id])
-  interviews    Interview[]
+  id                String        @id @default(uuid())
+  name              String
+  document_type     DOCUMENT_TYPE
+  document          String        @unique
+  phone             String
+  birth_date        DateTime
+  age               Int
+  gender            GENDER
+  email             String
+  emergency_contact String?
+  emergency_phone   String?
+  medical_history   String?
+  allergies         String?
+  medications       String?
+  role              ROLE
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+  deleted_at        DateTime?
+  company_id        String
+  company           Company       @relation(fields: [company_id], references: [id])
+  interviews        Interview[]
 
   @@map("clients")
 }

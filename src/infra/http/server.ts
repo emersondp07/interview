@@ -1,7 +1,10 @@
+import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { administratorRoutes } from '@/interfaces/http/routes/administrator-routes'
 import { clientRoutes } from '@/interfaces/http/routes/client-routes'
 import { companyRoutes } from '@/interfaces/http/routes/company-routes'
 import { interviewerRoutes } from '@/interfaces/http/routes/interviewer-routes'
+import { webhookRoutes } from '@/interfaces/http/routes/webhook-routes'
+import { registerInterviewNamespace } from '@/interfaces/http/socket/namespace/interview-namespace'
 import fastifyCookie from '@fastify/cookie'
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
@@ -16,9 +19,6 @@ import {
 	validatorCompiler,
 } from 'fastify-type-provider-zod'
 import { ZodError } from 'zod'
-import { InvalidCredencialsError } from '../../domain/core/errors/errors/invalid-credencials-error'
-import { webhookRoutes } from '../../interfaces/http/routes/webhook-routes'
-import { registerInterviewNamespace } from '../../interfaces/http/socket/namespace/interview-namespace'
 import { env } from '../config'
 
 import { Server as SocketIOServer } from 'socket.io'
@@ -35,7 +35,7 @@ app.register(fastifyRawBody, {
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
-app.register(fastifyCors, { origin: '*' })
+app.register(fastifyCors, { origin: '*', credentials: true })
 
 app.register(fastifySwagger, {
 	openapi: {

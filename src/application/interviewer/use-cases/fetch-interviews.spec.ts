@@ -5,7 +5,7 @@ import { FetchInterviewsUseCase } from './fetch-interviews'
 let inMemoryInterviewsRepository: InMemoryInterviewsRepository
 let sut: FetchInterviewsUseCase
 
-describe('Fetch Plans', () => {
+describe('Fetch Interviews', () => {
 	beforeEach(() => {
 		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
 		sut = new FetchInterviewsUseCase(inMemoryInterviewsRepository)

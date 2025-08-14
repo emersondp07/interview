@@ -5,10 +5,13 @@ import { PrismaClientMapper } from '../prisma/mappers/prisma-client-mapper'
 import { prisma } from '../prisma/prisma'
 
 export class PrismaClientsRepository implements ClientsRepository {
-	async findAll({ page }: PaginationParams) {
+	async findAll(companyId: string, { page }: PaginationParams) {
 		const clients = await prisma.client.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
+			where: {
+				company_id: companyId,
+			},
 		})
 
 		return clients.map(PrismaClientMapper.toDomain)

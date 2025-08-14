@@ -1,9 +1,13 @@
 import { Client } from '@/domain/client/entities/client'
-import type { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
+import type {
+	DOCUMENT_TYPE,
+	GENDER,
+} from '@/domain/client/entities/interfaces/client.type'
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type {
 	Client as PrismaClient,
+	GENDER as PrismaGender,
 	Interview as PrismaInterview,
 	ROLE as PrismaRole,
 } from '@prisma/client'
@@ -15,11 +19,18 @@ export class PrismaClientMapper {
 		return {
 			id: client.id.toString(),
 			name: client.name,
-			email: client.email,
 			document_type: client.documentType,
 			document: client.document,
-			birth_date: new Date(client.birthDate),
 			phone: client.phone,
+			birth_date: new Date(client.birthDate),
+			age: client.age,
+			gender: client.gender as PrismaGender,
+			email: client.email,
+			emergency_contact: client.emergencyContact ?? null,
+			emergency_phone: client.emergencyPhone ?? null,
+			medical_history: client.medicalHistory ?? null,
+			allergies: client.allergies ?? null,
+			medications: client.medications ?? null,
 			company_id: client.companyId.toString(),
 			role: client.role as PrismaRole,
 			created_at: client.createdAt,
@@ -42,11 +53,18 @@ export class PrismaClientMapper {
 		return Client.create(
 			{
 				name: raw.name,
-				email: raw.email,
 				documentType: raw.document_type as DOCUMENT_TYPE.CPF | DOCUMENT_TYPE.RG,
 				document: raw.document,
-				birthDate: new Date(raw.birth_date),
 				phone: raw.phone,
+				birthDate: new Date(raw.birth_date),
+				age: raw.age,
+				gender: raw.gender as GENDER,
+				email: raw.email,
+				emergencyContact: raw.emergency_contact ?? undefined,
+				emergencyPhone: raw.emergency_phone ?? undefined,
+				medicalHistory: raw.medical_history ?? undefined,
+				allergies: raw.allergies ?? undefined,
+				medications: raw.medications ?? undefined,
 				companyId: new UniqueEntityID(raw.company_id),
 				role: raw.role as ROLE.CLIENT,
 				interviews: interviewList,

@@ -4,6 +4,10 @@ import { InMemoryCompaniesRepository } from '@/tests/repositories/in-memory-comp
 import { InMemoryInterviewersRepository } from '@/tests/repositories/in-memory-interviewers-repository'
 import { faker } from '@faker-js/faker'
 import { beforeEach, describe, it } from 'vitest'
+import {
+	PROFESSIONAL_REGISTRATIONS,
+	SPECIALTIES,
+} from '../../../domain/interviewer/entities/interfaces/interviewer.type'
 import { InMemoryResendEmailsService } from '../../../tests/repositories/in-memory-resend-emails-service'
 import { CreateInterviewerUseCase } from './create-interviewer'
 
@@ -34,6 +38,13 @@ describe('Create Interviewer', () => {
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			password: faker.internet.password(),
+			specialty: faker.helpers.arrayElement(Object.values(SPECIALTIES)),
+			profissionalRegistration: faker.helpers.arrayElement(
+				Object.values(PROFESSIONAL_REGISTRATIONS),
+			),
+			numberRegistration: faker.string.numeric(6),
+			experience: faker.lorem.sentence(),
+			bio: faker.lorem.paragraph(),
 			companyId: company.id.toString(),
 		})
 
@@ -51,6 +62,13 @@ describe('Create Interviewer', () => {
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			password: faker.internet.password(),
+			specialty: faker.helpers.arrayElement(Object.values(SPECIALTIES)),
+			profissionalRegistration: faker.helpers.arrayElement(
+				Object.values(PROFESSIONAL_REGISTRATIONS),
+			),
+			numberRegistration: faker.string.numeric(6),
+			experience: faker.lorem.sentence(),
+			bio: faker.lorem.paragraph(),
 			companyId: company.id.toString(),
 		})
 
