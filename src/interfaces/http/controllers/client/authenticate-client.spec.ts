@@ -26,6 +26,13 @@ describe('Authenticate Client (e2e)', () => {
 				birthDate: '10-09-1996',
 				phone: '11 987466531',
 				email: 'johndoe@email.com',
+				age: 27,
+				gender: 'MALE',
+				emergencyContact: 'Jane Doe',
+				emergencyPhone: '11 987466531',
+				medicalHistory: 'None',
+				allergies: 'None',
+				medications: 'None',
 				companyId: companyId,
 			})
 
