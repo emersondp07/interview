@@ -37,6 +37,13 @@ describe('Register Client (e2e)', () => {
 				phone: client.phone,
 				documentType: client.documentType,
 				document: client.document,
+				age: client.age,
+				gender: client.gender,
+				emergencyContact: client.emergencyContact,
+				emergencyPhone: client.emergencyPhone,
+				medicalHistory: client.medicalHistory,
+				allergies: client.allergies,
+				medications: client.medications,
 				companyId,
 			})
 

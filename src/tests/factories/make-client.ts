@@ -15,7 +15,7 @@ export function makeClient(
 		{
 			name: faker.person.fullName(),
 			documentType: DOCUMENT_TYPE.CPF,
-			document: '12345678909',
+			document: faker.string.numeric(11),
 			birthDate: new Date('1990-01-01'),
 			phone: faker.phone.number(),
 			email: faker.internet.email(),
