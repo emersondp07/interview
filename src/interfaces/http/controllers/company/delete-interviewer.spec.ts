@@ -36,7 +36,7 @@ describe('Delete Interviewer (e2e)', () => {
 		})
 
 		const response = await request(app.server)
-			.delete(`/delete-interviewer/${companyId}/${interviewer.id.toString()}`)
+			.delete(`/delete-interviewer/${interviewer.id.toString()}`)
 			.set('Authorization', `Bearer ${token}`)
 			.send()
 
