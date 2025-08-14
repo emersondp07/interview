@@ -15,9 +15,9 @@ export function makeCompany(
 			cnpj: faker.helpers.replaceSymbols('##.###.###/####-##'),
 			email: faker.internet.email(),
 			password: faker.internet.password({
-				length: 16,
+				length: 8,
 				memorable: false,
-				pattern: /[A-Za-z0-9!@#$%^&*()_+]{16}/,
+				pattern: /(?=.*\d)(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*()_+]{8}/,
 			}),
 			phone: faker.phone.number(),
 			planId: faker.string.uuid(),
