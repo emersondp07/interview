@@ -11,7 +11,7 @@ export class ResendEmailsService implements IResendEmails {
 
 	async sendEmail(to: string, subject: string, html: string): Promise<void> {
 		await this.resend.emails.send({
-			from: env.EMAIL_ADM,
+			from: 'onboarding@resend.dev',
 			to,
 			subject,
 			html,

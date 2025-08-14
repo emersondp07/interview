@@ -25,6 +25,11 @@ export async function createAndAuthenticateClientInterviewer(
 			name: interviewer.name,
 			email: interviewer.email,
 			password: interviewer.password,
+			specialty: interviewer.specialty,
+			profissionalRegistration: interviewer.profissionalRegistration,
+			numberRegistration: interviewer.numberRegistration,
+			experience: interviewer.experience,
+			bio: interviewer.bio,
 			companyId: companyId,
 		})
 
@@ -50,6 +55,13 @@ export async function createAndAuthenticateClientInterviewer(
 			birth_date: client.birthDate,
 			role: ROLE.CLIENT,
 			phone: client.phone,
+			age: client.age,
+			gender: client.gender,
+			emergency_contact: client.emergencyContact,
+			emergency_phone: client.emergencyPhone,
+			medical_history: client.medicalHistory,
+			allergies: client.allergies,
+			medications: client.medications,
 			company_id: companyId,
 			interviews: {
 				create: {

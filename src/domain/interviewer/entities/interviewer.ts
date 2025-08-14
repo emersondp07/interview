@@ -17,6 +17,26 @@ export class Interviewer extends Entity<InterviewerProps> {
 		return this.props.password
 	}
 
+	get specialty() {
+		return this.props.specialty
+	}
+
+	get profissionalRegistration() {
+		return this.props.profissionalRegistration
+	}
+
+	get numberRegistration() {
+		return this.props.numberRegistration
+	}
+
+	get experience() {
+		return this.props.experience
+	}
+
+	get bio() {
+		return this.props.bio
+	}
+
 	get role() {
 		return this.props.role
 	}

@@ -34,6 +34,11 @@ describe('Create Interviewer (e2e)', () => {
 				name: interviewer.name,
 				email: interviewer.email,
 				password: interviewer.password,
+				specialty: interviewer.specialty,
+				profissionalRegistration: interviewer.profissionalRegistration,
+				numberRegistration: interviewer.numberRegistration,
+				experience: interviewer.experience,
+				bio: interviewer.bio,
 				companyId: companyId,
 			})
 

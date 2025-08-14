@@ -7,8 +7,11 @@ import type { Client as PrismaClient } from '@prisma/client'
 export class InMemoryClientsRepository implements ClientsRepository {
 	public items: PrismaClient[] = []
 
-	async findAll({ page }: PaginationParams) {
-		const clients = this.items.slice((page - 1) * 10, page * 10)
+	async findAll(companyId: string, { page }: PaginationParams) {
+		const filterClients = this.items.filter(
+			(client) => client.company_id === companyId,
+		)
+		const clients = filterClients.slice((page - 1) * 10, page * 10)
 
 		return clients.map(PrismaClientMapper.toDomain)
 	}

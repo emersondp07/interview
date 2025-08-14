@@ -1,4 +1,7 @@
-import { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
+import {
+	DOCUMENT_TYPE,
+	GENDER,
+} from '@/domain/client/entities/interfaces/client.type'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { makeCompany } from '@/tests/factories/make-company'
 import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
@@ -42,6 +45,13 @@ describe('Register Client', () => {
 			birthDate: new Date('1990-01-01'),
 			phone: faker.phone.number(),
 			email: faker.internet.email(),
+			age: faker.number.int({ min: 18, max: 65 }),
+			gender: faker.helpers.arrayElement(Object.values(GENDER)),
+			allergies: faker.lorem.sentence(),
+			emergencyContact: faker.person.fullName(),
+			emergencyPhone: faker.phone.number(),
+			medicalHistory: faker.lorem.paragraph(),
+			medications: faker.lorem.sentence(),
 			companyId: company.id.toString(),
 		})
 
@@ -59,6 +69,13 @@ describe('Register Client', () => {
 			birthDate: new Date('1990-01-01'),
 			phone: faker.phone.number(),
 			email: faker.internet.email(),
+			age: faker.number.int({ min: 18, max: 65 }),
+			gender: faker.helpers.arrayElement(Object.values(GENDER)),
+			allergies: faker.lorem.sentence(),
+			emergencyContact: faker.person.fullName(),
+			emergencyPhone: faker.phone.number(),
+			medicalHistory: faker.lorem.paragraph(),
+			medications: faker.lorem.sentence(),
 			companyId: company.id.toString(),
 		})
 

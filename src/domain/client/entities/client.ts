@@ -10,24 +10,52 @@ export class Client extends AggregateRoot<ClientProps> {
 		return this.props.name
 	}
 
-	get phone() {
-		return this.props.phone
-	}
-
-	get email() {
-		return this.props.email
-	}
-
-	get birthDate() {
-		return this.props.birthDate
-	}
-
 	get documentType() {
 		return this.props.documentType
 	}
 
 	get document() {
 		return this.props.document
+	}
+
+	get phone() {
+		return this.props.phone
+	}
+
+	get birthDate() {
+		return this.props.birthDate
+	}
+
+	get age() {
+		return this.props.age
+	}
+
+	get gender() {
+		return this.props.gender
+	}
+
+	get email() {
+		return this.props.email
+	}
+
+	get emergencyContact() {
+		return this.props.emergencyContact
+	}
+
+	get emergencyPhone() {
+		return this.props.emergencyPhone
+	}
+
+	get medicalHistory() {
+		return this.props.medicalHistory
+	}
+
+	get allergies() {
+		return this.props.allergies
+	}
+
+	get medications() {
+		return this.props.medications
 	}
 
 	get role() {

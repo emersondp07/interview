@@ -1,6 +1,7 @@
 import { DOCUMENT_TYPE } from '@/domain/client/entities/interfaces/client.type'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
+import { GENDER } from '@prisma/client'
 import request from 'supertest'
 
 describe('Authenticate Client (e2e)', () => {
@@ -26,6 +27,13 @@ describe('Authenticate Client (e2e)', () => {
 				birthDate: '10-09-1996',
 				phone: '11 987466531',
 				email: 'johndoe@email.com',
+				age: 27,
+				gender: GENDER.MALE,
+				emergencyContact: 'Jane Doe',
+				emergencyPhone: '11 987466531',
+				medicalHistory: 'None',
+				allergies: 'None',
+				medications: 'None',
 				companyId: companyId,
 			})
 

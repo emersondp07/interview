@@ -2,7 +2,7 @@ import type { Client } from '../../client/entities/client'
 import type { PaginationParams } from '../../core/repositories/pagination-params'
 
 export interface ClientsRepository {
-	findAll(params: PaginationParams): Promise<Client[] | null>
+	findAll(companyId: string, params: PaginationParams): Promise<Client[] | null>
 	findAllOnline(
 		params: PaginationParams,
 		clients: string[],

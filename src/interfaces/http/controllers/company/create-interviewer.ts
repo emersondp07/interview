@@ -10,7 +10,16 @@ export async function createInterviewer(
 	reply: FastifyReply,
 ) {
 	const { sub: companyId } = request.user
-	const { name, email, password } = request.body as CreateInterviewerSchema
+	const {
+		name,
+		email,
+		password,
+		specialty,
+		profissionalRegistration,
+		numberRegistration,
+		experience,
+		bio,
+	} = request.body as CreateInterviewerSchema
 
 	const prismaInterviewersRepository = new PrismaInterviewersRepository()
 	const prismaCompaniesRepository = new PrismaCompaniesRepository()
@@ -25,6 +34,11 @@ export async function createInterviewer(
 		name,
 		email,
 		password,
+		specialty,
+		profissionalRegistration,
+		numberRegistration,
+		experience,
+		bio,
 		companyId,
 	})
 

@@ -25,13 +25,18 @@ describe('Delete Interviewer (e2e)', () => {
 				name: interviewer.name,
 				email: interviewer.email,
 				password: interviewer.password,
+				specialty: interviewer.specialty,
+				number_registration: interviewer.numberRegistration,
+				profissional_registration: interviewer.profissionalRegistration,
+				experience: interviewer.experience,
+				bio: interviewer.bio,
 				role: interviewer.role,
 				company_id: companyId,
 			},
 		})
 
 		const response = await request(app.server)
-			.delete(`/delete-interviewer/${companyId}/${interviewer.id.toString()}`)
+			.delete(`/delete-interviewer/${interviewer.id.toString()}`)
 			.set('Authorization', `Bearer ${token}`)
 			.send()
 
