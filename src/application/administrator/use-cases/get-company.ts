@@ -9,7 +9,7 @@ interface GetCompanyUseCaseRequest {
 type GetCompanyUseCaseResponse = Either<null, { company: Company | null }>
 
 export class GetCompanyUseCase {
-	constructor(private companiesRepository: CompaniesRepository) {}
+	constructor(private readonly companiesRepository: CompaniesRepository) {}
 
 	async execute({
 		companyId,

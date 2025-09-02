@@ -13,7 +13,7 @@ type GetInterviewUseCaseResponse = Either<
 >
 
 export class GetInterviewByIdUseCase {
-	constructor(private interviewsRepository: InterviewsRepository) {}
+	constructor(private readonly interviewsRepository: InterviewsRepository) {}
 
 	async execute({
 		interviewId,

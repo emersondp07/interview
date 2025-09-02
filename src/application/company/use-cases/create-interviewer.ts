@@ -29,9 +29,9 @@ type CreateInterviewerUseCaseResponse = Either<
 
 export class CreateInterviewerUseCase {
 	constructor(
-		private interviewersRepository: InterviewersRepository,
-		private companiesRepository: CompaniesRepository,
-		private resendEmailsService: IResendEmails,
+		private readonly interviewersRepository: InterviewersRepository,
+		private readonly companiesRepository: CompaniesRepository,
+		private readonly resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({

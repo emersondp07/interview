@@ -11,7 +11,7 @@ interface DeleteClientUseCaseRequest {
 type DeleteClientUseCaseResponse = Either<ResourceNotFoundError, {}>
 
 export class DeleteClientUseCase {
-	constructor(private clientsRepository: ClientsRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
 		companyId,

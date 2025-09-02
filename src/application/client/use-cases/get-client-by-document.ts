@@ -13,7 +13,7 @@ type GetClientByDocumentUseCaseResponse = Either<
 >
 
 export class GetClientByDocumentUseCase {
-	constructor(private clientsRepository: ClientsRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
 		document,

@@ -18,8 +18,8 @@ type GetInterviewerByIdUseCaseResponse = Either<
 
 export class GetInterviewerByIdUseCase {
 	constructor(
-		private interviewersRepository: InterviewersRepository,
-		private companiesRepository: CompaniesRepository,
+		private readonly interviewersRepository: InterviewersRepository,
+		private readonly companiesRepository: CompaniesRepository,
 	) {}
 
 	async execute({

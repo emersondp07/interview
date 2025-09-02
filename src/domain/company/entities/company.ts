@@ -55,7 +55,7 @@ export class Company extends AggregateRoot<CompanyProps> {
 		return this.props.stripeCustomerId
 	}
 
-	private touch() {
+	touch() {
 		this.props.updatedAt = new Date()
 	}
 

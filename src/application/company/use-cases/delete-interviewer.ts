@@ -10,7 +10,9 @@ interface DeleteInterviewerUseCaseRequest {
 type DeleteInterviewerUseCaseResponse = Either<ResourceNotFoundError, {}>
 
 export class DeleteInterviewerUseCase {
-	constructor(private interviewersRepository: InterviewersRepository) {}
+	constructor(
+		private readonly interviewersRepository: InterviewersRepository,
+	) {}
 
 	async execute({
 		interviewerId,

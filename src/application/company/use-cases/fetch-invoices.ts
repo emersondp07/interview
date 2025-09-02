@@ -16,8 +16,8 @@ type FetchInvoicesUseCaseResponse = Either<
 
 export class FetchInvoicesUseCase {
 	constructor(
-		private invoicesRepository: InvoicesRepository,
-		private companiesRepository: CompaniesRepository,
+		private readonly invoicesRepository: InvoicesRepository,
+		private readonly companiesRepository: CompaniesRepository,
 	) {}
 
 	async execute({

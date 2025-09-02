@@ -10,7 +10,7 @@ interface FetchClientsUseCaseRequest {
 type FetchClientsUseCaseResponse = Either<null, { clients: Client[] | null }>
 
 export class FetchClientsUseCase {
-	constructor(private clientsRepository: ClientsRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
 		companyId,

@@ -15,7 +15,9 @@ type CreateAdministratorUseCaseResponse = Either<
 >
 
 export class CreateAdministratorUseCase {
-	constructor(private administratorsRepository: AdministratorsRepository) {}
+	constructor(
+		private readonly administratorsRepository: AdministratorsRepository,
+	) {}
 
 	async execute({
 		name,

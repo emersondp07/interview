@@ -61,7 +61,7 @@ export class Interviewer extends AggregateRoot<InterviewerProps> {
 		return this.props.companyId
 	}
 
-	private touch() {
+	touch() {
 		this.props.updatedAt = new Date()
 	}
 

@@ -35,7 +35,7 @@ export class Interview extends Entity<InterviewProps> {
 		return this.props.deletedAt
 	}
 
-	private touch() {
+	touch() {
 		this.props.updatedAt = new Date()
 	}
 

@@ -26,11 +26,11 @@ type RegisterCompanyUseCaseResponse = Either<
 
 export class RegisterCompanyUseCase {
 	constructor(
-		private companiesRepository: CompaniesRepository,
-		private plansRepository: PlansRepository,
-		private signaturesRepository: SignaturesRepository,
-		private stripeCustomersService: IStripeCustomers,
-		private resendEmailsService: IResendEmails,
+		private readonly companiesRepository: CompaniesRepository,
+		private readonly plansRepository: PlansRepository,
+		private readonly signaturesRepository: SignaturesRepository,
+		private readonly stripeCustomersService: IStripeCustomers,
+		private readonly resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({

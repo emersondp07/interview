@@ -15,7 +15,9 @@ type AuthenticateInterviewerUseCaseResponse = Either<
 >
 
 export class AuthenticateInterviewerUseCase {
-	constructor(private interviewersRepository: InterviewersRepository) {}
+	constructor(
+		private readonly interviewersRepository: InterviewersRepository,
+	) {}
 
 	async execute({
 		email,

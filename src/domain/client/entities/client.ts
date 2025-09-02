@@ -82,7 +82,7 @@ export class Client extends AggregateRoot<ClientProps> {
 		return this.props.deletedAt
 	}
 
-	private touch() {
+	touch() {
 		this.props.updatedAt = new Date()
 	}
 

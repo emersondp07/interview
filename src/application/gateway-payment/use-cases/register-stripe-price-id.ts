@@ -10,7 +10,7 @@ interface RegisterStripePriceIdUseCaseRequest {
 type RegisterStripePriceIdUseCaseResponse = Either<null, { plan: Plan }>
 
 export class RegisterStripePriceIdUseCase {
-	constructor(private plansRepository: PlansRepository) {}
+	constructor(private readonly plansRepository: PlansRepository) {}
 
 	async execute({
 		productId,

@@ -13,7 +13,9 @@ type FetchInterviewersUseCaseResponse = Either<
 >
 
 export class FetchInterviewersUseCase {
-	constructor(private interviewersRepository: InterviewersRepository) {}
+	constructor(
+		private readonly interviewersRepository: InterviewersRepository,
+	) {}
 
 	async execute({
 		companyId,
