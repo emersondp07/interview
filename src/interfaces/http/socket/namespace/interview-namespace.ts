@@ -48,10 +48,13 @@ export async function registerInterviewNamespace(io: Server) {
 			const clientId = socket.data.clientId
 
 			if (clientId) {
-				waitingQueue.delete(clientId)
-				onlineClients.delete(clientId)
-				// onlineInterviewers.delete(clientId)
-				// onlineCompanies.delete(clientId)
+				// Only remove from waiting queue if client is actually waiting
+				if (waitingQueue.has(clientId)) {
+					waitingQueue.delete(clientId)
+				}
+				if (onlineClients.has(clientId)) {
+					onlineClients.delete(clientId)
+				}
 			}
 		})
 	})
