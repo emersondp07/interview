@@ -2,6 +2,7 @@ import { CreateInterviewerUseCase } from '@/application/company/use-cases/create
 import type { CreateInterviewerSchema } from '@/application/company/validators/create-interviewer.schema'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import { ResendEmailsService } from '@/infra/services/email/emails'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -30,7 +31,7 @@ export async function createInterviewer(
 		resendEmailsService,
 	)
 
-	await createInterviewerUseCase.execute({
+	const result = await createInterviewerUseCase.execute({
 		name,
 		email,
 		password,
@@ -42,5 +43,7 @@ export async function createInterviewer(
 		companyId,
 	})
 
-	return reply.status(201).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(201).send()
+	})
 }

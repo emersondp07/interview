@@ -1,6 +1,7 @@
 import { CancelInvoiceUseCase } from '@/application/company/use-cases/cancel-invoice'
 import type { CancelInvoiceParams } from '@/application/company/validators/cancel-invoice.schema'
 import { PrismaInvoicesRepository } from '@/infra/database/repositories/prisma-invoices-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function cancelInvoice(
@@ -14,10 +15,12 @@ export async function cancelInvoice(
 		prismaInvoicesRepository,
 	)
 
-	await cancelInvoiceUseCase.execute({
+	const result = await cancelInvoiceUseCase.execute({
 		invoiceId,
 		signatureId,
 	})
 
-	return reply.status(204).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(204).send()
+	})
 }

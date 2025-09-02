@@ -2,6 +2,7 @@ import { CreateContractUseCase } from '@/application/company/use-cases/create-co
 import type { CreateContractSchema } from '@/application/company/validators/create-contract.schema'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaContractsRepository } from '@/infra/database/repositories/prisma-contracts-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function createContract(
@@ -19,12 +20,14 @@ export async function createContract(
 		prismaCompaniesRepository,
 	)
 
-	await createContractUseCase.execute({
+	const result = await createContractUseCase.execute({
 		title,
 		description,
 		imageUrl,
 		companyId,
 	})
 
-	return reply.status(201).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(201).send()
+	})
 }

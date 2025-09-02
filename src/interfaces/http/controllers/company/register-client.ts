@@ -3,6 +3,7 @@ import type { RegisterClientSchema } from '@/application/company/validators/regi
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import { ResendEmailsService } from '@/infra/services/email/emails'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -38,7 +39,7 @@ export async function registerClient(
 		resendEmailsService,
 	)
 
-	await registerCompanyUseCase.execute({
+	const result = await registerCompanyUseCase.execute({
 		name,
 		documentType,
 		document,
@@ -55,5 +56,7 @@ export async function registerClient(
 		companyId,
 	})
 
-	return reply.status(201).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(201).send()
+	})
 }

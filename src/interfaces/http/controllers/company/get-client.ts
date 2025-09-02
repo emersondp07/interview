@@ -2,6 +2,7 @@ import type { GetClientSchema } from '@/application/client/validators/get-client
 import { GetClientByIdUseCase } from '@/application/company/use-cases/get-client-by-id'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function getClient(request: FastifyRequest, reply: FastifyReply) {
@@ -16,9 +17,11 @@ export async function getClient(request: FastifyRequest, reply: FastifyReply) {
 		prismaCompaniesRepository,
 	)
 
-	const { value } = await fetchInterviewersUseCase.execute({
+	const result = await fetchInterviewersUseCase.execute({
 		clientId,
 	})
 
-	return reply.status(200).send(value)
+	return handleResult(result, reply, async (value) => {
+		return reply.status(200).send(value)
+	})
 }

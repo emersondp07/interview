@@ -1,6 +1,7 @@
 import { FetchClientsUseCase } from '@/application/company/use-cases/fetch-clients'
 import type { FetchClientsSchema } from '@/application/company/validators/fetch-clients.schema'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function fetchClients(
@@ -16,7 +17,9 @@ export async function fetchClients(
 		prismaClientsRepository,
 	)
 
-	const { value } = await fetchInterviewersUseCase.execute({ companyId, page })
+	const result = await fetchInterviewersUseCase.execute({ companyId, page })
 
-	return reply.status(200).send(value)
+	return handleResult(result, reply, async (value) => {
+		return reply.status(200).send(value)
+	})
 }
