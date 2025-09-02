@@ -11,7 +11,8 @@ export async function startInterview(
 	event: StartInterviewSchema,
 	socket: Socket,
 ) {
-	const { clientId, interviewId, interviewerId } = event
+	const { clientId, interviewId } = event
+	const interviewerId = socket.data.user.sub
 
 	const prismaClientsRepository = new PrismaClientsRepository()
 	const prismaInterviewsRepository = new PrismaInterviewsRepository()

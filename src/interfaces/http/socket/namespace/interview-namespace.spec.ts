@@ -25,10 +25,16 @@ describe('Interview Namespace (e2e)', () => {
 
 		clientSocket = Client(`http://localhost:${env.PORT}/interview`, {
 			withCredentials: true,
+			extraHeaders: {
+				cookie: `token=${tokenClient}`,
+			},
 		})
 
 		interviewerSocket = Client(`http://localhost:${env.PORT}/interview`, {
 			withCredentials: true,
+			extraHeaders: {
+				cookie: `token=${tokenInterviewer}`,
+			},
 		})
 
 		idClient = clientId
@@ -42,7 +48,7 @@ describe('Interview Namespace (e2e)', () => {
 		await new Promise<void>((resolve) => {
 			interviewerSocket.on('connect', () => resolve())
 		})
-	}, 60000)
+	}, 30000)
 
 	afterAll(async () => {
 		if (clientSocket.connected) {
