@@ -22,15 +22,11 @@ describe('Interview Namespace (e2e)', () => {
 		} = await createAndAuthenticateClientInterviewer(app)
 
 		clientSocket = Client(`http://localhost:${env.PORT}/interview`, {
-			auth: {
-				token: `Bearer ${tokenClient}`,
-			},
+			withCredentials: true,
 		})
 
 		interviewerSocket = Client(`http://localhost:${env.PORT}/interview`, {
-			auth: {
-				token: `Bearer ${tokenInterviewer}`,
-			},
+			withCredentials: true,
 		})
 
 		idClient = clientId

@@ -44,6 +44,11 @@ export class Interview extends Entity<InterviewProps> {
 		this.touch()
 	}
 
+	changeInterviewer(interviewerId: UniqueEntityID) {
+		this.props.interviewerId = interviewerId
+		this.touch()
+	}
+
 	delete() {
 		this.props.deletedAt = new Date()
 		this.props.status = STATUS_INTERVIEW.CANCELED

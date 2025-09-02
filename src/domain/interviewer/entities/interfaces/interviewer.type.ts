@@ -1,3 +1,4 @@
+import type { InterviewList } from '../../../../application/company/use-cases/interview-list'
 import type { ROLE } from '../../../administrator/entities/interfaces/adminitrator.type'
 import type { UniqueEntityID } from '../../../core/entities/unique-entity'
 
@@ -35,5 +36,6 @@ export interface InterviewerProps {
 	createdAt: Date
 	updatedAt: Date
 	deletedAt?: Date
+	interviews?: InterviewList
 	companyId: UniqueEntityID
 }

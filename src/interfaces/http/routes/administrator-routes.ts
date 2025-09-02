@@ -84,7 +84,7 @@ export async function administratorRoutes(app: FastifyTypedInstance) {
 				description: '',
 				body: createPlanSchema,
 			},
-			onRequest: [verifyJWT, verifyUserRole(ROLE.ADMIN)],
+			onRequest: [verifyJWT, verifyUserRole([ROLE.ADMIN])],
 		},
 		createPlan,
 	)
@@ -99,7 +99,7 @@ export async function administratorRoutes(app: FastifyTypedInstance) {
 					'This route allows an administrator to fetch all registered companies.',
 				querystring: fetchCompaniesSchema,
 			},
-			onRequest: [verifyJWT, verifyUserRole(ROLE.ADMIN)],
+			onRequest: [verifyJWT, verifyUserRole([ROLE.ADMIN])],
 		},
 		fetchCompanies,
 	)
@@ -114,7 +114,7 @@ export async function administratorRoutes(app: FastifyTypedInstance) {
 					'This route allows an administrator to get a company by its ID.',
 				params: getCompanySchema,
 			},
-			onRequest: [verifyJWT, verifyUserRole(ROLE.ADMIN)],
+			onRequest: [verifyJWT, verifyUserRole([ROLE.ADMIN])],
 		},
 		getCompany,
 	)

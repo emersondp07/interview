@@ -16,11 +16,10 @@ export class InMemoryInterviewersRepository implements InterviewersRepository {
 		return interviewersInPage.map(PrismaInterviewerMapper.toDomain)
 	}
 
-	async findById(companyId: string, interviewerId: string) {
+	async findById(interviewerId: string) {
 		const interviewer = this.items.find(
-			(interviewer) =>
-				interviewer.id === interviewerId &&
-				interviewer.company_id === companyId,
+			(interviewer) => interviewer.id === interviewerId,
+			// interviewer.company_id === companyId,
 		)
 
 		if (!interviewer) {

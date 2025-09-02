@@ -9,6 +9,7 @@ export class PrismaInterviewersRepository implements InterviewersRepository {
 		const interviewers = await prisma.interviewer.findMany({
 			where: {
 				company_id: companyId,
+				deleted_at: null,
 			},
 			take: 10,
 			skip: (page - 1) * 10,
@@ -17,11 +18,10 @@ export class PrismaInterviewersRepository implements InterviewersRepository {
 		return interviewers.map(PrismaInterviewerMapper.toDomain)
 	}
 
-	async findById(companyId: string, interviewerId: string) {
+	async findById(interviewerId: string) {
 		const interviewer = await prisma.interviewer.findUnique({
 			where: {
 				id: interviewerId,
-				company_id: companyId,
 			},
 		})
 

@@ -6,9 +6,12 @@ import { sendContract } from '../../controllers/interviewer/send-contract'
 import { startInterview } from '../../controllers/interviewer/start-interview'
 import { verifyJwtSocket } from '../../middlewares/verify-jwt-socket'
 
+export const onlineInterviewers: Map<string, Socket> = new Map()
+export const onlineClients: Map<string, Socket> = new Map()
+export const onlineCompanies: Map<string, Socket> = new Map()
 export const waitingQueue: Map<string, Socket> = new Map()
 
-export function registerInterviewNamespace(io: Server) {
+export async function registerInterviewNamespace(io: Server) {
 	const nsp = io.of('/interview')
 
 	nsp.use((socket, next) => {
@@ -34,6 +37,22 @@ export function registerInterviewNamespace(io: Server) {
 
 		socket.on('finish-interview', async (data) => {
 			await finishInterview(data, socket)
+		})
+
+		socket.on('disconnect', (data) => {
+			socket.emit('disconnect:response', {
+				message: 'You have been disconnected',
+				data,
+			})
+
+			const clientId = socket.data.clientId
+
+			if (clientId) {
+				waitingQueue.delete(clientId)
+				onlineClients.delete(clientId)
+				onlineInterviewers.delete(clientId)
+				onlineCompanies.delete(clientId)
+			}
 		})
 	})
 }

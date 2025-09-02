@@ -6,13 +6,14 @@ export function verifyJwtSocket(
 	socket: Socket,
 	next: (err?: ExtendedError) => void,
 ) {
-	const authHeader = socket.handshake.auth?.token
+	const token = socket.handshake.headers.cookie
+		?.split('; ')
+		.find((cookie) => cookie.startsWith('token='))
+		?.replace('token=', '')
 
-	if (!authHeader || !authHeader.startsWith('Bearer ')) {
+	if (!token) {
 		return next(new Error('Token não informado ou inválido'))
 	}
-
-	const token = authHeader.replace('Bearer ', '')
 
 	try {
 		const payload = jwt.verify(token, env.JWT_SECRET)

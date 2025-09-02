@@ -1,7 +1,10 @@
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import type { STATUS_INTERVIEW } from '@/domain/interviewer/entities/interfaces/interview.type'
 import { Interview } from '@/domain/interviewer/entities/interview'
-import type { Interview as PrismaInterview } from '@prisma/client'
+import type {
+	Interview as PrismaInterview,
+	STATUS_INTERVIEW as PrismaStatusInterview,
+} from '@prisma/client'
 
 export class PrismaInterviewMapper {
 	static toPrisma(interview: Interview): PrismaInterview {
@@ -10,7 +13,7 @@ export class PrismaInterviewMapper {
 			client_id: interview.clientId.toString(),
 			interviewer_id: interview.interviewerId?.toString() ?? null,
 			company_id: interview.companyId.toString(),
-			status: interview.status as STATUS_INTERVIEW,
+			status: interview.status as PrismaStatusInterview,
 			created_at: interview.createdAt,
 			updated_at: interview.updatedAt,
 			deleted_at: interview.deletedAt ?? null,
