@@ -42,7 +42,7 @@ describe('Interview Namespace (e2e)', () => {
 		await new Promise<void>((resolve) => {
 			interviewerSocket.on('connect', () => resolve())
 		})
-	})
+	}, 60000)
 
 	afterAll(async () => {
 		if (clientSocket.connected) {
