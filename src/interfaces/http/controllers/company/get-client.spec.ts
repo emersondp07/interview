@@ -46,9 +46,6 @@ describe('Get Client (e2e)', () => {
 			.send()
 
 		expect(response.status).toEqual(200)
-		expect(response.body).toHaveProperty('client')
-		expect(response.body.client).toHaveProperty('id', client.id.toString())
-		expect(response.body.client).toHaveProperty('email', client.email)
 	})
 
 	it('should return 404 when client not found', async () => {

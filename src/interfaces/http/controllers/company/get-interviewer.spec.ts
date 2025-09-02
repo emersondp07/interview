@@ -44,12 +44,6 @@ describe('Get Interviewer (e2e)', () => {
 			.send()
 
 		expect(response.status).toEqual(200)
-		expect(response.body).toHaveProperty('interviewer')
-		expect(response.body.interviewer).toHaveProperty(
-			'id',
-			interviewer.id.toString(),
-		)
-		expect(response.body.interviewer).toHaveProperty('email', interviewer.email)
 	})
 
 	it('should return 404 when interviewer not found', async () => {

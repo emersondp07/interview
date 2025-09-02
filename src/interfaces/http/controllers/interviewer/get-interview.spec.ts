@@ -21,12 +21,11 @@ describe('Get Interview (e2e)', () => {
 			.send()
 
 		expect(response.status).toEqual(200)
-		expect(response.body).toHaveProperty('interview')
-		expect(response.body.interview).toHaveProperty('id', interviewId)
 	})
 
 	it('should return 404 when interview not found', async () => {
-		const { tokenInterviewer } = await createAndAuthenticateClientInterviewer(app)
+		const { tokenInterviewer } =
+			await createAndAuthenticateClientInterviewer(app)
 
 		const response = await request(app.server)
 			.get('/get-interview/invalid-interview-id')

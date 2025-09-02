@@ -33,7 +33,7 @@ const socketToRoom = new Map<string, string>()
 // Criar worker do Mediasoup
 const createWorker = async () => {
 	worker = await mediasoup.createWorker({
-		logLevel: 'warn', // Mudado de debug para warn para reduzir logs
+		logLevel: 'warn',
 		logTags: ['info', 'ice', 'dtls', 'rtp', 'srtp', 'rtcp'],
 		rtcMinPort: 10000,
 		rtcMaxPort: 10100,
