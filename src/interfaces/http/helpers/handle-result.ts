@@ -1,19 +1,19 @@
 import type { Either } from '@/domain/core/either'
 import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
-import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { NotAllowedError } from '@/domain/core/errors/errors/not-allowed-error'
+import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import type { FastifyReply } from 'fastify'
 
 export const handleResult = async <L, R>(
 	result: Either<L, R>,
 	reply: FastifyReply,
-	onSuccess: (value: R) => Promise<FastifyReply> | FastifyReply
+	onSuccess: (value: R) => Promise<FastifyReply> | FastifyReply,
 ): Promise<FastifyReply> => {
 	if (result.isFailed()) {
 		const error = result.value
 
 		if (error instanceof InvalidCredencialsError) {
-			return reply.status(400).send({ message: error.message })
+			return reply.status(401).send({ message: error.message })
 		}
 
 		if (error instanceof ResourceNotFoundError) {

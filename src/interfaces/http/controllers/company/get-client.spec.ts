@@ -2,7 +2,7 @@ import { prisma } from '@/infra/database/prisma/prisma'
 import { app } from '@/infra/http/server'
 import { createAndAuthenticateCompany } from '@/tests/factories/create-and-authenticate-company'
 import { makeClient } from '@/tests/factories/make-client'
-import type { DOCUMENT_TYPE, GENDER } from '@prisma/client'
+import { type DOCUMENT_TYPE, type GENDER, ROLE } from '@prisma/client'
 import request from 'supertest'
 import { UniqueEntityID } from '../../../../domain/core/entities/unique-entity'
 
@@ -33,7 +33,7 @@ describe('Get Client (e2e)', () => {
 				email: client.email,
 				gender: client.gender as GENDER,
 				phone: client.phone,
-				role: client.role,
+				role: ROLE.CLIENT,
 				allergies: client.allergies,
 				emergency_contact: client.emergencyContact,
 				company_id: companyId,

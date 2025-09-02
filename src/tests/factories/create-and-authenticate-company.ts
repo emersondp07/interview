@@ -36,11 +36,11 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 	await prisma.company.create({
 		data: {
 			id: company.id.toString(),
-			corporate_reason: 'Corporate',
-			email: 'corporate@example.com',
+			corporate_reason: company.corporateReason,
+			email: company.email,
 			password: await hash(company.password, 10),
-			cnpj: '165165165156',
-			phone: '1231321321',
+			cnpj: company.cnpj,
+			phone: company.phone,
 			role: ROLE.COMPANY,
 			plan_id: plan.id.toString(),
 			signature: {
@@ -52,7 +52,7 @@ export async function createAndAuthenticateCompany(app: FastifyTypedInstance) {
 	})
 
 	const authResponse = await request(app.server).post('/session-company').send({
-		email: 'corporate@example.com',
+		email: company.email,
 		password: company.password,
 	})
 
