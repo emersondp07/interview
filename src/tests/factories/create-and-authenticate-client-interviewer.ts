@@ -50,7 +50,7 @@ export async function createAndAuthenticateClientInterviewer(
 			id: client.id.toString(),
 			name: client.name,
 			email: client.email,
-			document: '12345678912',
+			document: client.document,
 			document_type: client.documentType,
 			birth_date: client.birthDate,
 			role: ROLE.CLIENT,
@@ -76,7 +76,7 @@ export async function createAndAuthenticateClientInterviewer(
 	const responseClient = await request(app.server)
 		.post('/session-client')
 		.send({
-			document: '12345678912',
+			document: client.document,
 		})
 
 	const { token: tokenClient } = responseClient.body
