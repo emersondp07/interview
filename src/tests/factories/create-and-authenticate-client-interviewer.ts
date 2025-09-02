@@ -86,6 +86,7 @@ export async function createAndAuthenticateClientInterviewer(
 		tokenInterviewer,
 		companyId,
 		signatureId,
+		document: client.document,
 		clientId: client.id.toString(),
 		interviewId: interview.id.toString(),
 	}

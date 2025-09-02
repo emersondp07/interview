@@ -8,6 +8,7 @@ describe('Interview Namespace (e2e)', () => {
 	let interviewerSocket: Socket
 	let idClient: string
 	let idInterview: string
+	let clientDocument: string
 
 	beforeAll(async () => {
 		await start()
@@ -17,6 +18,7 @@ describe('Interview Namespace (e2e)', () => {
 			tokenInterviewer,
 			companyId,
 			signatureId,
+			document,
 			clientId,
 			interviewId,
 		} = await createAndAuthenticateClientInterviewer(app)
@@ -31,6 +33,7 @@ describe('Interview Namespace (e2e)', () => {
 
 		idClient = clientId
 		idInterview = interviewId
+		clientDocument = document
 
 		await new Promise<void>((resolve) => {
 			clientSocket.on('connect', () => resolve())
@@ -57,7 +60,7 @@ describe('Interview Namespace (e2e)', () => {
 	})
 
 	it('should handle "join-queue" event', async () => {
-		clientSocket.emit('join-queue', { document: '12345678912' })
+		clientSocket.emit('join-queue', { document: clientDocument })
 
 		const response = await new Promise((resolve) => {
 			clientSocket.once('join-queue:response', resolve)
