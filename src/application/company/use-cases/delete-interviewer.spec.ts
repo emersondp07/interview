@@ -43,7 +43,6 @@ describe('Delete Inteviewer', () => {
 		})
 
 		const deletedInterviewer = await inMemoryInterviewersRepository.findById(
-			company.id.toString(),
 			interviewer.id.toString(),
 		)
 

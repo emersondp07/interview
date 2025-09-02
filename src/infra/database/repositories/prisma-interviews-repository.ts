@@ -24,6 +24,16 @@ export class PrismaInterviewsRepository implements InterviewsRepository {
 		return interview ? PrismaInterviewMapper.toDomain(interview) : null
 	}
 
+	async getDetailsById(interviewId: string) {
+		const interview = await prisma.interview.findUnique({
+			where: {
+				id: interviewId,
+			},
+		})
+
+		return interview ? PrismaInterviewMapper.toDomain(interview) : null
+	}
+
 	async create(interview: Interview) {
 		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
 
@@ -52,9 +62,7 @@ export class PrismaInterviewsRepository implements InterviewsRepository {
 			where: {
 				id: prismaInterview.id,
 			},
-			data: {
-				status: prismaInterview.status,
-			},
+			data: prismaInterview,
 		})
 	}
 

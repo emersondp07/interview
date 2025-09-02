@@ -4,28 +4,37 @@ import { makeClient } from '@/tests/factories/make-client'
 import { makeInterview } from '@/tests/factories/make-interview'
 import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
 import { InMemoryInterviewsRepository } from '@/tests/repositories/in-memory-interviews-repository'
+import { makeInterviewer } from '../../../tests/factories/make-interviewer'
+import { InMemoryInterviewersRepository } from '../../../tests/repositories/in-memory-interviewers-repository'
 import { StartInterviewUseCase } from './start-interview'
 
-let inMemoryInterviewsRepository: InMemoryInterviewsRepository
 let inMemoryClientsRepository: InMemoryClientsRepository
+let inMemoryInterviewsRepository: InMemoryInterviewsRepository
+let inMemoryInterviewersRepository: InMemoryInterviewersRepository
 let sut: StartInterviewUseCase
 
 describe('Start Interview', () => {
 	beforeEach(() => {
-		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
 		inMemoryClientsRepository = new InMemoryClientsRepository()
+		inMemoryInterviewsRepository = new InMemoryInterviewsRepository()
+		inMemoryInterviewersRepository = new InMemoryInterviewersRepository()
 		sut = new StartInterviewUseCase(
 			inMemoryClientsRepository,
 			inMemoryInterviewsRepository,
+			inMemoryInterviewersRepository,
 		)
 	})
 
 	it('Should be able to start interview', async () => {
 		const client = makeClient()
 
+		const interviewer = makeInterviewer()
+
 		const interviewScheduled = makeInterview()
 
 		inMemoryClientsRepository.create(client)
+
+		inMemoryInterviewersRepository.create(interviewer)
 
 		inMemoryInterviewsRepository.create(interviewScheduled)
 
@@ -34,6 +43,7 @@ describe('Start Interview', () => {
 		const result = await sut.execute({
 			clientId: client.id.toString(),
 			interviewId: interviewScheduled.id.toString(),
+			interviewerId: interviewer.id.toString(),
 		})
 
 		expect(result.isSuccess()).toBe(true)
@@ -46,6 +56,7 @@ describe('Start Interview', () => {
 
 	it('Should be able throw an error if interview is not found', async () => {
 		const client = makeClient()
+		const interviewer = makeInterviewer()
 		const interviewScheduled = makeInterview()
 
 		interviewScheduled.changeStatus(STATUS_INTERVIEW.SCHEDULED)
@@ -55,6 +66,7 @@ describe('Start Interview', () => {
 		const result = await sut.execute({
 			clientId: client.id.toString(),
 			interviewId: interviewScheduled.id.toString(),
+			interviewerId: interviewer.id.toString(),
 		})
 
 		if (result.isFailed()) {
@@ -64,6 +76,7 @@ describe('Start Interview', () => {
 
 	it('Should be able throw an error if interview status is different from SCHEDULED', async () => {
 		const client = makeClient()
+		const interviewer = makeInterviewer()
 
 		const interviewScheduled = makeInterview()
 
@@ -76,6 +89,7 @@ describe('Start Interview', () => {
 		const result = await sut.execute({
 			clientId: client.id.toString(),
 			interviewId: interviewScheduled.id.toString(),
+			interviewerId: interviewer.id.toString(),
 		})
 
 		if (result.isFailed()) {

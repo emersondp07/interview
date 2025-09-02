@@ -3,7 +3,10 @@ import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import type { GetClientByDocumentSchema } from '@application/client/validators/get-client-by-document.schema'
 import type { Socket } from 'socket.io'
-import { waitingQueue } from '../../socket/namespace/interview-namespace'
+import {
+	onlineClients,
+	waitingQueue,
+} from '../../socket/namespace/interview-namespace'
 
 export async function getClientByDocument(
 	data: GetClientByDocumentSchema,
@@ -22,7 +25,12 @@ export async function getClientByDocument(
 		return socket.emit('error', value)
 	}
 
-	waitingQueue.set(value.client.id.toString(), socket)
+	const clientId = value.client.id.toString()
+
+	socket.data.clientId = clientId
+
+	waitingQueue.set(clientId, socket)
+	onlineClients.set(clientId, socket)
 	socket.emit('join-queue:response', {
 		message: 'Client added to the waiting queue',
 	})

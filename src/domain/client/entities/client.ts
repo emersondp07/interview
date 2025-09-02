@@ -1,4 +1,4 @@
-import type { InterviewList } from '../../../application/company/use-cases/interview-list'
+import type { InterviewList } from '@/application/company/use-cases/interview-list'
 import { ROLE } from '../../administrator/entities/interfaces/adminitrator.type'
 import { AggregateRoot } from '../../core/entities/aggregate-root'
 import type { UniqueEntityID } from '../../core/entities/unique-entity'

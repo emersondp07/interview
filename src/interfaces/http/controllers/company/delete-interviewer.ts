@@ -1,6 +1,7 @@
 import { DeleteInterviewerUseCase } from '@/application/company/use-cases/delete-interviewer'
 import type { DeleteInterviewerParams } from '@/application/company/validators/delete-interviewer.schema'
 import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function deleteInterviewer(
@@ -15,10 +16,12 @@ export async function deleteInterviewer(
 		prismaInterviewersRepository,
 	)
 
-	await deleteInterviewerUseCase.execute({
+	const result = await deleteInterviewerUseCase.execute({
 		interviewerId,
 		companyId,
 	})
 
-	return reply.status(204).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(204).send()
+	})
 }

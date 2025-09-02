@@ -22,6 +22,7 @@ import { ZodError } from 'zod'
 import { env } from '../config'
 
 import { Server as SocketIOServer } from 'socket.io'
+import { registerVideoNamespace } from '../../interfaces/http/socket/namespace/video-namespace'
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -102,6 +103,7 @@ app.setErrorHandler((error, _, reply) => {
 
 function initSocket(io: SocketIOServer) {
 	registerInterviewNamespace(io)
+	registerVideoNamespace(io)
 }
 
 export async function start() {

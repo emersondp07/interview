@@ -11,6 +11,7 @@ const envSchema = z.object({
 	EMAIL_ADM: z.string(),
 	RESEND_EMAIL_API_KEY: z.string(),
 	URL_FRONTEND: z.string(),
+	ANNOUNCED_IP: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

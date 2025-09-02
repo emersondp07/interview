@@ -24,6 +24,20 @@ export class PrismaCompaniesRepository implements CompaniesRepository {
 		return company ? PrismaCompanyMapper.toDomain(company) : null
 	}
 
+	async findByInteviewerId(interviewerId: string): Promise<Company | null> {
+		const company = await prisma.company.findFirst({
+			where: {
+				interviewers: {
+					some: {
+						id: interviewerId,
+					},
+				},
+			},
+		})
+
+		return company ? PrismaCompanyMapper.toDomain(company) : null
+	}
+
 	async findByCustomerId(customerId: string) {
 		const company = await prisma.company.findUnique({
 			where: {

@@ -1,16 +1,19 @@
+import { InterviewList } from '@/application/company/use-cases/interview-list'
 import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
+import type {
+	PROFESSIONAL_REGISTRATIONS,
+	SPECIALTIES,
+} from '@/domain/interviewer/entities/interfaces/interviewer.type'
 import { Interviewer } from '@/domain/interviewer/entities/interviewer'
 import type { ROLE } from '@domain/administrator/entities/interfaces/adminitrator.type'
 import type {
+	Interview as PrismaInterview,
 	Interviewer as PrismaInterviewer,
 	PROFESSIONAL_REGISTRATIONS as PrismaProfessionalRegistrations,
 	ROLE as PrismaRole,
 	SPECIALTIES as PrismaSpecialties,
 } from '@prisma/client'
-import type {
-	PROFESSIONAL_REGISTRATIONS,
-	SPECIALTIES,
-} from '../../../../domain/interviewer/entities/interfaces/interviewer.type'
+import { PrismaInterviewMapper } from './prisma-interview-mapper'
 
 export class PrismaInterviewerMapper {
 	static toPrisma(interviewer: Interviewer): PrismaInterviewer {
@@ -33,7 +36,17 @@ export class PrismaInterviewerMapper {
 		}
 	}
 
-	static toDomain(raw: PrismaInterviewer): Interviewer {
+	static toDomain(
+		raw: PrismaInterviewer & { interviews?: PrismaInterview[] },
+	): Interviewer {
+		const interviewList = new InterviewList()
+
+		const interviews = raw.interviews?.map((interview) =>
+			PrismaInterviewMapper.toDomain(interview),
+		)
+
+		interviewList.currentItems = interviews || []
+
 		return Interviewer.create(
 			{
 				name: raw.name,

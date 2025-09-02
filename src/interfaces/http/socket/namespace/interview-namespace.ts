@@ -6,9 +6,12 @@ import { sendContract } from '../../controllers/interviewer/send-contract'
 import { startInterview } from '../../controllers/interviewer/start-interview'
 import { verifyJwtSocket } from '../../middlewares/verify-jwt-socket'
 
+// export const onlineInterviewers: Map<string, Socket> = new Map()
+export const onlineClients: Map<string, Socket> = new Map()
+// export const onlineCompanies: Map<string, Socket> = new Map()
 export const waitingQueue: Map<string, Socket> = new Map()
 
-export function registerInterviewNamespace(io: Server) {
+export async function registerInterviewNamespace(io: Server) {
 	const nsp = io.of('/interview')
 
 	nsp.use((socket, next) => {
@@ -34,6 +37,28 @@ export function registerInterviewNamespace(io: Server) {
 
 		socket.on('finish-interview', async (data) => {
 			await finishInterview(data, socket)
+		})
+
+		socket.on('disconnect', (data) => {
+			socket.emit('disconnect:response', {
+				message: 'You have been disconnected',
+				data,
+			})
+
+			const clientId = socket.data.clientId
+
+			if (clientId) {
+				// biome-ignore lint/complexity/useOptionalChain: <explanation>
+				if (waitingQueue && waitingQueue.has(clientId)) {
+					waitingQueue.delete(clientId)
+				}
+
+				// Mesma lógica para onlineClients
+				// biome-ignore lint/complexity/useOptionalChain: <explanation>
+				if (onlineClients && onlineClients.has(clientId)) {
+					onlineClients.delete(clientId)
+				}
+			}
 		})
 	})
 }

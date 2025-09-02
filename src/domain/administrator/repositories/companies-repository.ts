@@ -5,6 +5,7 @@ export interface CompaniesRepository {
 	create(company: Company): Promise<void>
 	findAll(params: PaginationParams): Promise<Company[] | null>
 	findById(companyId: string): Promise<Company | null>
+	findByInteviewerId(interviewerId: string): Promise<Company | null>
 	findByCustomerId(customerId: string): Promise<Company | null>
 	findByEmail(email: string): Promise<Company | null>
 }

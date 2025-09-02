@@ -1,3 +1,4 @@
+import { InterviewList } from '@/application/company/use-cases/interview-list'
 import { Client } from '@/domain/client/entities/client'
 import type {
 	DOCUMENT_TYPE,
@@ -11,7 +12,6 @@ import type {
 	Interview as PrismaInterview,
 	ROLE as PrismaRole,
 } from '@prisma/client'
-import { InterviewList } from '../../../../application/company/use-cases/interview-list'
 import { PrismaInterviewMapper } from './prisma-interview-mapper'
 
 export class PrismaClientMapper {

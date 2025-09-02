@@ -1,10 +1,10 @@
 import { ROLE } from '../../administrator/entities/interfaces/adminitrator.type'
-import { Entity } from '../../core/entities/entity'
+import { AggregateRoot } from '../../core/entities/aggregate-root'
 import type { UniqueEntityID } from '../../core/entities/unique-entity'
 import type { Optional } from '../../core/types/optional'
 import type { InterviewerProps } from './interfaces/interviewer.type'
 
-export class Interviewer extends Entity<InterviewerProps> {
+export class Interviewer extends AggregateRoot<InterviewerProps> {
 	get name() {
 		return this.props.name
 	}
@@ -39,6 +39,10 @@ export class Interviewer extends Entity<InterviewerProps> {
 
 	get role() {
 		return this.props.role
+	}
+
+	get interviews() {
+		return this.props.interviews
 	}
 
 	get createdAt() {

@@ -1,6 +1,6 @@
 import { AuthenticateClientUseCase } from '@/application/client/use-cases/authenticate-client'
-import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { AuthenticateClientSchema } from '@application/client/validators/authenticate-client.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -15,46 +15,44 @@ export async function authenticateClient(
 		prismaClientsRepository,
 	)
 
-	const { value } = await authenticateClientUseCase.execute({
+	const result = await authenticateClientUseCase.execute({
 		document,
 	})
 
-	if (value instanceof InvalidCredencialsError) {
-		return reply.status(401).send(value)
-	}
-
-	const token = await reply.jwtSign(
-		{
-			role: value.client.role,
-		},
-		{
-			sign: {
-				sub: value.client.id.toString(),
+	return handleResult(result, reply, async (value) => {
+		const token = await reply.jwtSign(
+			{
+				role: value.client.role,
 			},
-		},
-	)
-
-	const refreshToken = await reply.jwtSign(
-		{
-			role: value.client.role,
-		},
-		{
-			sign: {
-				sub: value.client.id.toString(),
-				expiresIn: '7d',
+			{
+				sign: {
+					sub: value.client.id.toString(),
+				},
 			},
-		},
-	)
+		)
 
-	return reply
-		.setCookie('refreshToken', refreshToken, {
-			path: '/',
-			secure: true,
-			sameSite: true,
-			httpOnly: true,
-		})
-		.status(200)
-		.send({
-			token,
-		})
+		const refreshToken = await reply.jwtSign(
+			{
+				role: value.client.role,
+			},
+			{
+				sign: {
+					sub: value.client.id.toString(),
+					expiresIn: '7d',
+				},
+			},
+		)
+
+		return reply
+			.setCookie('refreshToken', refreshToken, {
+				path: '/',
+				secure: true,
+				sameSite: true,
+				httpOnly: true,
+			})
+			.status(200)
+			.send({
+				token,
+			})
+	})
 }

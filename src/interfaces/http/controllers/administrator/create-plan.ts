@@ -1,6 +1,7 @@
 import { CreatePlanUseCase } from '@/application/administrator/use-cases/create-plan'
 import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
 import { StripeProductsService } from '@/infra/services/stripe/products'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { CreatePlanSchema } from '@application/administrator/validators/create-plan.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -15,12 +16,14 @@ export async function createPlan(request: FastifyRequest, reply: FastifyReply) {
 		stripeProductsService,
 	)
 
-	await createPlanUseCase.execute({
+	const result = await createPlanUseCase.execute({
 		planName,
 		planPrice,
 		planDescription,
 		planInterviewLimit,
 	})
 
-	return reply.status(201).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(201).send()
+	})
 }

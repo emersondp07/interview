@@ -1,5 +1,6 @@
 import { CreateAdministratorUseCase } from '@/application/administrator/use-cases/create-administrator'
 import { PrismaAdministratorsRepository } from '@/infra/database/repositories/prisma-administrators-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { CreateAdministratorSchema } from '@application/administrator/validators/create-administrator.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
@@ -14,11 +15,13 @@ export async function createAdministrator(
 		prismaAdministratorsRepository,
 	)
 
-	await createAdministratorUseCase.execute({
+	const result = await createAdministratorUseCase.execute({
 		name,
 		email,
 		password,
 	})
 
-	return reply.status(201).send()
+	return handleResult(result, reply, async () => {
+		return reply.status(201).send()
+	})
 }

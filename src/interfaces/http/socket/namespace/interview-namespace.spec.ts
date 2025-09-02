@@ -8,6 +8,7 @@ describe('Interview Namespace (e2e)', () => {
 	let interviewerSocket: Socket
 	let idClient: string
 	let idInterview: string
+	let clientDocument: string
 
 	beforeAll(async () => {
 		await start()
@@ -17,24 +18,28 @@ describe('Interview Namespace (e2e)', () => {
 			tokenInterviewer,
 			companyId,
 			signatureId,
+			document,
 			clientId,
 			interviewId,
 		} = await createAndAuthenticateClientInterviewer(app)
 
 		clientSocket = Client(`http://localhost:${env.PORT}/interview`, {
-			auth: {
-				token: `Bearer ${tokenClient}`,
+			withCredentials: true,
+			extraHeaders: {
+				cookie: `token=${tokenClient}`,
 			},
 		})
 
 		interviewerSocket = Client(`http://localhost:${env.PORT}/interview`, {
-			auth: {
-				token: `Bearer ${tokenInterviewer}`,
+			withCredentials: true,
+			extraHeaders: {
+				cookie: `token=${tokenInterviewer}`,
 			},
 		})
 
 		idClient = clientId
 		idInterview = interviewId
+		clientDocument = document
 
 		await new Promise<void>((resolve) => {
 			clientSocket.on('connect', () => resolve())
@@ -43,7 +48,7 @@ describe('Interview Namespace (e2e)', () => {
 		await new Promise<void>((resolve) => {
 			interviewerSocket.on('connect', () => resolve())
 		})
-	})
+	}, 30000)
 
 	afterAll(async () => {
 		if (clientSocket.connected) {
@@ -61,7 +66,7 @@ describe('Interview Namespace (e2e)', () => {
 	})
 
 	it('should handle "join-queue" event', async () => {
-		clientSocket.emit('join-queue', { document: '12345678912' })
+		clientSocket.emit('join-queue', { document: clientDocument })
 
 		const response = await new Promise((resolve) => {
 			clientSocket.once('join-queue:response', resolve)
