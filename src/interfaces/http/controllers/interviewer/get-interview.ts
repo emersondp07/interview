@@ -1,7 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import type { GetInterviewSchema } from '../../../../application/client/validators/get-interview.schema'
-import { GetInterviewByIdUseCase } from '../../../../application/interviewer/use-cases/get-interview'
-import { PrismaInterviewsRepository } from '../../../../infra/database/repositories/prisma-interviews-repository'
+import type { GetInterviewSchema } from '@/application/client/validators/get-interview.schema'
+import { GetInterviewByIdUseCase } from '@/application/interviewer/use-cases/get-interview'
+import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 
 export async function getInterview(
 	request: FastifyRequest,
@@ -16,9 +17,11 @@ export async function getInterview(
 		prismaInterviewsRepository,
 	)
 
-	const { value } = await getInterviewersUseCase.execute({
+	const result = await getInterviewersUseCase.execute({
 		interviewId,
 	})
 
-	return reply.status(200).send(value)
+	return handleResult(result, reply, async (value) => {
+		return reply.status(200).send(value)
+	})
 }
