@@ -14,8 +14,8 @@ type CreatePlanUseCaseResponse = Either<null, { plan: Plan }>
 
 export class CreatePlanUseCase {
 	constructor(
-		private plansRepository: PlansRepository,
-		private stripeProductsService: IStripeProducts,
+		private readonly plansRepository: PlansRepository,
+		private readonly stripeProductsService: IStripeProducts,
 	) {}
 
 	async execute({

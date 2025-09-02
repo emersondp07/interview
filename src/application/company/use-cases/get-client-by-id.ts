@@ -15,8 +15,8 @@ type GetClientUseCaseResponse = Either<
 
 export class GetClientByIdUseCase {
 	constructor(
-		private clientsRepository: ClientsRepository,
-		private companiesRepository: CompaniesRepository,
+		private readonly clientsRepository: ClientsRepository,
+		private readonly companiesRepository: CompaniesRepository,
 	) {}
 
 	async execute({

@@ -18,8 +18,8 @@ type CreateContractUseCaseResponse = Either<
 
 export class CreateContractUseCase {
 	constructor(
-		private contractsRepository: ContractsRepository,
-		private companiesRepository: CompaniesRepository,
+		private readonly contractsRepository: ContractsRepository,
+		private readonly companiesRepository: CompaniesRepository,
 	) {}
 
 	async execute({

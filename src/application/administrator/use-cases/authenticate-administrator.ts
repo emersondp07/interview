@@ -15,7 +15,9 @@ type AuthenticateAdministratorUseCaseResponse = Either<
 >
 
 export class AuthenticateAdministratorUseCase {
-	constructor(private administratorsRepository: AdministratorsRepository) {}
+	constructor(
+		private readonly administratorsRepository: AdministratorsRepository,
+	) {}
 
 	async execute({
 		email,

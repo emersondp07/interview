@@ -15,7 +15,7 @@ type SendContractUseCaseResponse = Either<
 >
 
 export class SendContractUseCase {
-	constructor(private interviewsRepository: InterviewsRepository) {}
+	constructor(private readonly interviewsRepository: InterviewsRepository) {}
 
 	async execute({
 		clientId,

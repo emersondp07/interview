@@ -13,7 +13,7 @@ type AuthenticateClientUseCaseResponse = Either<
 >
 
 export class AuthenticateClientUseCase {
-	constructor(private clientsRepository: ClientsRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
 		document,

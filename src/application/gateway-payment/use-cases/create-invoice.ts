@@ -18,8 +18,8 @@ type CreateInvoiceUseCaseResponse = Either<
 
 export class CreateInvoiceUseCase {
 	constructor(
-		private invoicesRepository: InvoicesRepository,
-		private companiesRepository: CompaniesRepository,
+		private readonly invoicesRepository: InvoicesRepository,
+		private readonly companiesRepository: CompaniesRepository,
 	) {}
 
 	async execute({

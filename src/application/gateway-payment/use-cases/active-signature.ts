@@ -18,9 +18,9 @@ type ActiveSignatureUseCaseResponse = Either<
 
 export class ActiveSignatureUseCase {
 	constructor(
-		private signaturesRepository: SignaturesRepository,
-		private companiesRepository: CompaniesRepository,
-		private resendEmailsService: IResendEmails,
+		private readonly signaturesRepository: SignaturesRepository,
+		private readonly companiesRepository: CompaniesRepository,
+		private readonly resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({

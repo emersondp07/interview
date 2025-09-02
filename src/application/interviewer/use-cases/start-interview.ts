@@ -19,9 +19,9 @@ type StartInterviewUseCaseResponse = Either<
 
 export class StartInterviewUseCase {
 	constructor(
-		private clientsRepository: ClientsRepository,
-		private interviewsRepository: InterviewsRepository,
-		private interviewersRepository: InterviewersRepository,
+		private readonly clientsRepository: ClientsRepository,
+		private readonly interviewsRepository: InterviewsRepository,
+		private readonly interviewersRepository: InterviewersRepository,
 	) {}
 
 	async execute({

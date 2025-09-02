@@ -13,7 +13,7 @@ type FetchClientsOnlineUseCaseResponse = Either<
 >
 
 export class FetchClientsOnlineUseCase {
-	constructor(private clientsRepository: ClientsRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
 		page,

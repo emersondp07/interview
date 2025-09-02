@@ -14,7 +14,7 @@ type CancelInvoiceUseCaseResponse = Either<
 >
 
 export class CancelInvoiceUseCase {
-	constructor(private invoicesRepository: InvoicesRepository) {}
+	constructor(private readonly invoicesRepository: InvoicesRepository) {}
 
 	async execute({
 		invoiceId,

@@ -3,7 +3,7 @@ import { env } from '../../config'
 import type { IStripeProducts } from './interfaces/stripe-products'
 
 export class StripeProductsService implements IStripeProducts {
-	private stripe: Stripe
+	private readonly stripe: Stripe
 
 	constructor() {
 		this.stripe = new Stripe(env.STRIPE_SECRET_KEY, {

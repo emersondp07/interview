@@ -3,7 +3,7 @@ import { env } from '../../config'
 import type { IResendEmails } from './interfaces/resend-emails'
 
 export class ResendEmailsService implements IResendEmails {
-	private resend: Resend
+	private readonly resend: Resend
 
 	constructor() {
 		this.resend = new Resend(env.RESEND_EMAIL_API_KEY)

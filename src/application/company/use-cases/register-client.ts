@@ -36,10 +36,10 @@ type RegisterClientUseCaseResponse = Either<
 
 export class RegisterClientUseCase {
 	constructor(
-		private clientsRepository: ClientsRepository,
-		private companiesRepository: CompaniesRepository,
-		private interviewsRepository: InterviewsRepository,
-		private resendEmailsService: IResendEmails,
+		private readonly clientsRepository: ClientsRepository,
+		private readonly companiesRepository: CompaniesRepository,
+		private readonly interviewsRepository: InterviewsRepository,
+		private readonly resendEmailsService: IResendEmails,
 	) {}
 
 	async execute({

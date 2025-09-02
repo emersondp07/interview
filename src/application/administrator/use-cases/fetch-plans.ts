@@ -9,7 +9,7 @@ interface FetchPlansUseCaseRequest {
 type FetchPlansUseCaseResponse = Either<null, { plans: Plan[] | null }>
 
 export class FetchPlansUseCase {
-	constructor(private plansRepository: PlansRepository) {}
+	constructor(private readonly plansRepository: PlansRepository) {}
 
 	async execute({
 		page,

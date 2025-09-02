@@ -12,7 +12,7 @@ type FetchCompaniesUseCaseResponse = Either<
 >
 
 export class FetchCompaniesUseCase {
-	constructor(private companiesRepository: CompaniesRepository) {}
+	constructor(private readonly companiesRepository: CompaniesRepository) {}
 
 	async execute({
 		page,

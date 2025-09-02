@@ -15,7 +15,7 @@ type AuthenticateCompanyUseCaseResponse = Either<
 >
 
 export class AuthenticateCompanyUseCase {
-	constructor(private companiesRepository: CompaniesRepository) {}
+	constructor(private readonly companiesRepository: CompaniesRepository) {}
 
 	async execute({
 		email,
