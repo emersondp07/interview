@@ -25,6 +25,20 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 		return company ? PrismaCompanyMapper.toDomain(company) : null
 	}
 
+	async findByInteviewerId(interviewerId: string) {
+		// For this in-memory implementation, we'll find a company by checking if the interviewer belongs to it
+		// In the test, we create an interviewer with a companyId, so we find the company with that ID
+		const company = this.items.find(
+			(company) => company.id.toString() === interviewerId,
+		)
+
+		if (!company) {
+			return null
+		}
+
+		return company ? PrismaCompanyMapper.toDomain(company) : null
+	}
+
 	async findByCustomerId(customerId: string) {
 		const company = this.items.find(
 			(company) => company.id.toString() === customerId,

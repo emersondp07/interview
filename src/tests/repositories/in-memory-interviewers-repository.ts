@@ -19,7 +19,6 @@ export class InMemoryInterviewersRepository implements InterviewersRepository {
 	async findById(interviewerId: string) {
 		const interviewer = this.items.find(
 			(interviewer) => interviewer.id === interviewerId,
-			// interviewer.company_id === companyId,
 		)
 
 		if (!interviewer) {

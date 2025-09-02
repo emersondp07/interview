@@ -25,6 +25,18 @@ export class InMemoryInterviewsRepository implements InterviewsRepository {
 		return interview ? PrismaInterviewMapper.toDomain(interview) : null
 	}
 
+	async getDetailsById(interviewId: string) {
+		const interview = this.items.find(
+			(interview) => interview.id.toString() === interviewId,
+		)
+
+		if (!interview) {
+			return null
+		}
+
+		return interview ? PrismaInterviewMapper.toDomain(interview) : null
+	}
+
 	async create(interview: Interview) {
 		const prismaInterview = PrismaInterviewMapper.toPrisma(interview)
 

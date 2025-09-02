@@ -8,6 +8,7 @@
 /.nyc_output
 /swagger
 /build
+CLAUDE.md
 
 # Logs
 logs
