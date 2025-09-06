@@ -93,7 +93,10 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 				description: 'This route allows a company to get a client by ID.',
 				params: getClientSchema,
 			},
-			onRequest: [verifyJWT, verifyUserRole([ROLE.COMPANY, ROLE.INTERVIEWER])],
+			onRequest: [
+				verifyJWT,
+				verifyUserRole([ROLE.COMPANY, ROLE.INTERVIEWER, ROLE.CLIENT]),
+			],
 		},
 		getClient,
 	)
@@ -107,7 +110,10 @@ export async function companyRoutes(app: FastifyTypedInstance) {
 				description: 'This route allows a company to get a interviewer by ID.',
 				params: getInterviewerSchema,
 			},
-			onRequest: [verifyJWT, verifyUserRole([ROLE.COMPANY, ROLE.INTERVIEWER])],
+			onRequest: [
+				verifyJWT,
+				verifyUserRole([ROLE.COMPANY, ROLE.INTERVIEWER, ROLE.CLIENT]),
+			],
 		},
 		getInterviewer,
 	)
