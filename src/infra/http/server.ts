@@ -92,10 +92,6 @@ app.setErrorHandler((error, _, reply) => {
 		return reply.status(401).send(error.message)
 	}
 
-	if (error.code === 'FST_JWT_BAD_REQUEST' || error.code === 'FST_JWT_NO_AUTHORIZATION_IN_HEADER_OR_COOKIE') {
-		return reply.status(401).send({ message: 'Unauthorized.' })
-	}
-
 	if (env.NODE_ENV !== 'prod') {
 		console.error(error)
 	} else {
