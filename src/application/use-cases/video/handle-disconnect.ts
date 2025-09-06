@@ -1,5 +1,5 @@
-import type { VideoSessionRepository } from '../../../domain/video/repositories/video-session-repository'
-import { RecordingService } from '../../../infra/video/recording-service'
+import type { VideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { RecordingService } from '@/infra/video/recording-service'
 
 interface HandleDisconnectRequest {
 	socketId: string
@@ -16,7 +16,9 @@ export class HandleDisconnectUseCase {
 		private recordingService: RecordingService,
 	) {}
 
-	async execute({ socketId }: HandleDisconnectRequest): Promise<HandleDisconnectResponse> {
+	async execute({
+		socketId,
+	}: HandleDisconnectRequest): Promise<HandleDisconnectResponse> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) {
 			console.log('Socket desconectou sem estar em sala:', socketId)
@@ -55,9 +57,7 @@ export class HandleDisconnectUseCase {
 			return { roomCleaned: true }
 		}
 
-		console.log(
-			`Notificado ${otherSocketId} sobre desconexão de ${socketId}`,
-		)
+		console.log(`Notificado ${otherSocketId} sobre desconexão de ${socketId}`)
 
 		return { roomCleaned: false, otherSocketId }
 	}
