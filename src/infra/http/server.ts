@@ -106,11 +106,11 @@ function initSocket(io: SocketIOServer) {
 	registerVideoNamespace(io)
 }
 
-export async function start() {
+export async function start(customPort?: number) {
 	try {
 		await app.ready()
 
-		const port = env.PORT ?? 3333
+		const port = customPort ?? env.PORT ?? 3333
 		await app.listen({
 			port,
 			host: '0.0.0.0',
@@ -126,6 +126,12 @@ export async function start() {
 		initSocket(io)
 	} catch (err) {
 		app.log.error(err)
-		process.exit(1)
+		// Em ambiente de teste, não devemos fazer process.exit(1)
+		if (process.env.NODE_ENV !== 'test' && process.env.VITEST !== 'true') {
+			process.exit(1)
+		} else {
+			console.error('Server failed to start in test environment:', err)
+			throw err
+		}
 	}
 }

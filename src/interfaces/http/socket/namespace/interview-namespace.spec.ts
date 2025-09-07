@@ -1,6 +1,7 @@
 import { env } from '@/infra/config'
 import { app, start } from '@/infra/http/server'
 import { createAndAuthenticateClientInterviewer } from '@/tests/factories/create-and-authenticate-client-interviewer'
+import { getUniqueTestPort, releaseTestPort } from '@/tests/utils/test-port-generator'
 import { io as Client, type Socket } from 'socket.io-client'
 
 describe('Interview Namespace (e2e)', () => {
@@ -9,28 +10,28 @@ describe('Interview Namespace (e2e)', () => {
 	let idClient: string
 	let idInterview: string
 	let clientDocument: string
+	let testPort: number
 
 	beforeAll(async () => {
-		await start()
+		testPort = getUniqueTestPort()
+		await start(testPort)
 
 		const {
 			tokenClient,
 			tokenInterviewer,
-			companyId,
-			signatureId,
 			document,
 			clientId,
 			interviewId,
 		} = await createAndAuthenticateClientInterviewer(app)
 
-		clientSocket = Client(`http://localhost:${env.PORT}/interview`, {
+		clientSocket = Client(`http://localhost:${testPort}/interview`, {
 			withCredentials: true,
 			extraHeaders: {
 				cookie: `token=${tokenClient}`,
 			},
 		})
 
-		interviewerSocket = Client(`http://localhost:${env.PORT}/interview`, {
+		interviewerSocket = Client(`http://localhost:${testPort}/interview`, {
 			withCredentials: true,
 			extraHeaders: {
 				cookie: `token=${tokenInterviewer}`,
@@ -51,14 +52,17 @@ describe('Interview Namespace (e2e)', () => {
 	}, 30000)
 
 	afterAll(async () => {
-		if (clientSocket.connected) {
+		if (clientSocket?.connected) {
 			clientSocket.disconnect()
 		}
-		if (interviewerSocket.connected) {
+		if (interviewerSocket?.connected) {
 			interviewerSocket.disconnect()
 		}
 
 		await app.close()
+		
+		// Liberar a porta para outros testes
+		releaseTestPort(testPort)
 	})
 
 	it('should connect to interview namespace', async () => {
