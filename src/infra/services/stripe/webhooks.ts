@@ -39,7 +39,7 @@ export class StripeWebhooksService implements IStripeWebhooks {
 				env.STRIPE_WEBHOOK_SECRET_KEY,
 			)
 		} catch (error) {
-			console.error('❌ Erro ao validar webhook:', error)
+			// console.error('❌ Erro ao validar webhook:', error)
 			throw new Error(`Webhook validation failed: ${(error as Error).message}`)
 		}
 	}
