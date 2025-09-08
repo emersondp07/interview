@@ -1,11 +1,11 @@
+import { EndInterviewUseCase } from '@/application/video/use-cases/end-interview'
+import { HandleDisconnectUseCase } from '@/application/video/use-cases/handle-disconnect'
+import { JoinInterviewRoomUseCase } from '@/application/video/use-cases/join-interview-room'
+import { ManageMediaStreamsUseCase } from '@/application/video/use-cases/manage-media-streams'
+import { InMemoryVideoSessionRepository } from '@/infra/video/in-memory-video-session-repository'
+import { MediaSoupService } from '@/infra/video/mediasoup-service'
+import { RecordingService } from '@/infra/video/recording-service'
 import type { Server, Socket } from 'socket.io'
-import { EndInterviewUseCase } from '../../../../application/use-cases/video/end-interview'
-import { HandleDisconnectUseCase } from '../../../../application/use-cases/video/handle-disconnect'
-import { JoinInterviewRoomUseCase } from '../../../../application/use-cases/video/join-interview-room'
-import { ManageMediaStreamsUseCase } from '../../../../application/use-cases/video/manage-media-streams'
-import { InMemoryVideoSessionRepository } from '../../../../infra/video/in-memory-video-session-repository'
-import { MediaSoupService } from '../../../../infra/video/mediasoup-service'
-import { RecordingService } from '../../../../infra/video/recording-service'
 
 // Registrar namespace de vídeo
 export async function registerVideoNamespace(io: Server) {

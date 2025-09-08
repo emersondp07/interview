@@ -1,5 +1,5 @@
-import type { VideoSessionRepository } from '../../../domain/video/repositories/video-session-repository'
-import type { RecordingService } from '../../../infra/video/recording-service'
+import type { VideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { RecordingService } from '@/infra/video/recording-service'
 
 interface EndInterviewRequest {
 	socketId: string
