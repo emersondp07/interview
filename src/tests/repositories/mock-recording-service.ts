@@ -1,12 +1,13 @@
 import type { InterviewRoom } from '../../domain/video/entities/interview-room'
+import type { IRecordingService } from '../../infra/video/interfaces/recording-service'
 
-export class MockRecordingService {
+export class MockRecordingService implements IRecordingService {
 	public recordingStartedCalls: InterviewRoom[] = []
 	public recordingStoppedCalls: InterviewRoom[] = []
 
 	async startRecording(room: InterviewRoom): Promise<void> {
 		this.recordingStartedCalls.push(room)
-		
+
 		if (room.isRecording) {
 			console.log(`Gravação já está ativa para a sala: ${room.interviewId}`)
 			return
@@ -17,7 +18,14 @@ export class MockRecordingService {
 		console.log(`Mock: Gravação iniciada para sala ${room.interviewId}`)
 	}
 
-	async stopRecording(room: InterviewRoom): Promise<{ path?: string; duration: number; startTime?: Date; endTime: Date } | null> {
+	async stopRecording(
+		room: InterviewRoom,
+	): Promise<{
+		path?: string
+		duration: number
+		startTime?: Date
+		endTime: Date
+	} | null> {
 		this.recordingStoppedCalls.push(room)
 
 		if (!room.isRecording) {
@@ -26,7 +34,9 @@ export class MockRecordingService {
 		}
 
 		const recordingInfo = room.stopRecording()
-		console.log(`Mock: Gravação parada para sala ${room.interviewId}. Duração: ${recordingInfo.duration}s`)
+		console.log(
+			`Mock: Gravação parada para sala ${room.interviewId}. Duração: ${recordingInfo.duration}s`,
+		)
 		return recordingInfo
 	}
 

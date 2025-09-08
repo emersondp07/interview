@@ -1,8 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import type { InterviewRoom } from '../../domain/video/entities/interview-room'
+import type { IRecordingService } from './interfaces/recording-service'
 
-export class RecordingService {
+export type RecordingInfo = {
+	duration: number
+	startTime?: Date
+	endTime: Date
+	path?: string
+}
+
+export class RecordingService implements IRecordingService {
 	private static instance: RecordingService
 
 	private constructor() {}
@@ -37,7 +45,12 @@ export class RecordingService {
 		console.log(`Gravação iniciada para sala ${room.interviewId}`)
 	}
 
-	async stopRecording(room: InterviewRoom): Promise<{ path?: string; duration: number; startTime?: Date; endTime: Date } | null> {
+	async stopRecording(room: InterviewRoom): Promise<{
+		path?: string
+		duration: number
+		startTime?: Date
+		endTime: Date
+	} | null> {
 		if (!room.isRecording) {
 			console.log(`Nenhuma gravação ativa para a sala: ${room.interviewId}`)
 			return null

@@ -26,7 +26,7 @@ export class FetchInvoicesUseCase {
 	}: FetchInvoicesUseCaseRequest): Promise<FetchInvoicesUseCaseResponse> {
 		const company = await this.companiesRepository.findById(companyId)
 
-		if (!company || !company.signature) {
+		if (!company?.signature) {
 			return failed(new ResourceNotFoundError())
 		}
 

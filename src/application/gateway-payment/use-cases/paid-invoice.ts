@@ -25,7 +25,7 @@ export class PaidInvoiceUseCase {
 		const isExistCompany =
 			await this.companiesRepository.findByCustomerId(customerId)
 
-		if (!isExistCompany || !isExistCompany.signature) {
+		if (!isExistCompany?.signature) {
 			return failed(new ResourceNotFoundError())
 		}
 

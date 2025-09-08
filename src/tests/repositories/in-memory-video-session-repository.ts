@@ -1,11 +1,15 @@
 import { InterviewRoom } from '../../domain/video/entities/interview-room'
-import type { VideoSessionRepository } from '../../domain/video/repositories/video-session-repository'
+import type { IVideoSessionRepository } from '../../domain/video/repositories/video-session-repository'
 
-export class InMemoryVideoSessionRepository implements VideoSessionRepository {
+export class InMemoryVideoSessionRepository implements IVideoSessionRepository {
 	private rooms = new Map<string, InterviewRoom>()
 	private socketToRoom = new Map<string, string>()
 
-	create(interviewId: string, patientId: string, doctorId: string): InterviewRoom {
+	create(
+		interviewId: string,
+		patientId: string,
+		doctorId: string,
+	): InterviewRoom {
 		const room = InterviewRoom.create(interviewId, patientId, doctorId)
 		this.rooms.set(interviewId, room)
 		return room

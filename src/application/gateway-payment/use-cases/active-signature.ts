@@ -31,7 +31,7 @@ export class ActiveSignatureUseCase {
 		const isExistCompany =
 			await this.companiesRepository.findByCustomerId(companyId)
 
-		if (!isExistCompany || !isExistCompany.signature) {
+		if (!isExistCompany?.signature) {
 			return failed(new ResourceNotFoundError())
 		}
 

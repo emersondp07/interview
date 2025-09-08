@@ -1,6 +1,6 @@
+import type { IVideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { IMediaSoupService } from '@/infra/video/interfaces/mediasoup-service'
 import type * as mediasoup from 'mediasoup'
-import type { VideoSessionRepository } from '../../../domain/video/repositories/video-session-repository'
-import { MediaSoupService } from '../../../infra/video/mediasoup-service'
 
 interface CreateTransportRequest {
 	socketId: string
@@ -48,11 +48,14 @@ interface ConsumeMediaResponse {
 
 export class ManageMediaStreamsUseCase {
 	constructor(
-		private videoSessionRepository: VideoSessionRepository,
-		private mediaSoupService: MediaSoupService,
+		private readonly videoSessionRepository: IVideoSessionRepository,
+		private readonly mediaSoupService: IMediaSoupService,
 	) {}
 
-	async createWebRtcTransport({ socketId, sender }: CreateTransportRequest): Promise<CreateTransportResponse> {
+	async createWebRtcTransport({
+		socketId,
+		sender,
+	}: CreateTransportRequest): Promise<CreateTransportResponse> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) {
 			console.log('Socket não está em nenhuma sala:', socketId)
@@ -103,7 +106,10 @@ export class ManageMediaStreamsUseCase {
 		}
 	}
 
-	async connectProducerTransport(socketId: string, dtlsParameters: mediasoup.types.DtlsParameters): Promise<boolean> {
+	async connectProducerTransport(
+		socketId: string,
+		dtlsParameters: mediasoup.types.DtlsParameters,
+	): Promise<boolean> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) {
 			console.log('Socket não está em sala para transport-connect:', socketId)
@@ -134,7 +140,10 @@ export class ManageMediaStreamsUseCase {
 		}
 	}
 
-	async connectConsumerTransport(socketId: string, dtlsParameters: mediasoup.types.DtlsParameters): Promise<boolean> {
+	async connectConsumerTransport(
+		socketId: string,
+		dtlsParameters: mediasoup.types.DtlsParameters,
+	): Promise<boolean> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) return false
 
@@ -162,7 +171,11 @@ export class ManageMediaStreamsUseCase {
 		}
 	}
 
-	async produceMedia({ socketId, kind, rtpParameters }: ProduceMediaRequest): Promise<ProduceMediaResponse> {
+	async produceMedia({
+		socketId,
+		kind,
+		rtpParameters,
+	}: ProduceMediaRequest): Promise<ProduceMediaResponse> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) {
 			return { success: false, error: 'Socket não está em nenhuma sala' }
@@ -205,7 +218,10 @@ export class ManageMediaStreamsUseCase {
 		}
 	}
 
-	async consumeMedia({ socketId, rtpCapabilities }: ConsumeMediaRequest): Promise<ConsumeMediaResponse> {
+	async consumeMedia({
+		socketId,
+		rtpCapabilities,
+	}: ConsumeMediaRequest): Promise<ConsumeMediaResponse> {
 		const roomId = this.videoSessionRepository.getSocketRoom(socketId)
 		if (!roomId) {
 			console.log('Socket não está em sala para consume:', socketId)
@@ -237,7 +253,9 @@ export class ManageMediaStreamsUseCase {
 		}
 
 		const otherProducers = room.getProducers(otherSocketId)
-		console.log(`Tentando consumir ${otherProducers.length} producers de ${otherSocketId}`)
+		console.log(
+			`Tentando consumir ${otherProducers.length} producers de ${otherSocketId}`,
+		)
 
 		for (const producer of otherProducers) {
 			console.log(`Verificando producer ${producer.id} (${producer.kind})`)
@@ -282,13 +300,18 @@ export class ManageMediaStreamsUseCase {
 					`Consumer criado: ${consumer.id} para producer: ${producer.id} (${producer.kind}) na sala: ${roomId}`,
 				)
 			} catch (error) {
-				console.error(`Erro ao criar consumer para producer ${producer.id}:`, error)
+				console.error(
+					`Erro ao criar consumer para producer ${producer.id}:`,
+					error,
+				)
 			}
 		}
 
 		this.videoSessionRepository.save(room)
 
-		console.log(`Retornando ${consumableProducers.length} consumers para ${socketId}`)
+		console.log(
+			`Retornando ${consumableProducers.length} consumers para ${socketId}`,
+		)
 		return { consumers: consumableProducers }
 	}
 
@@ -303,7 +326,7 @@ export class ManageMediaStreamsUseCase {
 		}
 
 		const consumers = room.getConsumers(socketId)
-		const consumer = consumers.find(c => c.id === consumerId)
+		const consumer = consumers.find((c) => c.id === consumerId)
 
 		if (consumer) {
 			try {
@@ -333,7 +356,7 @@ export class ManageMediaStreamsUseCase {
 		console.log(`Pausando producer: ${producerId} para socket: ${socketId}`)
 
 		const producers = room.getProducers(socketId)
-		const producer = producers.find(p => p.id === producerId)
+		const producer = producers.find((p) => p.id === producerId)
 
 		if (producer) {
 			try {
@@ -362,7 +385,7 @@ export class ManageMediaStreamsUseCase {
 		console.log(`Retomando producer: ${producerId} para socket: ${socketId}`)
 
 		const producers = room.getProducers(socketId)
-		const producer = producers.find(p => p.id === producerId)
+		const producer = producers.find((p) => p.id === producerId)
 
 		if (producer) {
 			try {

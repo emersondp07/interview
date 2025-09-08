@@ -1,7 +1,7 @@
-import { ROLE } from '../../../domain/administrator/entities/interfaces/adminitrator.type'
-import type { InterviewRoom } from '../../../domain/video/entities/interview-room'
-import type { VideoSessionRepository } from '../../../domain/video/repositories/video-session-repository'
-import { RecordingService } from '../../../infra/video/recording-service'
+import { ROLE } from '@/domain/administrator/entities/interfaces/adminitrator.type'
+import type { InterviewRoom } from '@/domain/video/entities/interview-room'
+import type { IVideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { IRecordingService } from '@/infra/video/interfaces/recording-service'
 
 interface JoinInterviewRoomRequest {
 	interviewId: string
@@ -25,16 +25,16 @@ interface JoinInterviewRoomResponse {
 
 export class JoinInterviewRoomUseCase {
 	constructor(
-		private videoSessionRepository: VideoSessionRepository,
-		private recordingService: RecordingService,
+		private readonly videoSessionRepository: IVideoSessionRepository,
+		private readonly recordingService: IRecordingService,
 	) {}
 
-	async execute({ 
-		interviewId, 
-		patientId, 
-		doctorId, 
-		role, 
-		socketId 
+	async execute({
+		interviewId,
+		patientId,
+		doctorId,
+		role,
+		socketId,
 	}: JoinInterviewRoomRequest): Promise<JoinInterviewRoomResponse> {
 		try {
 			console.log(
@@ -44,7 +44,11 @@ export class JoinInterviewRoomUseCase {
 			// Buscar ou criar sala
 			let room = this.videoSessionRepository.findById(interviewId)
 			if (!room) {
-				room = this.videoSessionRepository.create(interviewId, patientId, doctorId)
+				room = this.videoSessionRepository.create(
+					interviewId,
+					patientId,
+					doctorId,
+				)
 			}
 
 			// Verificar se o usuário tem permissão para entrar na sala

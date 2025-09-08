@@ -1,5 +1,5 @@
-import type { VideoSessionRepository } from '../../../domain/video/repositories/video-session-repository'
-import type { RecordingService } from '../../../infra/video/recording-service'
+import type { IVideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { IRecordingService } from '@/infra/video/interfaces/recording-service'
 
 interface EndInterviewRequest {
 	socketId: string
@@ -18,8 +18,8 @@ interface EndInterviewResponse {
 
 export class EndInterviewUseCase {
 	constructor(
-		private videoSessionRepository: VideoSessionRepository,
-		private recordingService: RecordingService,
+		private readonly videoSessionRepository: IVideoSessionRepository,
+		private readonly recordingService: IRecordingService,
 	) {}
 
 	async execute({
