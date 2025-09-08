@@ -1,5 +1,5 @@
-import type { VideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
-import type { MediaSoupService } from '@/infra/video/mediasoup-service'
+import type { IVideoSessionRepository } from '@/domain/video/repositories/video-session-repository'
+import type { IMediaSoupService } from '@/infra/video/interfaces/mediasoup-service'
 import type * as mediasoup from 'mediasoup'
 
 interface CreateTransportRequest {
@@ -48,8 +48,8 @@ interface ConsumeMediaResponse {
 
 export class ManageMediaStreamsUseCase {
 	constructor(
-		private videoSessionRepository: VideoSessionRepository,
-		private mediaSoupService: MediaSoupService,
+		private readonly videoSessionRepository: IVideoSessionRepository,
+		private readonly mediaSoupService: IMediaSoupService,
 	) {}
 
 	async createWebRtcTransport({

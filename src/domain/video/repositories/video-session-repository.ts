@@ -1,6 +1,6 @@
 import type { InterviewRoom } from '../entities/interview-room'
 
-export interface VideoSessionRepository {
+export interface IVideoSessionRepository {
 	create(
 		interviewId: string,
 		patientId: string,
