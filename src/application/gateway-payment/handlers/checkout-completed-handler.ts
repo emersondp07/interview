@@ -1,10 +1,12 @@
-import type { ActiveSignatureUseCase } from '../use-cases/active-signature'
-import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookResult } from '../interfaces/webhook-processor'
+import type { ActiveSignatureUseCase } from '../use-cases/active-signature'
 
 export class CheckoutCompletedHandler implements IEventHandler {
-	constructor(private readonly activeSignatureUseCase: ActiveSignatureUseCase) {}
+	constructor(
+		private readonly activeSignatureUseCase: ActiveSignatureUseCase,
+	) {}
 
 	canHandle(eventType: string): boolean {
 		return eventType === 'checkout.session.completed'
@@ -26,7 +28,9 @@ export class CheckoutCompletedHandler implements IEventHandler {
 				stripeSubscriptionStatus: status as string,
 			})
 
-			console.log(`✅ Signature activated successfully for customer: ${customer}`)
+			console.log(
+				`✅ Signature activated successfully for customer: ${customer}`,
+			)
 
 			return {
 				success: true,

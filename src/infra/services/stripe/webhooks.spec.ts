@@ -1,6 +1,6 @@
 import { env } from '@/infra/config'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Stripe from 'stripe'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { StripeWebhooksService } from './webhooks'
 
 // Mock do Stripe

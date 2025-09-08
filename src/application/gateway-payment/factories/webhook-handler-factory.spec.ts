@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { WebhookHandlerFactory } from './webhook-handler-factory'
 import type { IEventHandler } from '../interfaces/event-handler'
+import { WebhookHandlerFactory } from './webhook-handler-factory'
 
 // Mock handler para testes
 class MockCheckoutHandler implements IEventHandler {
@@ -9,7 +9,11 @@ class MockCheckoutHandler implements IEventHandler {
 	}
 
 	async handle(): Promise<any> {
-		return { success: true, message: 'Mock handled', eventType: 'checkout.session.completed' }
+		return {
+			success: true,
+			message: 'Mock handled',
+			eventType: 'checkout.session.completed',
+		}
 	}
 }
 
@@ -40,9 +44,15 @@ describe('WebhookHandlerFactory', () => {
 
 			factory.registerHandlers([mockCheckoutHandler, mockInvoiceHandler])
 
-			expect(consoleSpy).toHaveBeenCalledWith('Registered handler for event type: checkout.session.completed')
-			expect(consoleSpy).toHaveBeenCalledWith('Registered handler for event type: invoice.created')
-			expect(consoleSpy).toHaveBeenCalledWith('Registered handler for event type: invoice.paid')
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Registered handler for event type: checkout.session.completed',
+			)
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Registered handler for event type: invoice.created',
+			)
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Registered handler for event type: invoice.paid',
+			)
 
 			consoleSpy.mockRestore()
 		})
@@ -78,7 +88,7 @@ describe('WebhookHandlerFactory', () => {
 		it('should return same handler instance for multiple calls', () => {
 			const handler1 = factory.getHandler('invoice.created')
 			const handler2 = factory.getHandler('invoice.created')
-			
+
 			expect(handler1).toBe(handler2)
 			expect(handler1).toBe(mockInvoiceHandler)
 		})
@@ -92,9 +102,9 @@ describe('WebhookHandlerFactory', () => {
 
 		it('should return all registered event types', () => {
 			factory.registerHandlers([mockCheckoutHandler, mockInvoiceHandler])
-			
+
 			const eventTypes = factory.getRegisteredEventTypes()
-			
+
 			expect(eventTypes).toContain('checkout.session.completed')
 			expect(eventTypes).toContain('invoice.created')
 			expect(eventTypes).toContain('invoice.paid')
@@ -105,7 +115,7 @@ describe('WebhookHandlerFactory', () => {
 	describe('edge cases', () => {
 		it('should handle empty handlers array', () => {
 			expect(() => factory.registerHandlers([])).not.toThrow()
-			
+
 			const handler = factory.getHandler('any.event.type')
 			expect(handler).toBeNull()
 		})
@@ -121,13 +131,13 @@ describe('WebhookHandlerFactory', () => {
 			}
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-			
+
 			factory.registerHandlers([new EmptyHandler()])
-			
+
 			// Should not register any event types
 			expect(factory.getRegisteredEventTypes()).toHaveLength(0)
 			expect(consoleSpy).not.toHaveBeenCalled()
-			
+
 			consoleSpy.mockRestore()
 		})
 	})

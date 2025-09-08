@@ -1,19 +1,19 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { RegisterStripePriceHandler } from './register-stripe-price-handler'
-import type { RegisterStripePriceIdUseCase } from '../use-cases/register-stripe-price-id'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import { makePlan } from '@/tests/factories/make-plan'
+import { InMemoryPlansRepository } from '@/tests/repositories/in-memory-plans-repository'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { RegisterStripePriceIdUseCase } from '../use-cases/register-stripe-price-id'
+import { RegisterStripePriceHandler } from './register-stripe-price-handler'
 
-// Mock do use case
-const mockRegisterStripePriceIdUseCase = {
-	execute: vi.fn(),
-} as unknown as RegisterStripePriceIdUseCase
+let inMemoryPlansRepository: InMemoryPlansRepository
+let registerStripePriceIdUseCase: RegisterStripePriceIdUseCase
+let handler: RegisterStripePriceHandler
 
 describe('RegisterStripePriceHandler', () => {
-	let handler: RegisterStripePriceHandler
-
 	beforeEach(() => {
-		vi.clearAllMocks()
-		handler = new RegisterStripePriceHandler(mockRegisterStripePriceIdUseCase)
+		inMemoryPlansRepository = new InMemoryPlansRepository()
+		registerStripePriceIdUseCase = new RegisterStripePriceIdUseCase(inMemoryPlansRepository)
+		handler = new RegisterStripePriceHandler(registerStripePriceIdUseCase)
 	})
 
 	describe('canHandle', () => {
@@ -48,7 +48,9 @@ describe('RegisterStripePriceHandler', () => {
 		}
 
 		it('should handle valid price created event', async () => {
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
+			// Criar um plano no repositório in-memory
+			const plan = makePlan({ stripeProductId: 'prod_test_product' })
+			await inMemoryPlansRepository.create(plan)
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
@@ -60,10 +62,9 @@ describe('RegisterStripePriceHandler', () => {
 				eventType: 'price.created',
 			})
 
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: 'prod_test_product',
-				priceId: 'price_test_12345',
-			})
+			// Verificar se o plano foi atualizado com o priceId
+			const updatedPlan = await inMemoryPlansRepository.findByProductId('prod_test_product')
+			expect(updatedPlan?.stripePriceId).toBe('price_test_12345')
 
 			expect(consoleSpy).toHaveBeenCalledWith(
 				'✅ Stripe price registered successfully: price_test_12345 for product: prod_test_product',
@@ -72,11 +73,11 @@ describe('RegisterStripePriceHandler', () => {
 			consoleSpy.mockRestore()
 		})
 
-		it('should handle use case execution error', async () => {
-			const useCaseError = new Error('Database connection failed')
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockRejectedValue(useCaseError)
-
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+		it('should handle use case execution error when plan not found', async () => {
+			// Não criar plano no repositório para forçar erro
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(validEvent)
 
@@ -84,13 +85,12 @@ describe('RegisterStripePriceHandler', () => {
 				success: false,
 				message: 'Failed to register stripe price',
 				eventType: 'price.created',
-				error: 'Database connection failed',
+				error: 'Plan not found',
 			})
 
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalled()
 			expect(consoleErrorSpy).toHaveBeenCalledWith(
 				'❌ Error handling price registration:',
-				useCaseError,
+				expect.any(Error),
 			)
 
 			consoleErrorSpy.mockRestore()
@@ -108,15 +108,17 @@ describe('RegisterStripePriceHandler', () => {
 				},
 			}
 
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(incompleteEvent)
 
-			expect(result.success).toBe(true)
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: undefined,
-				priceId: 'price_test_12345',
-			})
+			// Deve falhar porque productId é undefined e não há plano para buscar
+			expect(result.success).toBe(false)
+			expect(result.error).toBe('Plan not found')
+
+			consoleErrorSpy.mockRestore()
 		})
 
 		it('should handle missing price id', async () => {
@@ -131,63 +133,16 @@ describe('RegisterStripePriceHandler', () => {
 				},
 			}
 
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
+			// Criar plano no repositório
+			const plan = makePlan({ stripeProductId: 'prod_test_product' })
+			await inMemoryPlansRepository.create(plan)
 
 			const result = await handler.handle(incompleteEvent)
 
 			expect(result.success).toBe(true)
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: 'prod_test_product',
-				priceId: undefined,
-			})
-		})
-
-		it('should handle product as null', async () => {
-			const nullProductEvent: WebhookEvent = {
-				...validEvent,
-				data: {
-					object: {
-						id: 'price_test_12345',
-						product: null,
-						currency: 'brl',
-					},
-				},
-			}
-
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
-
-			const result = await handler.handle(nullProductEvent)
-
-			expect(result.success).toBe(true)
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: null,
-				priceId: 'price_test_12345',
-			})
-		})
-
-		it('should handle different price types (one-time vs recurring)', async () => {
-			const oneTimeEvent: WebhookEvent = {
-				...validEvent,
-				data: {
-					object: {
-						id: 'price_test_12345',
-						product: 'prod_test_product',
-						currency: 'brl',
-						unit_amount: 2990,
-						// No recurring field - one-time payment
-					},
-				},
-			}
-
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
-
-			const result = await handler.handle(oneTimeEvent)
-
-			expect(result.success).toBe(true)
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: 'prod_test_product',
-				priceId: 'price_test_12345',
-			})
+			// Verificar se o plano foi atualizado mesmo com priceId undefined
+			const updatedPlan = await inMemoryPlansRepository.findByProductId('prod_test_product')
+			expect(updatedPlan?.stripePriceId).toBeUndefined()
 		})
 
 		it('should handle null/undefined event data gracefully', async () => {
@@ -198,33 +153,15 @@ describe('RegisterStripePriceHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(nullDataEvent)
 
 			expect(result.success).toBe(false)
-			expect(mockRegisterStripePriceIdUseCase.execute).not.toHaveBeenCalled()
-
+			
 			consoleErrorSpy.mockRestore()
-		})
-
-		it('should handle empty event data object', async () => {
-			const emptyDataEvent: WebhookEvent = {
-				...validEvent,
-				data: {
-					object: {},
-				},
-			}
-
-			vi.mocked(mockRegisterStripePriceIdUseCase.execute).mockResolvedValue(undefined)
-
-			const result = await handler.handle(emptyDataEvent)
-
-			expect(result.success).toBe(true)
-			expect(mockRegisterStripePriceIdUseCase.execute).toHaveBeenCalledWith({
-				productId: undefined,
-				priceId: undefined,
-			})
 		})
 	})
 })

@@ -24,7 +24,7 @@ export class InMemoryPlansRepository implements PlansRepository {
 	}
 
 	async findByProductId(productId: string) {
-		const plan = this.items.find((plan) => plan.id.toString() === productId)
+		const plan = this.items.find((plan) => plan.stripe_product_id === productId)
 
 		if (!plan) {
 			return null

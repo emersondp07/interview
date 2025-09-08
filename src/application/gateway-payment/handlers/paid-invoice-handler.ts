@@ -1,7 +1,7 @@
-import type { PaidInvoiceUseCase } from '../use-cases/paid-invoice'
-import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookResult } from '../interfaces/webhook-processor'
+import type { PaidInvoiceUseCase } from '../use-cases/paid-invoice'
 
 export class PaidInvoiceHandler implements IEventHandler {
 	constructor(private readonly paidInvoiceUseCase: PaidInvoiceUseCase) {}

@@ -1,7 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { CheckoutCompletedHandler } from './checkout-completed-handler'
-import type { ActiveSignatureUseCase } from '../use-cases/active-signature'
+import { success } from '@/domain/core/either'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import { makeSignature } from '@/tests/factories/make-signature'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { ActiveSignatureUseCase } from '../use-cases/active-signature'
+import { CheckoutCompletedHandler } from './checkout-completed-handler'
 
 // Mock do use case
 const mockActiveSignatureUseCase = {
@@ -45,7 +47,9 @@ describe('CheckoutCompletedHandler', () => {
 		}
 
 		it('should handle valid checkout session completed event', async () => {
-			vi.mocked(mockActiveSignatureUseCase.execute).mockResolvedValue(undefined)
+			vi.mocked(mockActiveSignatureUseCase.execute).mockResolvedValue(
+				success({ signature: makeSignature() }),
+			)
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
@@ -81,7 +85,9 @@ describe('CheckoutCompletedHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(invalidEvent)
 
@@ -103,9 +109,13 @@ describe('CheckoutCompletedHandler', () => {
 
 		it('should handle use case execution error', async () => {
 			const useCaseError = new Error('Database connection failed')
-			vi.mocked(mockActiveSignatureUseCase.execute).mockRejectedValue(useCaseError)
+			vi.mocked(mockActiveSignatureUseCase.execute).mockRejectedValue(
+				useCaseError,
+			)
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(validEvent)
 
@@ -137,7 +147,9 @@ describe('CheckoutCompletedHandler', () => {
 				},
 			}
 
-			vi.mocked(mockActiveSignatureUseCase.execute).mockResolvedValue(undefined)
+			vi.mocked(mockActiveSignatureUseCase.execute).mockResolvedValue(
+				success({ signature: makeSignature() }),
+			)
 
 			const result = await handler.handle(incompleteEvent)
 
@@ -157,7 +169,9 @@ describe('CheckoutCompletedHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(nullDataEvent)
 

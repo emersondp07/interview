@@ -1,7 +1,10 @@
-import type { IEventHandler, IWebhookHandlerFactory } from '../interfaces/event-handler'
+import type {
+	IEventHandler,
+	IWebhookHandlerFactory,
+} from '../interfaces/event-handler'
 
 export class WebhookHandlerFactory implements IWebhookHandlerFactory {
-	private handlers = new Map<string, IEventHandler>()
+	private readonly handlers = new Map<string, IEventHandler>()
 
 	registerHandlers(handlers: IEventHandler[]): void {
 		for (const handler of handlers) {
@@ -30,7 +33,7 @@ export class WebhookHandlerFactory implements IWebhookHandlerFactory {
 		]
 
 		// Retorna apenas os tipos que o handler pode processar
-		return allEventTypes.filter(eventType => handler.canHandle(eventType))
+		return allEventTypes.filter((eventType) => handler.canHandle(eventType))
 	}
 
 	getRegisteredEventTypes(): string[] {

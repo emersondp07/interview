@@ -1,7 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { CreateInvoiceHandler } from './create-invoice-handler'
-import type { CreateInvoiceUseCase } from '../use-cases/create-invoice'
+import { success } from '@/domain/core/either'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import { makeInvoice } from '@/tests/factories/make-invoice'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { CreateInvoiceUseCase } from '../use-cases/create-invoice'
+import { CreateInvoiceHandler } from './create-invoice-handler'
 
 // Mock do use case
 const mockCreateInvoiceUseCase = {
@@ -53,7 +55,9 @@ describe('CreateInvoiceHandler', () => {
 		}
 
 		it('should handle valid invoice created event', async () => {
-			vi.mocked(mockCreateInvoiceUseCase.execute).mockResolvedValue(undefined)
+			vi.mocked(mockCreateInvoiceUseCase.execute).mockResolvedValue(
+				success({ invoice: makeInvoice() }),
+			)
 
 			const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
@@ -81,9 +85,13 @@ describe('CreateInvoiceHandler', () => {
 
 		it('should handle use case execution error', async () => {
 			const useCaseError = new Error('Database connection failed')
-			vi.mocked(mockCreateInvoiceUseCase.execute).mockRejectedValue(useCaseError)
+			vi.mocked(mockCreateInvoiceUseCase.execute).mockRejectedValue(
+				useCaseError,
+			)
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(validEvent)
 
@@ -115,7 +123,9 @@ describe('CreateInvoiceHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(incompleteEvent)
 
@@ -136,7 +146,9 @@ describe('CreateInvoiceHandler', () => {
 				},
 			}
 
-			vi.mocked(mockCreateInvoiceUseCase.execute).mockResolvedValue(undefined)
+			vi.mocked(mockCreateInvoiceUseCase.execute).mockResolvedValue(
+				success({ invoice: makeInvoice() }),
+			)
 
 			const result = await handler.handle(zeroAmountEvent)
 
@@ -164,7 +176,9 @@ describe('CreateInvoiceHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(noLinesEvent)
 
@@ -182,7 +196,9 @@ describe('CreateInvoiceHandler', () => {
 				},
 			}
 
-			const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+			const consoleErrorSpy = vi
+				.spyOn(console, 'error')
+				.mockImplementation(() => {})
 
 			const result = await handler.handle(nullDataEvent)
 

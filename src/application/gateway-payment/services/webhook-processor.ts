@@ -1,6 +1,9 @@
 import type { IStripeWebhooks } from '@/infra/services/stripe/interfaces/stripe-webhooks'
-import type { IWebhookProcessor, WebhookResult } from '../interfaces/webhook-processor'
 import type { IWebhookHandlerFactory } from '../interfaces/event-handler'
+import type {
+	IWebhookProcessor,
+	WebhookResult,
+} from '../interfaces/webhook-processor'
 
 export class WebhookProcessorService implements IWebhookProcessor {
 	constructor(
@@ -8,7 +11,10 @@ export class WebhookProcessorService implements IWebhookProcessor {
 		private readonly handlerFactory: IWebhookHandlerFactory,
 	) {}
 
-	async processWebhook(rawBody: string, signature: string): Promise<WebhookResult> {
+	async processWebhook(
+		rawBody: string,
+		signature: string,
+	): Promise<WebhookResult> {
 		try {
 			// Validar evento usando Stripe service
 			const event = await this.stripeWebhooks.validateEvent(rawBody, signature)

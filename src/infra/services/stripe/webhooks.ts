@@ -1,6 +1,9 @@
 import Stripe from 'stripe'
 import { env } from '../../config'
-import type { IStripeWebhooks, WebhookEvent } from './interfaces/stripe-webhooks'
+import type {
+	IStripeWebhooks,
+	WebhookEvent,
+} from './interfaces/stripe-webhooks'
 
 export class StripeWebhooksService implements IStripeWebhooks {
 	private readonly stripe: Stripe
@@ -11,7 +14,10 @@ export class StripeWebhooksService implements IStripeWebhooks {
 		})
 	}
 
-	async validateEvent(rawBody: string, signature: string): Promise<WebhookEvent> {
+	async validateEvent(
+		rawBody: string,
+		signature: string,
+	): Promise<WebhookEvent> {
 		const event = await this.constructEvent(rawBody, signature)
 
 		return {
@@ -22,7 +28,10 @@ export class StripeWebhooksService implements IStripeWebhooks {
 		}
 	}
 
-	async constructEvent(rawBody: string, signature: string): Promise<Stripe.Event> {
+	async constructEvent(
+		rawBody: string,
+		signature: string,
+	): Promise<Stripe.Event> {
 		try {
 			return this.stripe.webhooks.constructEvent(
 				rawBody,

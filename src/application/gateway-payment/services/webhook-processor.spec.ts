@@ -1,8 +1,14 @@
+import type {
+	IStripeWebhooks,
+	WebhookEvent,
+} from '@/infra/services/stripe/interfaces/stripe-webhooks'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { WebhookProcessorService } from './webhook-processor'
-import type { IStripeWebhooks, WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
-import type { IWebhookHandlerFactory, IEventHandler } from '../interfaces/event-handler'
+import type {
+	IEventHandler,
+	IWebhookHandlerFactory,
+} from '../interfaces/event-handler'
 import type { WebhookResult } from '../interfaces/webhook-processor'
+import { WebhookProcessorService } from './webhook-processor'
 
 // Mock implementations
 class MockStripeWebhooks implements IStripeWebhooks {
@@ -57,11 +63,19 @@ describe('WebhookProcessorService', () => {
 			mockHandlerFactory.getHandler.mockReturnValue(mockHandler)
 			mockHandler.handle.mockResolvedValue(expectedResult)
 
-			const result = await webhookProcessor.processWebhook('raw_body', 'signature')
+			const result = await webhookProcessor.processWebhook(
+				'raw_body',
+				'signature',
+			)
 
 			expect(result).toEqual(expectedResult)
-			expect(mockStripeWebhooks.validateEvent).toHaveBeenCalledWith('raw_body', 'signature')
-			expect(mockHandlerFactory.getHandler).toHaveBeenCalledWith('checkout.session.completed')
+			expect(mockStripeWebhooks.validateEvent).toHaveBeenCalledWith(
+				'raw_body',
+				'signature',
+			)
+			expect(mockHandlerFactory.getHandler).toHaveBeenCalledWith(
+				'checkout.session.completed',
+			)
 			expect(mockHandler.handle).toHaveBeenCalledWith(mockEvent)
 		})
 
@@ -78,7 +92,10 @@ describe('WebhookProcessorService', () => {
 
 			const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-			const result = await webhookProcessor.processWebhook('raw_body', 'signature')
+			const result = await webhookProcessor.processWebhook(
+				'raw_body',
+				'signature',
+			)
 
 			expect(result).toEqual({
 				success: true,
@@ -86,7 +103,9 @@ describe('WebhookProcessorService', () => {
 				eventType: 'unsupported.event.type',
 			})
 
-			expect(consoleSpy).toHaveBeenCalledWith("Event type 'unsupported.event.type' not supported")
+			expect(consoleSpy).toHaveBeenCalledWith(
+				"Event type 'unsupported.event.type' not supported",
+			)
 			expect(mockHandler.handle).not.toHaveBeenCalled()
 
 			consoleSpy.mockRestore()
@@ -98,7 +117,10 @@ describe('WebhookProcessorService', () => {
 
 			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-			const result = await webhookProcessor.processWebhook('raw_body', 'invalid_signature')
+			const result = await webhookProcessor.processWebhook(
+				'raw_body',
+				'invalid_signature',
+			)
 
 			expect(result).toEqual({
 				success: false,
@@ -107,7 +129,10 @@ describe('WebhookProcessorService', () => {
 				error: 'Invalid signature',
 			})
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error processing webhook:', validationError)
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error processing webhook:',
+				validationError,
+			)
 			expect(mockHandlerFactory.getHandler).not.toHaveBeenCalled()
 
 			consoleSpy.mockRestore()
@@ -115,14 +140,17 @@ describe('WebhookProcessorService', () => {
 
 		it('should handle handler execution error', async () => {
 			const handlerError = new Error('Handler processing failed')
-			
+
 			mockStripeWebhooks.validateEvent.mockResolvedValue(mockEvent)
 			mockHandlerFactory.getHandler.mockReturnValue(mockHandler)
 			mockHandler.handle.mockRejectedValue(handlerError)
 
 			const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-			const result = await webhookProcessor.processWebhook('raw_body', 'signature')
+			const result = await webhookProcessor.processWebhook(
+				'raw_body',
+				'signature',
+			)
 
 			expect(result).toEqual({
 				success: false,
@@ -131,7 +159,10 @@ describe('WebhookProcessorService', () => {
 				error: 'Handler processing failed',
 			})
 
-			expect(consoleSpy).toHaveBeenCalledWith('Error processing webhook:', handlerError)
+			expect(consoleSpy).toHaveBeenCalledWith(
+				'Error processing webhook:',
+				handlerError,
+			)
 
 			consoleSpy.mockRestore()
 		})
@@ -148,7 +179,10 @@ describe('WebhookProcessorService', () => {
 			mockHandlerFactory.getHandler.mockReturnValue(mockHandler)
 			mockHandler.handle.mockResolvedValue(errorResult)
 
-			const result = await webhookProcessor.processWebhook('raw_body', 'signature')
+			const result = await webhookProcessor.processWebhook(
+				'raw_body',
+				'signature',
+			)
 
 			expect(result).toEqual(errorResult)
 		})
@@ -162,7 +196,9 @@ describe('WebhookProcessorService', () => {
 				'invoice.paid',
 			]
 
-			mockStripeWebhooks.getSupportedEventTypes.mockReturnValue(expectedEventTypes)
+			mockStripeWebhooks.getSupportedEventTypes.mockReturnValue(
+				expectedEventTypes,
+			)
 
 			const result = webhookProcessor.getSupportedEvents()
 

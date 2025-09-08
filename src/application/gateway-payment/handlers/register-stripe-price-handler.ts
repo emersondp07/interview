@@ -1,7 +1,7 @@
-import type { RegisterStripePriceIdUseCase } from '../use-cases/register-stripe-price-id'
-import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookResult } from '../interfaces/webhook-processor'
+import type { RegisterStripePriceIdUseCase } from '../use-cases/register-stripe-price-id'
 
 export class RegisterStripePriceHandler implements IEventHandler {
 	constructor(
@@ -21,7 +21,9 @@ export class RegisterStripePriceHandler implements IEventHandler {
 				priceId: id,
 			})
 
-			console.log(`✅ Stripe price registered successfully: ${id} for product: ${product}`)
+			console.log(
+				`✅ Stripe price registered successfully: ${id} for product: ${product}`,
+			)
 
 			return {
 				success: true,

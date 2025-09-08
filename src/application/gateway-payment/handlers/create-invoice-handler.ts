@@ -1,7 +1,7 @@
-import type { CreateInvoiceUseCase } from '../use-cases/create-invoice'
-import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookEvent } from '@/infra/services/stripe/interfaces/stripe-webhooks'
+import type { IEventHandler } from '../interfaces/event-handler'
 import type { WebhookResult } from '../interfaces/webhook-processor'
+import type { CreateInvoiceUseCase } from '../use-cases/create-invoice'
 
 export class CreateInvoiceHandler implements IEventHandler {
 	constructor(private readonly createInvoiceUseCase: CreateInvoiceUseCase) {}
@@ -21,7 +21,9 @@ export class CreateInvoiceHandler implements IEventHandler {
 				stripeInvoiceId: id as string,
 			})
 
-			console.log(`✅ Invoice created successfully: ${id} for customer: ${customer}`)
+			console.log(
+				`✅ Invoice created successfully: ${id} for customer: ${customer}`,
+			)
 
 			return {
 				success: true,
