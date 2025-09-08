@@ -31,7 +31,7 @@ export class CreateInvoiceUseCase {
 		const isExistCompany =
 			await this.companiesRepository.findByCustomerId(companyId)
 
-		if (!isExistCompany || !isExistCompany.signature?.id.toString()) {
+		if (!isExistCompany?.signature?.id.toString()) {
 			return failed(new ResourceNotFoundError())
 		}
 

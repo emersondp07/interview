@@ -45,7 +45,7 @@ export class RegisterCompanyUseCase {
 
 		const planExists = await this.plansRepository.findById(planId)
 
-		if (!planExists || !planExists.stripePriceId) {
+		if (!planExists?.stripePriceId) {
 			return failed(new NotAllowedError())
 		}
 
