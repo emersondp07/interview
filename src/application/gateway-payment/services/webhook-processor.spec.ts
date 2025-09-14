@@ -10,7 +10,6 @@ import type {
 import type { WebhookResult } from '../interfaces/webhook-processor'
 import { WebhookProcessorService } from './webhook-processor'
 
-// Mock implementations
 class MockStripeWebhooks implements IStripeWebhooks {
 	validateEvent = vi.fn()
 	constructEvent = vi.fn()

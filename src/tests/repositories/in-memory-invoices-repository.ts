@@ -29,9 +29,9 @@ export class InMemoryInvoicesRepository implements InvoicesRepository {
 		return invoice ? PrismaInvoiceMapper.toDomain(invoice) : null
 	}
 
-	async findBySignatureId(invoiceId: string) {
+	async findBySignatureId(signatureId: string) {
 		const invoice = this.items.find(
-			(invoice) => invoice.id.toString() === invoiceId,
+			(invoice) => invoice.signature_id === signatureId,
 		)
 
 		if (!invoice) {

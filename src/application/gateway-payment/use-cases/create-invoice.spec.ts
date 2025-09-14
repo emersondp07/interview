@@ -28,7 +28,9 @@ describe('Create Invoice', () => {
 	})
 
 	it('Should be able to create an invoice', async () => {
-		const company = makeCompany()
+		const company = makeCompany({
+			stripeCustomerId: faker.string.uuid(),
+		})
 		const signature = makeSignature({
 			planId: new UniqueEntityID(company.planId),
 			companyId: company.id,
@@ -42,7 +44,7 @@ describe('Create Invoice', () => {
 		const result = await sut.execute({
 			mounth: 'January',
 			value: '100',
-			companyId: company.id.toString(),
+			companyId: company.stripeCustomerId ?? '',
 			stripeInvoiceId: faker.string.uuid(),
 		})
 

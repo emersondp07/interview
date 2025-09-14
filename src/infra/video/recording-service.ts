@@ -28,7 +28,6 @@ export class RecordingService implements IRecordingService {
 			return
 		}
 
-		// Criar diretório de gravações se não existir
 		const recordingsDir = path.join(process.cwd(), 'recordings')
 		if (!fs.existsSync(recordingsDir)) {
 			fs.mkdirSync(recordingsDir, { recursive: true })
@@ -40,8 +39,6 @@ export class RecordingService implements IRecordingService {
 
 		room.startRecording(recordingPath)
 
-		// Para demonstração, apenas marcar como recording ativo
-		// Em produção, você implementaria a gravação real usando FFmpeg ou outra solução
 		console.log(`Gravação iniciada para sala ${room.interviewId}`)
 	}
 

@@ -40,7 +40,6 @@ export class EndInterviewUseCase {
 			`Encerrando entrevista ${roomId} por solicitação do socket: ${socketId}`,
 		)
 
-		// Parar gravação se estiver ativa
 		let recordingInfo = null
 		if (room.isRecording) {
 			recordingInfo = await this.recordingService.stopRecording(room)

@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { IEventHandler } from '../interfaces/event-handler'
 import { WebhookHandlerFactory } from './webhook-handler-factory'
 
-// Mock handler para testes
 class MockCheckoutHandler implements IEventHandler {
 	canHandle(eventType: string): boolean {
 		return eventType === 'checkout.session.completed'
