@@ -35,15 +35,13 @@ export class MediaSoupService implements IMediaSoupService {
 
 		worker.on('died', (error) => {
 			console.error('Mediasoup worker morreu:', error)
-			// Em ambiente de teste, não devemos fazer process.exit(1)
-			// pois isso interfere com outros testes
+
 			if (process.env.NODE_ENV !== 'test' && process.env.VITEST !== 'true') {
 				setTimeout(() => process.exit(1), 2000)
 			} else {
 				console.warn(
 					'MediaSoup worker died in test environment - not exiting process',
 				)
-				// Em testes, marcar que o worker precisa ser reinicializado
 				this.worker = undefined
 				this.router = undefined
 			}
@@ -134,7 +132,6 @@ export class MediaSoupService implements IMediaSoupService {
 		return this.getRouter().canConsume({ producerId, rtpCapabilities })
 	}
 
-	// Método para cleanup em testes
 	async cleanup(): Promise<void> {
 		if (this.worker && !this.worker.closed) {
 			this.worker.close()
@@ -143,7 +140,6 @@ export class MediaSoupService implements IMediaSoupService {
 		this.router = undefined
 	}
 
-	// Método para resetar instância (útil em testes)
 	static resetInstance(): void {
 		MediaSoupService.instance = undefined as any
 	}

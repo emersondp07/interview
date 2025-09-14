@@ -1,59 +1,99 @@
-import { env } from '@/infra/config'
+import { WebhookHandlerFactory } from '@/application/gateway-payment/factories/webhook-handler-factory'
+import { CheckoutCompletedHandler } from '@/application/gateway-payment/handlers/checkout-completed-handler'
+import { CreateInvoiceHandler } from '@/application/gateway-payment/handlers/create-invoice-handler'
+import { PaidInvoiceHandler } from '@/application/gateway-payment/handlers/paid-invoice-handler'
+import { RegisterStripePriceHandler } from '@/application/gateway-payment/handlers/register-stripe-price-handler'
+import { WebhookProcessorService } from '@/application/gateway-payment/services/webhook-processor'
+import { StripeWebhooksService } from '@/infra/services/stripe/webhooks'
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import Stripe from 'stripe'
-import { checkouCompleted } from './checkout-completed'
-import { createInvoice } from './create-invoice'
-import { paidInvoice } from './paid-invoice'
-import { registerStripePriceId } from './register-stripe-price-id'
+
+import { ActiveSignatureUseCase } from '@/application/gateway-payment/use-cases/active-signature'
+import { CreateInvoiceUseCase } from '@/application/gateway-payment/use-cases/create-invoice'
+import { PaidInvoiceUseCase } from '@/application/gateway-payment/use-cases/paid-invoice'
+import { RegisterStripePriceIdUseCase } from '@/application/gateway-payment/use-cases/register-stripe-price-id'
+
+import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import { PrismaInvoicesRepository } from '@/infra/database/repositories/prisma-invoices-repository'
+import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
+import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
+import { ResendEmailsService } from '@/infra/services/email/emails'
 
 export async function gatewayPayment(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
-	const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-		apiVersion: '2025-05-28.basil',
-	})
 	const sig = request.headers['stripe-signature']
 	const rawBody = request.rawBody as string
 
 	if (!sig || typeof sig !== 'string') {
-		return reply.status(400).send('Missing Stripe signature')
+		return reply.status(400).send({ error: 'Missing Stripe signature' })
 	}
 
 	if (!rawBody) {
-		return reply.status(400).send('Missing rawBody')
+		return reply.status(400).send({ error: 'Missing rawBody' })
 	}
-
-	let event: Stripe.Event
 
 	try {
-		event = stripe.webhooks.constructEvent(
-			rawBody,
-			sig,
-			env.STRIPE_WEBHOOK_SECRET_KEY,
+		const stripeWebhooks = new StripeWebhooksService()
+		const handlerFactory = new WebhookHandlerFactory()
+
+		const companiesRepository = new PrismaCompaniesRepository()
+		const signaturesRepository = new PrismaSignaturesRepository()
+		const invoicesRepository = new PrismaInvoicesRepository()
+		const plansRepository = new PrismaPlansRepository()
+		const emailService = new ResendEmailsService()
+
+		const activeSignatureUseCase = new ActiveSignatureUseCase(
+			signaturesRepository,
+			companiesRepository,
+			emailService,
 		)
-	} catch (err) {
-		console.error('❌ Erro ao validar webhook:', err)
-		return reply.status(400).send(`Webhook Error: ${(err as Error).message}`)
-	}
+		const createInvoiceUseCase = new CreateInvoiceUseCase(
+			invoicesRepository,
+			companiesRepository,
+		)
+		const paidInvoiceUseCase = new PaidInvoiceUseCase(
+			invoicesRepository,
+			companiesRepository,
+		)
+		const registerStripePriceIdUseCase = new RegisterStripePriceIdUseCase(
+			plansRepository,
+		)
 
-	if (event.type === 'price.created') {
-		await registerStripePriceId(event as Stripe.PriceCreatedEvent)
-	} else if (event.type === 'checkout.session.completed') {
-		await checkouCompleted(event as Stripe.CheckoutSessionCompletedEvent)
-	} else if (event.type === 'payment_intent.succeeded') {
-		// await checkouCompleted(event as Stripe.PaymentIntentSucceededEvent)
-	} else if (event.type === 'payment_intent.payment_failed') {
-		// await checkouCompleted(event as Stripe.PaymentIntentPaymentFailedEvent)
-	} else if (event.type === 'invoice.created') {
-		await createInvoice(event as Stripe.InvoiceCreatedEvent)
-	} else if (event.type === 'invoice.paid') {
-		await paidInvoice(event as Stripe.InvoicePaidEvent)
-	} else if (event.type === 'invoice.payment_failed') {
-		console.warn(`Unhandled event type: ${event.type}`)
-	} else {
-		console.warn(`Unhandled event type: ${event.type}`)
-	}
+		const handlers = [
+			new CheckoutCompletedHandler(activeSignatureUseCase),
+			new CreateInvoiceHandler(createInvoiceUseCase),
+			new PaidInvoiceHandler(paidInvoiceUseCase),
+			new RegisterStripePriceHandler(registerStripePriceIdUseCase),
+		]
+		handlerFactory.registerHandlers(handlers)
 
-	return reply.status(200).send({ received: true })
+		const processor = new WebhookProcessorService(
+			stripeWebhooks,
+			handlerFactory,
+		)
+
+		const result = await processor.processWebhook(rawBody, sig)
+
+		if (!result.success) {
+			console.error(`❌ Webhook processing failed: ${result.message}`)
+			return reply.status(400).send({
+				error: result.message,
+				eventType: result.eventType,
+			})
+		}
+
+		console.log(`✅ Webhook processed successfully: ${result.eventType}`)
+		return reply.status(200).send({
+			received: true,
+			message: result.message,
+			eventType: result.eventType,
+		})
+	} catch (error) {
+		console.error('❌ Gateway payment error:', error)
+		return reply.status(500).send({
+			error: 'Internal server error',
+			message: (error as Error).message,
+		})
+	}
 }

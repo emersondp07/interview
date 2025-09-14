@@ -41,7 +41,6 @@ export class JoinInterviewRoomUseCase {
 				`Tentativa de entrada na sala - ID: ${interviewId}, Role: ${role}, Socket: ${socketId}`,
 			)
 
-			// Buscar ou criar sala
 			let room = this.videoSessionRepository.findById(interviewId)
 			if (!room) {
 				room = this.videoSessionRepository.create(
@@ -51,7 +50,6 @@ export class JoinInterviewRoomUseCase {
 				)
 			}
 
-			// Verificar se o usuário tem permissão para entrar na sala
 			const isAuthorized =
 				(role === ROLE.INTERVIEWER && doctorId === room.doctorId) ||
 				(role === ROLE.CLIENT && patientId === room.patientId)
@@ -61,7 +59,6 @@ export class JoinInterviewRoomUseCase {
 				return { success: false, error: 'Não autorizado para esta entrevista' }
 			}
 
-			// Verificar se o role já está ocupado
 			if (
 				role === ROLE.INTERVIEWER &&
 				room.doctorSocketId &&
@@ -86,22 +83,18 @@ export class JoinInterviewRoomUseCase {
 				}
 			}
 
-			// Associar socket à sala
 			this.videoSessionRepository.setSocketRoom(socketId, interviewId)
 
-			// Registrar socket na sala baseado no role
 			if (role === ROLE.INTERVIEWER) {
 				room.setDoctorSocket(socketId)
 			} else {
 				room.setPatientSocket(socketId)
 			}
 
-			// Salvar alterações
 			this.videoSessionRepository.save(room)
 
 			console.log(`${role} entrou na sala ${interviewId}: ${socketId}`)
 
-			// Iniciar gravação automaticamente quando o doutor entrar
 			if (role === ROLE.INTERVIEWER && !room.isRecording) {
 				await this.recordingService.startRecording(room)
 			}

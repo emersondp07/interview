@@ -80,7 +80,6 @@ export class ManageMediaStreamsUseCase {
 				console.log(`Consumer transport criado para ${socketId}`)
 			}
 
-			// Adicionar listeners para debug
 			transport.on('dtlsstatechange', (dtlsState) => {
 				console.log(`Transport ${transport.id} DTLS state: ${dtlsState}`)
 			})
@@ -203,7 +202,6 @@ export class ManageMediaStreamsUseCase {
 				`Producer criado: ${producer.id} (${kind}) para socket: ${socketId} na sala: ${roomId}`,
 			)
 
-			// Configurar eventos do producer
 			producer.on('transportclose', () => {
 				console.log('Producer transport fechado:', producer.id)
 				room.removeProducer(socketId, producer.id)
@@ -244,7 +242,6 @@ export class ManageMediaStreamsUseCase {
 
 		const consumableProducers: any[] = []
 
-		// Consumir apenas producers do outro participante na sala
 		const otherSocketId = room.getOtherSocketId(socketId)
 
 		if (!otherSocketId) {
@@ -269,12 +266,11 @@ export class ManageMediaStreamsUseCase {
 				const consumer = await transport.consume({
 					producerId: producer.id,
 					rtpCapabilities,
-					paused: true, // Sempre iniciar pausado
+					paused: true,
 				})
 
 				room.addConsumer(socketId, consumer)
 
-				// Configurar eventos do consumer
 				consumer.on('transportclose', () => {
 					console.log('Consumer transport fechado:', consumer.id)
 					room.removeConsumer(socketId, consumer.id)

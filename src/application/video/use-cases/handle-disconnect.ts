@@ -34,19 +34,14 @@ export class HandleDisconnectUseCase {
 			return { roomCleaned: false }
 		}
 
-		// Obter o outro participante antes de limpar
 		const otherSocketId = room.getOtherSocketId(socketId)
 
-		// Limpar todos os recursos do socket que desconectou
 		room.clearSocket(socketId)
 
-		// Salvar alterações na sala
 		this.videoSessionRepository.save(room)
 
-		// Limpar mapeamento socket -> sala
 		this.videoSessionRepository.clearSocketRoom(socketId)
 
-		// Se não há mais participantes, parar gravação e limpar sala
 		if (room.hasNoParticipants()) {
 			console.log('Limpando sala sem participantes:', roomId)
 			if (room.isRecording) {

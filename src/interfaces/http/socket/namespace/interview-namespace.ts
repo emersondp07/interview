@@ -48,14 +48,10 @@ export async function registerInterviewNamespace(io: Server) {
 			const clientId = socket.data.clientId
 
 			if (clientId) {
-				// biome-ignore lint/complexity/useOptionalChain: <explanation>
-				if (waitingQueue && waitingQueue.has(clientId)) {
+				if (waitingQueue.size > 0) {
 					waitingQueue.delete(clientId)
 				}
-
-				// Mesma lógica para onlineClients
-				// biome-ignore lint/complexity/useOptionalChain: <explanation>
-				if (onlineClients && onlineClients.has(clientId)) {
+				if (onlineClients.size > 0) {
 					onlineClients.delete(clientId)
 				}
 			}

@@ -11,7 +11,7 @@ export default defineConfig({
         "src/domain/**",
         "src/application/**",
         "src/interfaces/**",
-        "src/application/**",
+        "src/infra/**",
       ],
       exclude: [
         "**/*.d.ts",
@@ -34,7 +34,11 @@ export default defineConfig({
         test: {
           name: "unit",
           environment: "node",
-          include: ["src/domain/**/*.spec.ts", "src/application/**/*.spec.ts"],
+          include: [
+            "src/domain/**/*.spec.ts",
+            "src/application/**/*.spec.ts",
+            "src/infra/**/*.spec.ts",
+          ],
           globals: true,
           testTimeout: 30000,
         },

@@ -41,7 +41,7 @@ export class InMemoryCompaniesRepository implements CompaniesRepository {
 
 	async findByCustomerId(customerId: string) {
 		const company = this.items.find(
-			(company) => company.id.toString() === customerId,
+			(company) => company.stripe_customer_id === customerId,
 		)
 
 		if (!company) {

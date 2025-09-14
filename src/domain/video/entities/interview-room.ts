@@ -23,7 +23,11 @@ export class InterviewRoom {
 		this.props = props
 	}
 
-	static create(interviewId: string, patientId: string, doctorId: string): InterviewRoom {
+	static create(
+		interviewId: string,
+		patientId: string,
+		doctorId: string,
+	): InterviewRoom {
 		return new InterviewRoom({
 			interviewId,
 			doctorId,
@@ -90,7 +94,12 @@ export class InterviewRoom {
 		this.props.recordingPath = recordingPath
 	}
 
-	stopRecording(): { duration: number; startTime?: Date; endTime: Date; path?: string } {
+	stopRecording(): {
+		duration: number
+		startTime?: Date
+		endTime: Date
+		path?: string
+	} {
 		const duration = this.props.recordingStartTime
 			? Date.now() - this.props.recordingStartTime.getTime()
 			: 0
@@ -117,7 +126,7 @@ export class InterviewRoom {
 
 	removeProducer(socketId: string, producerId: string): void {
 		const producers = this.props.producers.get(socketId) || []
-		const updatedProducers = producers.filter(p => p.id !== producerId)
+		const updatedProducers = producers.filter((p) => p.id !== producerId)
 		this.props.producers.set(socketId, updatedProducers)
 	}
 
@@ -133,36 +142,43 @@ export class InterviewRoom {
 
 	removeConsumer(socketId: string, consumerId: string): void {
 		const consumers = this.props.consumers.get(socketId) || []
-		const updatedConsumers = consumers.filter(c => c.id !== consumerId)
+		const updatedConsumers = consumers.filter((c) => c.id !== consumerId)
 		this.props.consumers.set(socketId, updatedConsumers)
 	}
 
-	setProducerTransport(socketId: string, transport: mediasoup.types.WebRtcTransport): void {
+	setProducerTransport(
+		socketId: string,
+		transport: mediasoup.types.WebRtcTransport,
+	): void {
 		this.props.producerTransports.set(socketId, transport)
 	}
 
-	getProducerTransport(socketId: string): mediasoup.types.WebRtcTransport | undefined {
+	getProducerTransport(
+		socketId: string,
+	): mediasoup.types.WebRtcTransport | undefined {
 		return this.props.producerTransports.get(socketId)
 	}
 
-	setConsumerTransport(socketId: string, transport: mediasoup.types.WebRtcTransport): void {
+	setConsumerTransport(
+		socketId: string,
+		transport: mediasoup.types.WebRtcTransport,
+	): void {
 		this.props.consumerTransports.set(socketId, transport)
 	}
 
-	getConsumerTransport(socketId: string): mediasoup.types.WebRtcTransport | undefined {
+	getConsumerTransport(
+		socketId: string,
+	): mediasoup.types.WebRtcTransport | undefined {
 		return this.props.consumerTransports.get(socketId)
 	}
 
 	clearSocket(socketId: string): void {
-		// Fechar todos os producers do socket
 		const producers = this.getProducers(socketId)
-		producers.forEach(producer => producer.close())
+		producers.forEach((producer) => producer.close())
 
-		// Fechar todos os consumers do socket
 		const consumers = this.getConsumers(socketId)
-		consumers.forEach(consumer => consumer.close())
+		consumers.forEach((consumer) => consumer.close())
 
-		// Fechar transports
 		const producerTransport = this.getProducerTransport(socketId)
 		if (producerTransport) {
 			producerTransport.close()
@@ -173,13 +189,11 @@ export class InterviewRoom {
 			consumerTransport.close()
 		}
 
-		// Limpar referências
 		this.props.producers.delete(socketId)
 		this.props.consumers.delete(socketId)
 		this.props.producerTransports.delete(socketId)
 		this.props.consumerTransports.delete(socketId)
 
-		// Atualizar referências de socket
 		if (this.props.doctorSocketId === socketId) {
 			this.props.doctorSocketId = undefined
 		}
@@ -189,12 +203,14 @@ export class InterviewRoom {
 	}
 
 	getParticipantCount(): number {
-		return (this.props.doctorSocketId ? 1 : 0) + (this.props.patientSocketId ? 1 : 0)
+		return (
+			(this.props.doctorSocketId ? 1 : 0) + (this.props.patientSocketId ? 1 : 0)
+		)
 	}
 
 	getOtherSocketId(currentSocketId: string): string | undefined {
-		return currentSocketId === this.props.doctorSocketId 
-			? this.props.patientSocketId 
+		return currentSocketId === this.props.doctorSocketId
+			? this.props.patientSocketId
 			: this.props.doctorSocketId
 	}
 
