@@ -2,9 +2,9 @@ import { RegisterCompanyUseCase } from '@/application/administrator/use-cases/re
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaPlansRepository } from '@/infra/database/repositories/prisma-plans-repository'
 import { PrismaSignaturesRepository } from '@/infra/database/repositories/prisma-signatures-repository'
-import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import { ResendEmailsService } from '@/infra/services/email/emails'
 import { StripeCustomersService } from '@/infra/services/stripe/customers'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { RegisterCompanySchema } from '@application/administrator/validators/register-company.schema'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 

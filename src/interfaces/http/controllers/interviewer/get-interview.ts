@@ -1,8 +1,8 @@
-import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { GetInterviewSchema } from '@/application/client/validators/get-interview.schema'
 import { GetInterviewByIdUseCase } from '@/application/interviewer/use-cases/get-interview'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
 import { handleResult } from '@/interfaces/http/helpers/handle-result'
+import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function getInterview(
 	request: FastifyRequest,

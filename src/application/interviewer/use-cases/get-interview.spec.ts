@@ -23,12 +23,14 @@ describe('Get Interview', () => {
 		})
 
 		expect(result.isSuccess()).toBe(true)
-		
+
 		if (result.isSuccess()) {
 			expect(result.value.interview?.id).toEqual(interview.id)
 			expect(result.value.interview?.status).toEqual(interview.status)
 			expect(result.value.interview?.clientId).toEqual(interview.clientId)
-			expect(result.value.interview?.interviewerId).toEqual(interview.interviewerId)
+			expect(result.value.interview?.interviewerId).toEqual(
+				interview.interviewerId,
+			)
 		}
 	})
 

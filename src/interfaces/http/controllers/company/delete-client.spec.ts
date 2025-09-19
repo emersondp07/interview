@@ -31,7 +31,6 @@ describe('Delete Client (e2e)', () => {
 				gender: client.gender,
 				emergency_contact: client.emergencyContact,
 				emergency_phone: client.emergencyPhone,
-				medical_history: client.medicalHistory,
 				allergies: client.allergies,
 				medications: client.medications,
 				role: client.role,

@@ -26,13 +26,13 @@ describe('EndInterviewUseCase', () => {
 
 		// Create room with recording started a bit ago
 		const recordingStartTime = new Date(Date.now() - 1000) // 1 second ago
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
 			isRecording: true,
 			recordingStartTime,
-			recordingPath: '/mock/path/recording.mp4'
+			recordingPath: '/mock/path/recording.mp4',
 		})
 		inMemoryVideoSessionRepository.save(room)
 		inMemoryVideoSessionRepository.setSocketRoom(socketId, interviewId)
@@ -53,11 +53,11 @@ describe('EndInterviewUseCase', () => {
 		const socketId = faker.string.uuid()
 
 		// Create room without recording
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
-			isRecording: false
+			isRecording: false,
 		})
 		inMemoryVideoSessionRepository.save(room)
 		inMemoryVideoSessionRepository.setSocketRoom(socketId, interviewId)

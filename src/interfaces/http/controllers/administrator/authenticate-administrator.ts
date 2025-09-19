@@ -11,8 +11,9 @@ export async function authenticateAdministrator(
 	const { email, password } = request.body as AuthenticateAdministratorSchema
 
 	const prismaAdministratorRepository = new PrismaAdministratorsRepository()
-	const authenticateAdministratorUseCase =
-		new AuthenticateAdministratorUseCase(prismaAdministratorRepository)
+	const authenticateAdministratorUseCase = new AuthenticateAdministratorUseCase(
+		prismaAdministratorRepository,
+	)
 
 	const result = await authenticateAdministratorUseCase.execute({
 		email,

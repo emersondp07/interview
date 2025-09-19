@@ -1,7 +1,7 @@
 import { GetInterviewerByIdUseCase } from '@/application/company/use-cases/get-interviewer-by-id'
 import type { GetInterviewerSchema } from '@/application/company/validators/get-interviewer-by-id.schema'
-import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
+import { PrismaInterviewersRepository } from '@/infra/database/repositories/prisma-interviewers-repository'
 import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
