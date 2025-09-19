@@ -26,7 +26,7 @@ export class PrismaPlanMapper {
 				interviewLimit: raw.interview_limit,
 				description: raw.description,
 				createdAt: raw.created_at,
-				updatedAt: raw.updated_at,
+				updatedAt: raw.updated_at ?? undefined,
 				deletedAt: raw.deleted_at ?? undefined,
 				stripeProductId: raw.stripe_product_id,
 				stripePriceId: raw.stripe_price_id ?? undefined,

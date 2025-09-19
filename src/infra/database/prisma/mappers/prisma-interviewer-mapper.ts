@@ -60,7 +60,7 @@ export class PrismaInterviewerMapper {
 				bio: raw.bio,
 				role: raw.role as ROLE.INTERVIEWER,
 				createdAt: raw.created_at,
-				updatedAt: raw.updated_at,
+				updatedAt: raw.updated_at ?? undefined,
 				deletedAt: raw.deleted_at ?? undefined,
 				companyId: new UniqueEntityID(raw.company_id),
 			},
