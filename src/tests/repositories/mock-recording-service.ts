@@ -18,9 +18,7 @@ export class MockRecordingService implements IRecordingService {
 		console.log(`Mock: Gravação iniciada para sala ${room.interviewId}`)
 	}
 
-	async stopRecording(
-		room: InterviewRoom,
-	): Promise<{
+	async stopRecording(room: InterviewRoom): Promise<{
 		path?: string
 		duration: number
 		startTime?: Date

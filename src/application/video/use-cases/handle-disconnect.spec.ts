@@ -38,7 +38,9 @@ describe('HandleDisconnectUseCase', () => {
 
 		expect(result.roomCleaned).toBe(false)
 		expect(result.otherSocketId).toBeUndefined()
-		expect(inMemoryVideoSessionRepository.getSocketRoom(socketId)).toBeUndefined()
+		expect(
+			inMemoryVideoSessionRepository.getSocketRoom(socketId),
+		).toBeUndefined()
 	})
 
 	it('should clean up room when last participant disconnects', async () => {
@@ -48,13 +50,13 @@ describe('HandleDisconnectUseCase', () => {
 		const socketId = faker.string.uuid()
 
 		// Create room with recording and one participant
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
 			isRecording: true,
 			recordingStartTime: new Date(),
-			doctorSocketId: socketId
+			doctorSocketId: socketId,
 		})
 		inMemoryVideoSessionRepository.save(room)
 		inMemoryVideoSessionRepository.setSocketRoom(socketId, interviewId)
@@ -75,12 +77,12 @@ describe('HandleDisconnectUseCase', () => {
 		const patientSocketId = faker.string.uuid()
 
 		// Create room with both participants
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
 			doctorSocketId,
-			patientSocketId
+			patientSocketId,
 		})
 		inMemoryVideoSessionRepository.save(room)
 		inMemoryVideoSessionRepository.setSocketRoom(doctorSocketId, interviewId)
@@ -90,7 +92,7 @@ describe('HandleDisconnectUseCase', () => {
 		expect(result.roomCleaned).toBe(false)
 		expect(result.otherSocketId).toBe(patientSocketId)
 		expect(inMemoryVideoSessionRepository.findById(interviewId)).toBeDefined()
-		
+
 		// Room should still exist
 		const updatedRoom = inMemoryVideoSessionRepository.findById(interviewId)
 		expect(updatedRoom?.doctorSocketId).toBeUndefined()
@@ -105,19 +107,25 @@ describe('HandleDisconnectUseCase', () => {
 		const otherSocketId = faker.string.uuid()
 
 		// Create room with mock resources
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
 			doctorSocketId: socketId,
-			patientSocketId: otherSocketId
+			patientSocketId: otherSocketId,
 		})
 
 		// Add mock resources
 		const mockProducer = { id: faker.string.uuid(), close: vi.fn() } as any
 		const mockConsumer = { id: faker.string.uuid(), close: vi.fn() } as any
-		const mockProducerTransport = { id: faker.string.uuid(), close: vi.fn() } as any
-		const mockConsumerTransport = { id: faker.string.uuid(), close: vi.fn() } as any
+		const mockProducerTransport = {
+			id: faker.string.uuid(),
+			close: vi.fn(),
+		} as any
+		const mockConsumerTransport = {
+			id: faker.string.uuid(),
+			close: vi.fn(),
+		} as any
 
 		room.addProducer(socketId, mockProducer)
 		room.addConsumer(socketId, mockConsumer)
@@ -131,7 +139,7 @@ describe('HandleDisconnectUseCase', () => {
 
 		expect(result.roomCleaned).toBe(false)
 		expect(result.otherSocketId).toBe(otherSocketId)
-		
+
 		// Check that resources were closed
 		expect(mockProducer.close).toHaveBeenCalled()
 		expect(mockConsumer.close).toHaveBeenCalled()
@@ -152,17 +160,17 @@ describe('HandleDisconnectUseCase', () => {
 		const socketId = faker.string.uuid()
 
 		// Create room with recording but no recording initially started
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
 			doctorId,
 			isRecording: false,
-			doctorSocketId: socketId
+			doctorSocketId: socketId,
 		})
 
 		// Start recording manually
 		room.startRecording('/mock/path.mp4')
-		
+
 		inMemoryVideoSessionRepository.save(room)
 		inMemoryVideoSessionRepository.setSocketRoom(socketId, interviewId)
 

@@ -1,7 +1,10 @@
 import { env } from '@/infra/config'
 import { app, start } from '@/infra/http/server'
 import { createAndAuthenticateClientInterviewer } from '@/tests/factories/create-and-authenticate-client-interviewer'
-import { getUniqueTestPort, releaseTestPort } from '@/tests/utils/test-port-generator'
+import {
+	getUniqueTestPort,
+	releaseTestPort,
+} from '@/tests/utils/test-port-generator'
 import { io as Client, type Socket } from 'socket.io-client'
 
 describe('Interview Namespace (e2e)', () => {
@@ -16,13 +19,8 @@ describe('Interview Namespace (e2e)', () => {
 		testPort = getUniqueTestPort()
 		await start(testPort)
 
-		const {
-			tokenClient,
-			tokenInterviewer,
-			document,
-			clientId,
-			interviewId,
-		} = await createAndAuthenticateClientInterviewer(app)
+		const { tokenClient, tokenInterviewer, document, clientId, interviewId } =
+			await createAndAuthenticateClientInterviewer(app)
 
 		clientSocket = Client(`http://localhost:${testPort}/interview`, {
 			withCredentials: true,
@@ -60,7 +58,7 @@ describe('Interview Namespace (e2e)', () => {
 		}
 
 		await app.close()
-		
+
 		// Liberar a porta para outros testes
 		releaseTestPort(testPort)
 	})

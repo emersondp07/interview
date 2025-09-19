@@ -12,7 +12,9 @@ let handler: RegisterStripePriceHandler
 describe('RegisterStripePriceHandler', () => {
 	beforeEach(() => {
 		inMemoryPlansRepository = new InMemoryPlansRepository()
-		registerStripePriceIdUseCase = new RegisterStripePriceIdUseCase(inMemoryPlansRepository)
+		registerStripePriceIdUseCase = new RegisterStripePriceIdUseCase(
+			inMemoryPlansRepository,
+		)
 		handler = new RegisterStripePriceHandler(registerStripePriceIdUseCase)
 	})
 
@@ -63,7 +65,8 @@ describe('RegisterStripePriceHandler', () => {
 			})
 
 			// Verificar se o plano foi atualizado com o priceId
-			const updatedPlan = await inMemoryPlansRepository.findByProductId('prod_test_product')
+			const updatedPlan =
+				await inMemoryPlansRepository.findByProductId('prod_test_product')
 			expect(updatedPlan?.stripePriceId).toBe('price_test_12345')
 
 			expect(consoleSpy).toHaveBeenCalledWith(
@@ -141,7 +144,8 @@ describe('RegisterStripePriceHandler', () => {
 
 			expect(result.success).toBe(true)
 			// Verificar se o plano foi atualizado mesmo com priceId undefined
-			const updatedPlan = await inMemoryPlansRepository.findByProductId('prod_test_product')
+			const updatedPlan =
+				await inMemoryPlansRepository.findByProductId('prod_test_product')
 			expect(updatedPlan?.stripePriceId).toBeUndefined()
 		})
 
@@ -160,7 +164,7 @@ describe('RegisterStripePriceHandler', () => {
 			const result = await handler.handle(nullDataEvent)
 
 			expect(result.success).toBe(false)
-			
+
 			consoleErrorSpy.mockRestore()
 		})
 	})

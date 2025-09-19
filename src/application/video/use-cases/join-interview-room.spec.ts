@@ -105,10 +105,10 @@ describe('JoinInterviewRoomUseCase', () => {
 		const socketId = faker.string.uuid()
 
 		// Create room for authorized doctor
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId, 
-			doctorId: authorizedDoctorId 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId,
+			doctorId: authorizedDoctorId,
 		})
 		inMemoryVideoSessionRepository.save(room)
 
@@ -132,10 +132,10 @@ describe('JoinInterviewRoomUseCase', () => {
 		const socketId = faker.string.uuid()
 
 		// Create room for authorized patient
-		const room = makeInterviewRoom({ 
-			interviewId, 
-			patientId: authorizedPatientId, 
-			doctorId 
+		const room = makeInterviewRoom({
+			interviewId,
+			patientId: authorizedPatientId,
+			doctorId,
 		})
 		inMemoryVideoSessionRepository.save(room)
 

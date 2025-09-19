@@ -2,7 +2,10 @@ import { ROLE } from '@/domain/administrator/entities/interfaces/adminitrator.ty
 import { app, start } from '@/infra/http/server'
 import { MediaSoupService } from '@/infra/video/mediasoup-service'
 import { createAndAuthenticateForVideo } from '@/tests/factories/create-and-authenticate-for-video'
-import { getUniqueTestPort, releaseTestPort } from '@/tests/utils/test-port-generator'
+import {
+	getUniqueTestPort,
+	releaseTestPort,
+} from '@/tests/utils/test-port-generator'
 import { io as Client, type Socket } from 'socket.io-client'
 
 describe('Video Namespace (e2e)', () => {
@@ -69,7 +72,7 @@ describe('Video Namespace (e2e)', () => {
 		MediaSoupService.resetInstance()
 
 		await app.close()
-		
+
 		// Liberar a porta para outros testes
 		releaseTestPort(testPort)
 	})
