@@ -1,0 +1,37 @@
+import type { UniqueEntityID } from '../../../core/entities/unique-entity'
+
+export enum STATUS_APPOINTMENT {
+	SCHEDULED = 'SCHEDULED',
+	IN_PROGRESS = 'IN_PROGRESS',
+	COMPLETED = 'COMPLETED',
+	CANCELED = 'CANCELED',
+}
+
+export enum SPECIALTIES {
+	CARDIOLOGIA = 'CARDIOLOGIA',
+	DERMATOLOGIA = 'DERMATOLOGIA',
+	ENDOCRINOLOGIA = 'ENDOCRINOLOGIA',
+	GASTROENTEROLOGIA = 'GASTROENTEROLOGIA',
+	GINECOLOGIA = 'GINECOLOGIA',
+	NEUROLOGIA = 'NEUROLOGIA',
+	OFTALMOLOGIA = 'OFTALMOLOGIA',
+	ORTOPEDIA = 'ORTOPEDIA',
+	PEDIATRIA = 'PEDIATRIA',
+	PSIQUIATRIA = 'PSIQUIATRIA',
+	CLINICA_GERAL = 'CLINICA_GERAL',
+	MEDICINA_DO_TRABALHO = 'MEDICINA_DO_TRABALHO',
+	MEDICINA_PREVENTIVA = 'MEDICINA_PREVENTIVA',
+}
+
+export interface AppointmentProps {
+	status: STATUS_APPOINTMENT
+	scheduledAt: Date
+	createdAt: Date
+	updatedAt: Date
+	deletedAt?: Date
+	clientId: UniqueEntityID
+	interviewerId?: UniqueEntityID
+	specialty: SPECIALTIES
+	triageId?: UniqueEntityID
+	interviewId?: UniqueEntityID
+}

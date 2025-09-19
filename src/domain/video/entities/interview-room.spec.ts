@@ -133,11 +133,17 @@ describe('InterviewRoom Entity', () => {
 	it('should be able to clear all socket resources', () => {
 		const room = makeInterviewRoom()
 		const socketId = faker.string.uuid()
-		
+
 		const mockProducer = { id: faker.string.uuid(), close: vi.fn() } as any
 		const mockConsumer = { id: faker.string.uuid(), close: vi.fn() } as any
-		const mockProducerTransport = { id: faker.string.uuid(), close: vi.fn() } as any
-		const mockConsumerTransport = { id: faker.string.uuid(), close: vi.fn() } as any
+		const mockProducerTransport = {
+			id: faker.string.uuid(),
+			close: vi.fn(),
+		} as any
+		const mockConsumerTransport = {
+			id: faker.string.uuid(),
+			close: vi.fn(),
+		} as any
 
 		room.setDoctorSocket(socketId)
 		room.addProducer(socketId, mockProducer)
