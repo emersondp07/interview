@@ -45,6 +45,16 @@ describe('Email Value Object', () => {
 			expect(Email.isValid('@domain.com')).toBe(false)
 			expect(Email.isValid('test@domain')).toBe(false)
 		})
+
+		it('should handle potentially malicious input efficiently (ReDoS protection)', () => {
+			const maliciousEmail = 'a@a@a@a@a@a@a@a@a@a@a@a@a@a@a@a@a@a@a@a.com'
+			const start = performance.now()
+			const result = Email.isValid(maliciousEmail)
+			const end = performance.now()
+
+			expect(result).toBe(false)
+			expect(end - start).toBeLessThan(100) // Should complete in less than 100ms
+		})
 	})
 
 	describe('Equality', () => {
