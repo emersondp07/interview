@@ -3,8 +3,8 @@ import type { RegisterClientSchema } from '@/application/company/validators/regi
 import { PrismaClientsRepository } from '@/infra/database/repositories/prisma-clients-repository'
 import { PrismaCompaniesRepository } from '@/infra/database/repositories/prisma-companies-repository'
 import { PrismaInterviewsRepository } from '@/infra/database/repositories/prisma-interviews-repository'
-import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import { ResendEmailsService } from '@/infra/services/email/emails'
+import { handleResult } from '@/interfaces/http/helpers/handle-result'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export async function registerClient(
