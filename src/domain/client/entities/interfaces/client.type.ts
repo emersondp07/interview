@@ -24,7 +24,6 @@ export interface ClientProps {
 	email: string
 	emergencyContact?: string
 	emergencyPhone?: string
-	medicalHistory?: string
 	allergies?: string
 	medications?: string
 	role: ROLE.CLIENT

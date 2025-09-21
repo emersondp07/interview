@@ -24,7 +24,6 @@ export function makeClient(
 			allergies: faker.lorem.sentence(),
 			emergencyContact: faker.person.fullName(),
 			emergencyPhone: faker.phone.number(),
-			medicalHistory: faker.lorem.paragraph(),
 			medications: faker.lorem.sentence(),
 			companyId: new UniqueEntityID(),
 			...override,
