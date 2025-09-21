@@ -1,5 +1,4 @@
 import { type Either, success } from '@/domain/core/either'
-import { UniqueEntityID } from '@/domain/core/entities/unique-entity'
 import type { InterviewAnswer } from '@/domain/interviewer/entities/interview-answer'
 import type { InterviewAnswersRepository } from '@/domain/interviewer/repositories/interview-answers-repository'
 

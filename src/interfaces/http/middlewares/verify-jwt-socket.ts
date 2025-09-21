@@ -20,6 +20,16 @@ export function verifyJwtSocket(
 		socket.data.user = payload
 		next()
 	} catch (err) {
-		return next(new Error('Token inválido ou expirado'))
+		console.error('JWT verification failed:', err)
+
+		if (err instanceof jwt.TokenExpiredError) {
+			return next(new Error('Token expirado'))
+		}
+
+		if (err instanceof jwt.JsonWebTokenError) {
+			return next(new Error('Token inválido'))
+		}
+
+		return next(new Error('Erro na verificação do token'))
 	}
 }
