@@ -42,13 +42,11 @@ export class JoinInterviewRoomUseCase {
 			)
 
 			let room = this.videoSessionRepository.findById(interviewId)
-			if (!room) {
-				room = this.videoSessionRepository.create(
-					interviewId,
-					patientId,
-					doctorId,
-				)
-			}
+			room ??= this.videoSessionRepository.create(
+				interviewId,
+				patientId,
+				doctorId,
+			)
 
 			const isAuthorized =
 				(role === ROLE.INTERVIEWER && doctorId === room.doctorId) ||

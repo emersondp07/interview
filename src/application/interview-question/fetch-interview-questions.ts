@@ -1,5 +1,4 @@
 import { type Either, success } from '@/domain/core/either'
-import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
 import type { InterviewQuestion } from '@/domain/interviewer/entities/interview-question'
 import type { InterviewQuestionsRepository } from '@/domain/interviewer/repositories/interview-questions-repository'
 

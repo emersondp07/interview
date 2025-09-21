@@ -1,10 +1,7 @@
 import { AggregateRoot } from '../../core/entities/aggregate-root'
 import type { UniqueEntityID } from '../../core/entities/unique-entity'
 import type { Optional } from '../../core/types/optional'
-import type {
-	MEDICAL_RECORD_TYPE,
-	MedicalHistoryProps,
-} from './interfaces/medical-history.type'
+import type { MedicalHistoryProps } from './interfaces/medical-history.type'
 
 export class MedicalHistory extends AggregateRoot<MedicalHistoryProps> {
 	get type() {

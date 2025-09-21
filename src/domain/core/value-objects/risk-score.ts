@@ -103,17 +103,10 @@ export class RiskScore {
 		let score = 0
 		const factors: string[] = []
 
-		// Idade (0-20 pontos)
-		if (riskFactors.age >= 80) {
-			score += 20
-			factors.push('Advanced Age (80+)')
-		} else if (riskFactors.age >= 65) {
-			score += 12
-			factors.push('Elderly (65-79)')
-		} else if (riskFactors.age >= 50) {
-			score += 6
-			factors.push('Middle Age (50-64)')
-		}
+		// Análise da idade
+		const ageAnalysis = this.analyzeAge(riskFactors.age)
+		score += ageAnalysis.score
+		if (ageAnalysis.factor) factors.push(ageAnalysis.factor)
 
 		// Condições crônicas (0-15 pontos)
 		if (riskFactors.hasChronicConditions) {
@@ -121,51 +114,62 @@ export class RiskScore {
 			factors.push('Chronic Medical Conditions')
 		}
 
-		// Tabagismo (0-10 pontos)
-		if (riskFactors.smokingStatus === 'current') {
-			score += 10
-			factors.push('Current Smoker')
-		} else if (riskFactors.smokingStatus === 'former') {
-			score += 5
-			factors.push('Former Smoker')
-		}
+		// Análise do tabagismo
+		const smokingAnalysis = this.analyzeSmokingStatus(riskFactors.smokingStatus)
+		score += smokingAnalysis.score
+		if (smokingAnalysis.factor) factors.push(smokingAnalysis.factor)
 
-		// IMC (0-8 pontos)
+		// Análise do IMC
 		if (riskFactors.bmi) {
-			if (riskFactors.bmi >= 35) {
-				score += 8
-				factors.push('Severe Obesity (BMI ≥35)')
-			} else if (riskFactors.bmi >= 30) {
-				score += 5
-				factors.push('Obesity (BMI 30-34.9)')
-			} else if (riskFactors.bmi < 18.5) {
-				score += 4
-				factors.push('Underweight (BMI <18.5)')
-			}
+			const bmiAnalysis = this.analyzeBMI(riskFactors.bmi)
+			score += bmiAnalysis.score
+			if (bmiAnalysis.factor) factors.push(bmiAnalysis.factor)
 		}
 
-		// Número de medicamentos (0-5 pontos)
-		if (riskFactors.medicationCount >= 5) {
-			score += 5
-			factors.push('Multiple Medications (≥5)')
-		} else if (riskFactors.medicationCount >= 3) {
-			score += 3
-			factors.push('Several Medications (3-4)')
-		}
+		// Análise de medicamentos
+		const medicationAnalysis = this.analyzeMedicationCount(riskFactors.medicationCount)
+		score += medicationAnalysis.score
+		if (medicationAnalysis.factor) factors.push(medicationAnalysis.factor)
 
-		// Gravidade dos sintomas (0-10 pontos)
-		if (riskFactors.symptomSeverity >= 8) {
-			score += 10
-			factors.push('Severe Symptoms')
-		} else if (riskFactors.symptomSeverity >= 6) {
-			score += 6
-			factors.push('Moderate Symptoms')
-		} else if (riskFactors.symptomSeverity >= 4) {
-			score += 3
-			factors.push('Mild Symptoms')
-		}
+		// Análise dos sintomas
+		const symptomAnalysis = this.analyzeSymptomSeverity(riskFactors.symptomSeverity)
+		score += symptomAnalysis.score
+		if (symptomAnalysis.factor) factors.push(symptomAnalysis.factor)
 
 		return { score, factors }
+	}
+
+	private static analyzeAge(age: number): { score: number; factor?: string } {
+		if (age >= 80) return { score: 20, factor: 'Advanced Age (80+)' }
+		if (age >= 65) return { score: 12, factor: 'Elderly (65-79)' }
+		if (age >= 50) return { score: 6, factor: 'Middle Age (50-64)' }
+		return { score: 0 }
+	}
+
+	private static analyzeSmokingStatus(smokingStatus: string): { score: number; factor?: string } {
+		if (smokingStatus === 'current') return { score: 10, factor: 'Current Smoker' }
+		if (smokingStatus === 'former') return { score: 5, factor: 'Former Smoker' }
+		return { score: 0 }
+	}
+
+	private static analyzeBMI(bmi: number): { score: number; factor?: string } {
+		if (bmi >= 35) return { score: 8, factor: 'Severe Obesity (BMI ≥35)' }
+		if (bmi >= 30) return { score: 5, factor: 'Obesity (BMI 30-34.9)' }
+		if (bmi < 18.5) return { score: 4, factor: 'Underweight (BMI <18.5)' }
+		return { score: 0 }
+	}
+
+	private static analyzeMedicationCount(medicationCount: number): { score: number; factor?: string } {
+		if (medicationCount >= 5) return { score: 5, factor: 'Multiple Medications (≥5)' }
+		if (medicationCount >= 3) return { score: 3, factor: 'Several Medications (3-4)' }
+		return { score: 0 }
+	}
+
+	private static analyzeSymptomSeverity(symptomSeverity: number): { score: number; factor?: string } {
+		if (symptomSeverity >= 8) return { score: 10, factor: 'Severe Symptoms' }
+		if (symptomSeverity >= 6) return { score: 6, factor: 'Moderate Symptoms' }
+		if (symptomSeverity >= 4) return { score: 3, factor: 'Mild Symptoms' }
+		return { score: 0 }
 	}
 
 	private static determineRiskLevel(score: number): RiskLevel {
