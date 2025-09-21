@@ -23,7 +23,9 @@ export class CancelAppointmentUseCase {
 			return failed(new ResourceNotFoundError())
 		}
 
-		await this.appointmentsRepository.delete(appointment)
+		appointment.cancel()
+
+		await this.appointmentsRepository.update(appointment)
 
 		return success({})
 	}

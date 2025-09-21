@@ -1,8 +1,11 @@
 import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import type { Triage } from '@/domain/interviewer/entities/triage'
+import type { TriagesRepository } from '@/domain/interviewer/repositories/triages-repository'
+import { PrismaTriageMapper } from '../prisma/mappers/prisma-triage-mapper'
 import { prisma } from '../prisma/prisma'
 
-export class PrismaTriagesRepository {
-	async findAll({ page }: PaginationParams) {
+export class PrismaTriagesRepository implements TriagesRepository {
+	async findAll({ page }: PaginationParams): Promise<Triage[] | null> {
 		const triages = await prisma.triage.findMany({
 			take: 10,
 			skip: (page - 1) * 10,
@@ -11,20 +14,24 @@ export class PrismaTriagesRepository {
 			},
 		})
 
-		return triages
+		return triages.map(PrismaTriageMapper.toDomain)
 	}
 
-	async findById(triageId: string) {
+	async findById(triageId: string): Promise<Triage | null> {
 		const triage = await prisma.triage.findUnique({
 			where: {
 				id: triageId,
 			},
 		})
 
-		return triage
+		if (!triage) {
+			return null
+		}
+
+		return PrismaTriageMapper.toDomain(triage)
 	}
 
-	async findByClientId(clientId: string, { page }: PaginationParams) {
+	async findByClientId(clientId: string, { page }: PaginationParams): Promise<Triage[] | null> {
 		const triages = await prisma.triage.findMany({
 			where: {
 				client_id: clientId,
@@ -36,10 +43,10 @@ export class PrismaTriagesRepository {
 			},
 		})
 
-		return triages
+		return triages.map(PrismaTriageMapper.toDomain)
 	}
 
-	async findByAppointmentId(appointmentId: string) {
+	async findByAppointmentId(appointmentId: string): Promise<Triage | null> {
 		const triage = await prisma.triage.findFirst({
 			where: {
 				appointment: {
@@ -50,19 +57,25 @@ export class PrismaTriagesRepository {
 			},
 		})
 
-		return triage
+		if (!triage) {
+			return null
+		}
+
+		return PrismaTriageMapper.toDomain(triage)
 	}
 
-	async create(data: any) {
+	async create(triage: Triage): Promise<void> {
+		const data = PrismaTriageMapper.toPrisma(triage)
 		await prisma.triage.create({
 			data,
 		})
 	}
 
-	async update(triageId: string, data: any) {
+	async update(triage: Triage): Promise<void> {
+		const data = PrismaTriageMapper.toPrisma(triage)
 		await prisma.triage.update({
 			where: {
-				id: triageId,
+				id: triage.id.toString(),
 			},
 			data: {
 				...data,
@@ -71,10 +84,10 @@ export class PrismaTriagesRepository {
 		})
 	}
 
-	async delete(triageId: string) {
+	async delete(triage: Triage): Promise<void> {
 		await prisma.triage.update({
 			where: {
-				id: triageId,
+				id: triage.id.toString(),
 			},
 			data: {
 				deleted_at: new Date(),

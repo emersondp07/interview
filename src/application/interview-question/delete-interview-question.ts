@@ -3,7 +3,7 @@ import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-
 import type { InterviewQuestionsRepository } from '@/domain/interviewer/repositories/interview-questions-repository'
 
 interface DeleteInterviewQuestionUseCaseRequest {
-	interviewQuestionId: string
+	questionId: string
 }
 
 type DeleteInterviewQuestionUseCaseResponse = Either<ResourceNotFoundError, {}>
@@ -14,16 +14,18 @@ export class DeleteInterviewQuestionUseCase {
 	) {}
 
 	async execute({
-		interviewQuestionId,
+		questionId,
 	}: DeleteInterviewQuestionUseCaseRequest): Promise<DeleteInterviewQuestionUseCaseResponse> {
 		const interviewQuestion =
-			await this.interviewQuestionsRepository.findById(interviewQuestionId)
+			await this.interviewQuestionsRepository.findById(questionId)
 
 		if (!interviewQuestion) {
 			return failed(new ResourceNotFoundError())
 		}
 
-		await this.interviewQuestionsRepository.delete(interviewQuestionId)
+		interviewQuestion.delete()
+
+		await this.interviewQuestionsRepository.update(questionId, interviewQuestion)
 
 		return success({})
 	}

@@ -1,8 +1,13 @@
 import { InvalidCredencialsError } from '@/domain/core/errors/errors/invalid-credencials-error'
 import { administratorRoutes } from '@/interfaces/http/routes/administrator-routes'
+import { appointmentRoutes } from '@/interfaces/http/routes/appointment-routes'
 import { clientRoutes } from '@/interfaces/http/routes/client-routes'
 import { companyRoutes } from '@/interfaces/http/routes/company-routes'
+import { interviewAnswerRoutes } from '@/interfaces/http/routes/interview-answer-routes'
+import { interviewQuestionRoutes } from '@/interfaces/http/routes/interview-question-routes'
 import { interviewerRoutes } from '@/interfaces/http/routes/interviewer-routes'
+import { riskScoreRoutes } from '@/interfaces/http/routes/risk-score-routes'
+import { triageRoutes } from '@/interfaces/http/routes/triage-routes'
 import { webhookRoutes } from '@/interfaces/http/routes/webhook-routes'
 import { registerInterviewNamespace } from '@/interfaces/http/socket/namespace/interview-namespace'
 import fastifyCookie from '@fastify/cookie'
@@ -78,6 +83,11 @@ app.register(administratorRoutes)
 app.register(companyRoutes)
 app.register(clientRoutes)
 app.register(interviewerRoutes)
+app.register(interviewQuestionRoutes)
+app.register(interviewAnswerRoutes)
+app.register(triageRoutes)
+app.register(appointmentRoutes)
+app.register(riskScoreRoutes)
 
 app.register(webhookRoutes)
 
@@ -86,6 +96,13 @@ app.setErrorHandler((error, _, reply) => {
 		return reply
 			.status(400)
 			.send({ message: 'Validation error.', issue: error.format() })
+	}
+
+	if (error.statusCode === 400 && error.code === 'FST_ERR_VALIDATION') {
+		return reply.status(400).send({
+			message: 'Validation error.',
+			details: error.validation
+		})
 	}
 
 	if (error instanceof InvalidCredencialsError) {

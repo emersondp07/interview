@@ -5,6 +5,7 @@ export interface InterviewAnswersRepository {
 	findById(answerId: string): Promise<InterviewAnswer | null>
 	findByClientId(clientId: string): Promise<InterviewAnswer[] | null>
 	findByQuestionId(questionId: string): Promise<InterviewAnswer[] | null>
+	findByInterviewId(interviewId: string): Promise<InterviewAnswer[] | null>
 	findByClientAndQuestion(
 		clientId: string,
 		questionId: string,
