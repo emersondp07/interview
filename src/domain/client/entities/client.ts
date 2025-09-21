@@ -46,10 +46,6 @@ export class Client extends AggregateRoot<ClientProps> {
 		return this.props.emergencyPhone
 	}
 
-	get medicalHistory() {
-		return this.props.medicalHistory
-	}
-
 	get allergies() {
 		return this.props.allergies
 	}
