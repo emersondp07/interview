@@ -4,7 +4,7 @@ import type { InterviewQuestion } from '@/domain/interviewer/entities/interview-
 import type { InterviewQuestionsRepository } from '@/domain/interviewer/repositories/interview-questions-repository'
 
 interface UpdateInterviewQuestionUseCaseRequest {
-	interviewQuestionId: string
+	questionId: string
 	question?: string
 	options?: string[]
 	required?: boolean
@@ -21,13 +21,13 @@ export class UpdateInterviewQuestionUseCase {
 	) {}
 
 	async execute({
-		interviewQuestionId,
+		questionId,
 		question,
 		options,
 		required,
 	}: UpdateInterviewQuestionUseCaseRequest): Promise<UpdateInterviewQuestionUseCaseResponse> {
 		const interviewQuestion =
-			await this.interviewQuestionsRepository.findById(interviewQuestionId)
+			await this.interviewQuestionsRepository.findById(questionId)
 
 		if (!interviewQuestion) {
 			return failed(new ResourceNotFoundError())
@@ -48,7 +48,7 @@ export class UpdateInterviewQuestionUseCase {
 		}
 
 		await this.interviewQuestionsRepository.update(
-			interviewQuestionId,
+			questionId,
 			interviewQuestion,
 		)
 

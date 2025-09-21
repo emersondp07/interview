@@ -252,4 +252,15 @@ export class RiskScore {
 	toString(): string {
 		return `${this._level} (${this._score}/100)`
 	}
+
+	toJSON() {
+		return {
+			score: this._score,
+			level: this._level,
+			factors: this._factors,
+			priority: this.priority,
+			recommendedAction: this.recommendedAction,
+			color: this.color,
+		}
+	}
 }

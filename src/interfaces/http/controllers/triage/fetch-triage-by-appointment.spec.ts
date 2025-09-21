@@ -50,7 +50,7 @@ describe('Fetch Triage by Appointment (e2e)', () => {
 		expect(response.body.triage).toEqual(
 			expect.objectContaining({
 				notes: 'Appointment triage notes',
-				nurse_name: 'Appointment Nurse',
+				nurseName: 'Appointment Nurse',
 			}),
 		)
 	})

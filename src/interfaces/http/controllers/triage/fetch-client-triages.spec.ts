@@ -44,7 +44,7 @@ describe('Fetch Client Triages (e2e)', () => {
 		expect(response.body.triages[0]).toEqual(
 			expect.objectContaining({
 				notes: expect.any(String),
-				nurse_name: expect.any(String),
+				nurseName: expect.any(String),
 			}),
 		)
 	})

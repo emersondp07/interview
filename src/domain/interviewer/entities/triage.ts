@@ -56,6 +56,19 @@ export class Triage extends AggregateRoot<TriageProps> {
 		this.touch()
 	}
 
+	toJSON() {
+		return {
+			id: this.id.toString(),
+			notes: this.notes,
+			vitalSigns: this.vitalSigns,
+			nurseName: this.nurseName,
+			clientId: this.clientId.toString(),
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+			deletedAt: this.deletedAt,
+		}
+	}
+
 	static create(
 		props: Optional<TriageProps, 'createdAt' | 'updatedAt'>,
 		id?: UniqueEntityID,

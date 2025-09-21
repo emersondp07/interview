@@ -24,6 +24,7 @@ describe('Calculate Risk Score (e2e)', () => {
 					diastolicBP: 80,
 					heartRate: 75,
 					temperature: 36.5,
+					respiratoryRate: 16,
 					oxygenSaturation: 98,
 				},
 				riskFactors: {
@@ -64,6 +65,7 @@ describe('Calculate Risk Score (e2e)', () => {
 					diastolicBP: 110, // High blood pressure
 					heartRate: 130, // High heart rate
 					temperature: 39.5, // Fever
+					respiratoryRate: 35, // High respiratory rate
 					oxygenSaturation: 88, // Low oxygen
 				},
 				riskFactors: {
@@ -92,6 +94,7 @@ describe('Calculate Risk Score (e2e)', () => {
 					diastolicBP: 80,
 					heartRate: 75,
 					temperature: 36.5,
+					respiratoryRate: 16,
 					oxygenSaturation: 98,
 				},
 				riskFactors: {
@@ -115,10 +118,11 @@ describe('Calculate Risk Score (e2e)', () => {
 			.set('Authorization', `Bearer ${tokenInterviewer}`)
 			.send({
 				vitalSigns: {
-					systolicBP: -10, // Invalid negative value
+					systolicBP: 60, // Invalid - below minimum for zod (70)
 					diastolicBP: 80,
 					heartRate: 75,
 					temperature: 36.5,
+					respiratoryRate: 16,
 					oxygenSaturation: 98,
 				},
 				riskFactors: {

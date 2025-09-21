@@ -1,11 +1,19 @@
 import { type Either, failed, success } from '@/domain/core/either'
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { RiskScore } from '@/domain/core/value-objects/risk-score'
-import type { VitalSigns } from '@/domain/core/value-objects/vital-signs'
-import type { TriagesRepository } from '@/domain/interviewer/repositories/triages-repository'
+import { VitalSigns } from '@/domain/core/value-objects/vital-signs'
+import type { ClientsRepository } from '@/domain/company/repositories/clients-repository'
 
 interface CalculateRiskScoreUseCaseRequest {
-	triageId: string
+	clientId: string
+	vitalSigns: {
+		systolicBP: number
+		diastolicBP: number
+		heartRate: number
+		temperature: number
+		respiratoryRate: number
+		oxygenSaturation: number
+	}
 	riskFactors: {
 		age: number
 		hasChronicConditions: boolean
@@ -22,25 +30,29 @@ type CalculateRiskScoreUseCaseResponse = Either<
 >
 
 export class CalculateRiskScoreUseCase {
-	constructor(private readonly triagesRepository: TriagesRepository) {}
+	constructor(private readonly clientsRepository: ClientsRepository) {}
 
 	async execute({
-		triageId,
+		clientId,
+		vitalSigns,
 		riskFactors,
 	}: CalculateRiskScoreUseCaseRequest): Promise<CalculateRiskScoreUseCaseResponse> {
-		const triage = await this.triagesRepository.findById(triageId)
+		const client = await this.clientsRepository.findById(clientId)
 
-		if (!triage) {
+		if (!client) {
 			return failed(new ResourceNotFoundError())
 		}
 
-		const vitalSigns = triage.vitalSigns as VitalSigns
+		const vitalSignsVO = VitalSigns.create({
+			systolicBP: vitalSigns.systolicBP,
+			diastolicBP: vitalSigns.diastolicBP,
+			heartRate: vitalSigns.heartRate,
+			temperature: vitalSigns.temperature,
+			respiratoryRate: vitalSigns.respiratoryRate,
+			oxygenSaturation: vitalSigns.oxygenSaturation,
+		})
 
-		if (!vitalSigns) {
-			return failed(new ResourceNotFoundError())
-		}
-
-		const riskScore = RiskScore.calculate(vitalSigns, riskFactors)
+		const riskScore = RiskScore.calculate(vitalSignsVO, riskFactors)
 
 		return success({
 			riskScore,

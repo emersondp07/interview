@@ -33,7 +33,7 @@ describe('Create Triage (e2e)', () => {
 		expect(response.body.triage).toEqual(
 			expect.objectContaining({
 				notes: 'Patient appears stable',
-				nurse_name: 'Jane Doe',
+				nurseName: 'Jane Doe',
 			}),
 		)
 	})

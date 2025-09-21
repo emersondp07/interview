@@ -42,6 +42,18 @@ export class InterviewAnswer extends AggregateRoot<InterviewAnswerProps> {
 		this.touch()
 	}
 
+	toJSON() {
+		return {
+			id: this.id.toString(),
+			clientId: this.clientId.toString(),
+			questionId: this.questionId.toString(),
+			selectedOption: this.selectedOption,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+			deletedAt: this.deletedAt,
+		}
+	}
+
 	static create(
 		props: Optional<InterviewAnswerProps, 'createdAt' | 'updatedAt'>,
 		id?: UniqueEntityID,

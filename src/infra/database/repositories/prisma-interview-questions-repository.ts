@@ -1,4 +1,5 @@
 import type { PaginationParams } from '@/domain/core/repositories/pagination-params'
+import type { InterviewQuestion } from '@/domain/interviewer/entities/interview-question'
 import type { InterviewQuestionsRepository } from '@/domain/interviewer/repositories/interview-questions-repository'
 import { PrismaInterviewQuestionMapper } from '../prisma/mappers/prisma-interview-question-mapper'
 import { prisma } from '../prisma/prisma'
@@ -41,13 +42,15 @@ export class PrismaInterviewQuestionsRepository
 		return questions.map(PrismaInterviewQuestionMapper.toDomain)
 	}
 
-	async create(data: any) {
+	async create(interviewQuestion: InterviewQuestion): Promise<void> {
+		const data = PrismaInterviewQuestionMapper.toPrisma(interviewQuestion)
 		await prisma.interviewQuestion.create({
 			data,
 		})
 	}
 
-	async update(questionId: string, data: any) {
+	async update(questionId: string, interviewQuestion: InterviewQuestion): Promise<void> {
+		const data = PrismaInterviewQuestionMapper.toPrisma(interviewQuestion)
 		await prisma.interviewQuestion.update({
 			where: {
 				id: questionId,
@@ -59,7 +62,7 @@ export class PrismaInterviewQuestionsRepository
 		})
 	}
 
-	async delete(questionId: string) {
+	async delete(questionId: string): Promise<void> {
 		await prisma.interviewQuestion.update({
 			where: {
 				id: questionId,

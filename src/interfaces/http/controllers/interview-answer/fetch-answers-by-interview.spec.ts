@@ -43,7 +43,7 @@ describe('Fetch Answers by Interview (e2e)', () => {
 		expect(response.body.interviewAnswers).toHaveLength(1)
 		expect(response.body.interviewAnswers[0]).toEqual(
 			expect.objectContaining({
-				selected_option: 'Yes',
+				selectedOption: 'Yes',
 			}),
 		)
 	})

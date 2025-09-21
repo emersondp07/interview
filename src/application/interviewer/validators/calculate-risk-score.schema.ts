@@ -6,11 +6,12 @@ export const calculateRiskScoreParams = z.object({
 
 export const calculateRiskScoreSchema = z.object({
 	vitalSigns: z.object({
-		systolicBP: z.number().min(0).max(300),
-		diastolicBP: z.number().min(0).max(200),
-		heartRate: z.number().min(0).max(300),
-		temperature: z.number().min(30).max(45),
-		oxygenSaturation: z.number().min(0).max(100),
+		systolicBP: z.number().min(70).max(250),
+		diastolicBP: z.number().min(40).max(150),
+		heartRate: z.number().min(30).max(220),
+		temperature: z.number().min(32).max(45),
+		respiratoryRate: z.number().min(8).max(60),
+		oxygenSaturation: z.number().min(70).max(100),
 	}),
 	riskFactors: z.object({
 		age: z.number().min(0).max(150),

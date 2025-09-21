@@ -1,38 +1,34 @@
 import { ResourceNotFoundError } from '@/domain/core/errors/errors/resource-not-found-error'
 import { RiskLevel } from '@/domain/core/value-objects/risk-score'
-import { VitalSigns } from '@/domain/core/value-objects/vital-signs'
-import { makeTriage } from '@/tests/factories/make-triage'
-import { InMemoryTriagesRepository } from '@/tests/repositories/in-memory-triages-repository'
+import { makeClient } from '@/tests/factories/make-client'
+import { InMemoryClientsRepository } from '@/tests/repositories/in-memory-clients-repository'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { CalculateRiskScoreUseCase } from './calculate-risk-score'
 
-let inMemoryTriagesRepository: InMemoryTriagesRepository
+let inMemoryClientsRepository: InMemoryClientsRepository
 let sut: CalculateRiskScoreUseCase
 
 describe('Calculate Risk Score Use Case', () => {
 	beforeEach(() => {
-		inMemoryTriagesRepository = new InMemoryTriagesRepository()
-		sut = new CalculateRiskScoreUseCase(inMemoryTriagesRepository)
+		inMemoryClientsRepository = new InMemoryClientsRepository()
+		sut = new CalculateRiskScoreUseCase(inMemoryClientsRepository)
 	})
 
-	it('should be able to calculate risk score for a triage', async () => {
-		const normalVitalSigns = VitalSigns.create({
-			systolicBP: 120,
-			diastolicBP: 80,
-			heartRate: 70,
-			temperature: 36.5,
-			respiratoryRate: 16,
-			oxygenSaturation: 98,
-		})
+	it('should be able to calculate risk score for a client', async () => {
+		const client = makeClient()
 
-		const triage = makeTriage({
-			vitalSigns: normalVitalSigns,
-		})
-
-		await inMemoryTriagesRepository.create(triage)
+		await inMemoryClientsRepository.create(client)
 
 		const result = await sut.execute({
-			triageId: triage.id.toString(),
+			clientId: client.id.toString(),
+			vitalSigns: {
+				systolicBP: 120,
+				diastolicBP: 80,
+				heartRate: 70,
+				temperature: 36.5,
+				respiratoryRate: 16,
+				oxygenSaturation: 98,
+			},
 			riskFactors: {
 				age: 30,
 				hasChronicConditions: false,
@@ -53,23 +49,20 @@ describe('Calculate Risk Score Use Case', () => {
 	})
 
 	it('should calculate high risk score for abnormal vitals and risk factors', async () => {
-		const abnormalVitalSigns = VitalSigns.create({
-			systolicBP: 180,
-			diastolicBP: 120,
-			heartRate: 130,
-			temperature: 39.5,
-			respiratoryRate: 25,
-			oxygenSaturation: 85,
-		})
+		const client = makeClient()
 
-		const triage = makeTriage({
-			vitalSigns: abnormalVitalSigns,
-		})
-
-		await inMemoryTriagesRepository.create(triage)
+		await inMemoryClientsRepository.create(client)
 
 		const result = await sut.execute({
-			triageId: triage.id.toString(),
+			clientId: client.id.toString(),
+			vitalSigns: {
+				systolicBP: 180,
+				diastolicBP: 120,
+				heartRate: 130,
+				temperature: 39.5,
+				respiratoryRate: 25,
+				oxygenSaturation: 85,
+			},
 			riskFactors: {
 				age: 80,
 				hasChronicConditions: true,
@@ -89,13 +82,22 @@ describe('Calculate Risk Score Use Case', () => {
 		})
 	})
 
-	it('should return error when triage does not exist', async () => {
+	it('should return error when client does not exist', async () => {
 		const result = await sut.execute({
-			triageId: 'invalid-id',
+			clientId: 'invalid-id',
+			vitalSigns: {
+				systolicBP: 120,
+				diastolicBP: 80,
+				heartRate: 70,
+				temperature: 36.5,
+				respiratoryRate: 16,
+				oxygenSaturation: 98,
+			},
 			riskFactors: {
 				age: 30,
 				hasChronicConditions: false,
 				smokingStatus: 'never',
+				bmi: 22,
 				medicationCount: 0,
 				symptomSeverity: 2,
 			},

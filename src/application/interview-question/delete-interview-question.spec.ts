@@ -22,7 +22,7 @@ describe('Delete Interview Question Use Case', () => {
 		await inMemoryInterviewQuestionsRepository.create(interviewQuestion)
 
 		const result = await sut.execute({
-			interviewQuestionId: interviewQuestion.id.toString(),
+			questionId: interviewQuestion.id.toString(),
 		})
 
 		expect(result.isSuccess()).toBe(true)
@@ -33,7 +33,7 @@ describe('Delete Interview Question Use Case', () => {
 
 	it('should return error when interview question does not exist', async () => {
 		const result = await sut.execute({
-			interviewQuestionId: 'invalid-id',
+			questionId: 'invalid-id',
 		})
 
 		expect(result.isFailed()).toBe(true)

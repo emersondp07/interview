@@ -25,7 +25,7 @@ describe('Update Interview Question Use Case', () => {
 		await inMemoryInterviewQuestionsRepository.create(interviewQuestion)
 
 		const result = await sut.execute({
-			interviewQuestionId: interviewQuestion.id.toString(),
+			questionId: interviewQuestion.id.toString(),
 			question: 'New question',
 			options: ['New option 1', 'New option 2', 'New option 3'],
 		})
@@ -47,7 +47,7 @@ describe('Update Interview Question Use Case', () => {
 		await inMemoryInterviewQuestionsRepository.create(interviewQuestion)
 
 		const result = await sut.execute({
-			interviewQuestionId: interviewQuestion.id.toString(),
+			questionId: interviewQuestion.id.toString(),
 			required: false,
 		})
 
@@ -61,7 +61,7 @@ describe('Update Interview Question Use Case', () => {
 
 	it('should return error when interview question does not exist', async () => {
 		const result = await sut.execute({
-			interviewQuestionId: 'invalid-id',
+			questionId: 'invalid-id',
 			question: 'New question',
 		})
 

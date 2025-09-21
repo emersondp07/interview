@@ -50,7 +50,7 @@ describe('Fetch Client Answers (e2e)', () => {
 		expect(response.body.interviewAnswers).toHaveLength(2)
 		expect(response.body.interviewAnswers[0]).toEqual(
 			expect.objectContaining({
-				selected_option: expect.any(String),
+				selectedOption: expect.any(String),
 			}),
 		)
 	})

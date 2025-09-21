@@ -98,6 +98,13 @@ app.setErrorHandler((error, _, reply) => {
 			.send({ message: 'Validation error.', issue: error.format() })
 	}
 
+	if (error.statusCode === 400 && error.code === 'FST_ERR_VALIDATION') {
+		return reply.status(400).send({
+			message: 'Validation error.',
+			details: error.validation
+		})
+	}
+
 	if (error instanceof InvalidCredencialsError) {
 		return reply.status(401).send(error.message)
 	}

@@ -80,6 +80,22 @@ export class Appointment extends AggregateRoot<AppointmentProps> {
 		this.touch()
 	}
 
+	toJSON() {
+		return {
+			id: this.id.toString(),
+			status: this.status,
+			scheduledAt: this.scheduledAt,
+			clientId: this.clientId.toString(),
+			interviewerId: this.interviewerId?.toString(),
+			specialty: this.specialty,
+			triageId: this.triageId?.toString(),
+			interviewId: this.interviewId?.toString(),
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+			deletedAt: this.deletedAt,
+		}
+	}
+
 	static create(
 		props: Optional<AppointmentProps, 'createdAt' | 'updatedAt'>,
 		id?: UniqueEntityID,

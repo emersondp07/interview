@@ -17,7 +17,7 @@ export async function updateInterviewAnswer(
 	)
 
 	const result = await updateInterviewAnswerUseCase.execute({
-		answerId,
+		interviewAnswerId: answerId,
 		selectedOption,
 	})
 
