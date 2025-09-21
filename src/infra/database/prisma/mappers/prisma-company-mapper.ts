@@ -37,7 +37,7 @@ export class PrismaCompanyMapper {
 				role: raw.role as ROLE.COMPANY,
 				planId: raw.plan_id,
 				createdAt: raw.created_at,
-				updatedAt: raw.updated_at,
+				updatedAt: raw.updated_at ?? undefined,
 				signature: raw.signature_id
 					? Signature.create(
 							{

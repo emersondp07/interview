@@ -24,7 +24,7 @@ export class PrismaContractMapper {
 				imageUrl: raw.image_url,
 				companyId: new UniqueEntityID(raw.company_id),
 				createdAt: raw.created_at,
-				updatedAt: raw.updated_at,
+				updatedAt: raw.updated_at ?? undefined,
 			},
 			new UniqueEntityID(raw.id),
 		)

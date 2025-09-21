@@ -28,7 +28,7 @@ export class PrismaAdministratorMapper {
 				password: raw.password,
 				role: raw.role as ROLE.ADMIN,
 				createdAt: raw.created_at,
-				updatedAt: raw.updated_at,
+				updatedAt: raw.updated_at ?? undefined,
 			},
 			new UniqueEntityID(raw.id),
 		)
